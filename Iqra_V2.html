@@ -1,0 +1,1109 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Iqra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=Onest:wght@400;500;600;700&family=Scheherazade+New:wght@400;700&display=swap">
+<style>
+/* Layout: dashboard like PetroEnglish — left progress column + right section grid; Samarkand-tile palette (lapis, turquoise, gold) over a faint girih pattern. Kids mode = bigger, brighter, mascot. */
+:root{
+  --bg:#EDF2F6; --surface:#FFFFFF; --surface-2:#F3F7FA; --ink:#0F2740; --muted:#566A7E; --line:#D7E1EA;
+  --accent:#1D4E89; --accent-ink:#FFFFFF; --accent-soft:#DFE9F5;
+  --tq:#0B8F9C; --tq-soft:#D3F0F2; --gold:#B07F22; --gold-soft:#F6EBD2;
+  --good:#2B8A3E; --good-soft:#DDF2E1; --bad:#C92A5A; --bad-soft:#FBE1EA;
+  --pattern:rgba(29,78,137,.07); --ghost:#C9D6E2;
+  --shadow:0 1px 2px rgba(15,39,64,.06),0 8px 24px rgba(15,39,64,.07);
+  --f-display:"Rubik","Onest",system-ui,sans-serif;
+  --f-body:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-ar:"Scheherazade New","Amiri","Noto Naskh Arabic","Geeza Pro","Times New Roman",serif;
+  --r:16px; --fs:16px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0A1220; --surface:#111C2D; --surface-2:#172538; --ink:#E5EDF6; --muted:#93A5BA; --line:#23344A;
+  --accent:#86B6F2; --accent-ink:#0A1A2E; --accent-soft:#19304E;
+  --tq:#45D0DB; --tq-soft:#113A40; --gold:#E7BC5E; --gold-soft:#3A2E14;
+  --good:#5BD07A; --good-soft:#163A22; --bad:#FF7AA2; --bad-soft:#3E1726;
+  --pattern:rgba(134,182,242,.06); --ghost:#2A3E58;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0A1220; --surface:#111C2D; --surface-2:#172538; --ink:#E5EDF6; --muted:#93A5BA; --line:#23344A;
+  --accent:#86B6F2; --accent-ink:#0A1A2E; --accent-soft:#19304E;
+  --tq:#45D0DB; --tq-soft:#113A40; --gold:#E7BC5E; --gold-soft:#3A2E14;
+  --good:#5BD07A; --good-soft:#163A22; --bad:#FF7AA2; --bad-soft:#3E1726;
+  --pattern:rgba(134,182,242,.06); --ghost:#2A3E58;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}
+body.kids{--r:22px;--fs:18px;--accent:var(--tq);--accent-soft:var(--tq-soft)}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:var(--fs);line-height:1.55;-webkit-font-smoothing:antialiased;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-color:var(--pattern);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23000' stroke-width='2'%3E%3Cpath d='M48 14 58 38 82 48 58 58 48 82 38 58 14 48 38 38Z'/%3E%3Crect x='30' y='30' width='36' height='36'/%3E%3Crect x='30' y='30' width='36' height='36' transform='rotate(45 48 48)'/%3E%3Cpath d='M0 0 14 14M96 0 82 14M0 96 14 82M96 96 82 82'/%3E%3C/g%3E%3C/svg%3E") repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23000' stroke-width='2'%3E%3Cpath d='M48 14 58 38 82 48 58 58 48 82 38 58 14 48 38 38Z'/%3E%3Crect x='30' y='30' width='36' height='36'/%3E%3Crect x='30' y='30' width='36' height='36' transform='rotate(45 48 48)'/%3E%3Cpath d='M0 0 14 14M96 0 82 14M0 96 14 82M96 96 82 82'/%3E%3C/g%3E%3C/svg%3E") repeat}
+button,input,textarea,select{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(22px,3vw,30px)} h2{font-size:20px} h3{font-size:17px}
+p{margin:0}
+.ar{font-family:var(--f-ar);direction:rtl;unicode-bidi:isolate;line-height:1.75;font-weight:400}
+.tr{font-style:italic;color:var(--muted)}
+.muted{color:var(--muted)}
+.lbl{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1320px;margin:0 auto;padding-inline:clamp(16px,3vw,32px);padding-block:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+.brand svg{width:42px;height:42px;flex:none}
+.brand-name{font-family:var(--f-display);font-weight:800;font-size:20px;letter-spacing:-.01em;line-height:1;display:flex;align-items:baseline;gap:8px}
+.brand-name .ar{color:var(--gold);font-size:22px;line-height:1;font-weight:700}
+.brand-by{font-size:11px;color:var(--muted);letter-spacing:.04em;margin-top:4px}
+.top-sp{flex:1}
+.seg{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:3px}
+.seg button{border:0;background:none;padding:6px 10px;border-radius:9px;font-weight:600;font-size:13px;cursor:pointer;color:var(--muted);min-width:40px}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.icon-btn{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer}
+.icon-btn svg{width:20px;height:20px}
+.kid-btn{height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:inline-flex;align-items:center;gap:6px;padding:0 12px;font-weight:700;font-size:14px;cursor:pointer}
+.kid-btn svg{width:24px;height:24px}
+.kid-btn.on{background:var(--gold-soft);border-color:var(--gold);color:var(--gold)}
+
+/* page */
+.wrap{max-width:1320px;margin:0 auto;padding-inline:clamp(16px,3vw,32px);padding-block:24px 32px}
+.dash{display:grid;grid-template-columns:320px minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:980px){.dash{grid-template-columns:minmax(0,1fr)}}
+.side{display:flex;flex-direction:column;gap:14px;position:sticky;top:84px}
+@media (max-width:980px){.side{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.side .wide{grid-column:1/-1}.dash>section{order:1}.dash>.side{order:2}}
+@media (max-width:560px){.side{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);min-width:0}
+.ring-row{display:flex;align-items:center;gap:16px}
+.ring{width:96px;height:96px;flex:none}
+.ring .bgc{stroke:var(--line)} .ring .fgc{stroke:var(--gold);transition:stroke-dashoffset .8s ease}
+.ring text{fill:var(--ink);font-family:var(--f-display);font-weight:700}
+.bar{height:10px;background:var(--surface-2);border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .6s ease}
+.week{display:flex;gap:6px;margin-top:10px}
+.week span{flex:1;height:28px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;font-size:11px;color:var(--muted);font-weight:600}
+.week span.on{background:var(--gold-soft);border-color:var(--gold);color:var(--gold)}
+.cont{background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 65%,var(--ink)));color:var(--accent-ink);border:0}
+.cont .lbl{color:inherit;opacity:.8}
+.cont h3{margin:6px 0 2px}
+.mascot-box{display:flex;gap:12px;align-items:center}
+.mascot-box svg{width:84px;height:96px;flex:none}
+.speech{background:var(--gold-soft);border:1px solid var(--gold);border-radius:16px;padding:10px 14px;font-weight:600;position:relative}
+
+/* tiles */
+.main-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.tiles .tile.feat{grid-column:1/-1}}
+@media (max-width:420px){.tiles{grid-template-columns:minmax(0,1fr)}}
+.tile{position:relative;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;cursor:pointer;display:flex;flex-direction:column;gap:8px;min-height:170px;box-shadow:var(--shadow);transition:transform .18s ease,border-color .18s ease;overflow:hidden;min-width:0}
+.tile:hover{transform:translateY(-3px);border-color:var(--accent)}
+.tile .glyph{font-family:var(--f-ar);font-size:44px;line-height:1;color:var(--accent);height:52px;display:flex;align-items:center}
+.tile h3{font-size:16px}
+.tile p{font-size:14px;color:var(--muted)}
+.tile .stat{margin-top:auto;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;font-variant-numeric:tabular-nums}
+.tile.feat{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tile.feat p,.tile.feat .stat{color:color-mix(in srgb,var(--bg) 70%,transparent)}
+.tile.feat .glyph{color:var(--gold)}
+.tile.gold .glyph{color:var(--gold)} .tile.tq .glyph{color:var(--tq)}
+.tile .deco{position:absolute;left:-30px;bottom:-40px;font-family:var(--f-ar);font-size:180px;line-height:1;opacity:.08;pointer-events:none}
+.tile.feat .deco{left:auto;right:-10px;opacity:.15;color:var(--gold)}
+body.kids .tile{min-height:190px}
+body.kids .tile .glyph{font-size:54px;height:62px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:13px;border:1px solid transparent;background:var(--accent);color:var(--accent-ink);font-weight:600;cursor:pointer;transition:transform .12s ease,filter .12s;text-decoration:none}
+.btn:hover{filter:brightness(1.06)} .btn:active{transform:scale(.98)}
+.btn.ghost{background:var(--surface);color:var(--ink);border-color:var(--line)}
+.btn.gold{background:var(--gold);color:#fff}
+.btn.light{background:rgba(255,255,255,.18);color:inherit;border-color:rgba(255,255,255,.35)}
+.btn.sm{min-height:38px;padding:0 14px;font-size:14px;border-radius:10px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn svg{width:18px;height:18px}
+.say{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);display:inline-grid;place-items:center;cursor:pointer;color:var(--accent);flex:none}
+.say svg{width:18px;height:18px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.stack{display:flex;flex-direction:column;gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.grid2,.grid3{grid-template-columns:minmax(0,1fr)}}
+
+/* inner screens */
+.crumb{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.back{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;flex:none}
+.back svg{width:20px;height:20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;min-width:0}
+.note{background:var(--gold-soft);border:1px solid color-mix(in srgb,var(--gold) 40%,transparent);border-radius:12px;padding:12px 14px;font-size:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--surface);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+
+/* alphabet grid */
+.abc{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;direction:rtl}
+@media (max-width:760px){.abc{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.lt{direction:ltr;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 6px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0;min-width:0;transition:border-color .15s,transform .15s}
+.lt:hover{border-color:var(--accent);transform:translateY(-2px)}
+.lt .g{font-family:var(--f-ar);font-size:44px;line-height:1.3;color:var(--ink)}
+.lt .n{font-size:12px;color:var(--muted);font-weight:600}
+.lt .e{font-size:20px;line-height:1.2}
+.lt.done{border-color:var(--good)} .lt.done .g{color:var(--good)}
+body.kids .lt .g{font-size:52px}
+
+/* letter detail */
+.big-letter{font-family:var(--f-ar);font-size:clamp(120px,22vw,180px);line-height:1.15;color:var(--accent);text-align:center}
+.forms{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;direction:rtl}
+.forms div{direction:ltr;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:8px;text-align:center}
+.forms .ar{font-size:46px;line-height:1.4;display:block}
+.forms small{font-size:12px;color:var(--muted)}
+.ex-word{display:flex;align-items:center;gap:14px;background:var(--surface-2);border-radius:14px;padding:12px 14px}
+.ex-word .emo{font-size:44px;line-height:1}
+.ex-word .ar{font-size:40px;line-height:1.3}
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:15px}
+.kv dt{color:var(--muted)} .kv dd{margin:0;font-weight:600}
+
+/* path */
+.mod{margin-bottom:22px}
+.mod-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.mod-num{width:40px;height:40px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;flex:none}
+.path{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.les{position:relative;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;min-height:124px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.les .n{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.les b{font-size:14px;line-height:1.3}
+.les .ar{font-size:24px;line-height:1.3;color:var(--accent)}
+.les .st{margin-top:auto;display:flex;gap:2px;color:var(--gold)}
+.les .st svg{width:16px;height:16px}
+.les .st .off{color:var(--line)}
+.les.done{border-color:var(--good)}
+.les.next{border:2px solid var(--accent);background:var(--accent-soft)}
+.les.lock{opacity:.5;cursor:not-allowed}
+
+/* lesson */
+.steps{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px}
+.steps span{flex:1;min-width:88px;padding:8px 10px;border-radius:10px;background:var(--surface);border:1px solid var(--line);font-size:12px;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap}
+.steps span.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.steps span.ok{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.syl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+.syl{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px;text-align:center;cursor:pointer}
+.syl:hover{border-color:var(--accent)}
+.syl .ar{font-size:44px;line-height:1.5;display:block}
+.syl small{display:block;font-weight:600}
+.syl i{display:block;font-size:12px;color:var(--muted)}
+.mark-demo{font-family:var(--f-ar);font-size:96px;line-height:1.4;color:var(--accent);text-align:center}
+
+/* quiz */
+.q-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.q-top .bar{flex:1}
+.q-prompt{font-size:20px;font-weight:600;margin-bottom:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.q-big{font-family:var(--f-ar);font-size:88px;line-height:1.4;color:var(--accent);text-align:center;margin:-6px 0 10px}
+.q-emo{font-size:72px;text-align:center;line-height:1.1;margin-bottom:8px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:560px){.opts{grid-template-columns:minmax(0,1fr)}}
+.opt{min-height:58px;text-align:center;padding:10px 16px;border-radius:13px;border:2px solid var(--line);background:var(--surface);cursor:pointer;font-weight:600;transition:border-color .12s,background .12s;font-size:18px}
+.opt.ar{font-size:34px;line-height:1.5;padding:4px 12px;font-weight:400}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft);animation:shake .35s}
+.fb{margin-top:14px;padding:12px 14px;border-radius:12px;font-weight:500;display:flex;gap:10px;align-items:center}
+.fb svg{width:46px;height:52px;flex:none}
+.fb.good{background:var(--good-soft);color:var(--good)} .fb.bad{background:var(--bad-soft);color:var(--bad)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes pop{0%{transform:scale(.9);opacity:.4}100%{transform:scale(1);opacity:1}}
+.anim{animation:pop .3s ease both}
+.big-num{font-family:var(--f-display);font-size:44px;font-weight:800;line-height:1}
+.stars{display:flex;gap:6px;color:var(--gold)} .stars svg{width:40px;height:40px}
+.stars .off{color:var(--line)}
+
+/* flashcard */
+.flash{perspective:1200px;max-width:520px;margin:0 auto;width:100%}
+.flash-in{position:relative;min-height:320px;transition:transform .5s;transform-style:preserve-3d;cursor:pointer}
+.flash.flip .flash-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:8px;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow)}
+.face.bk{transform:rotateY(180deg)}
+.face .ar{font-size:130px;line-height:1.3;color:var(--accent)}
+
+/* tracing */
+.trace-wrap{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:760px){.trace-wrap{grid-template-columns:minmax(0,1fr)}}
+.canvas-box{position:relative;width:100%;max-width:420px;aspect-ratio:1;border-radius:20px;border:2px dashed var(--line);background:var(--surface);overflow:hidden;touch-action:none}
+.canvas-box canvas{position:absolute;inset:0;width:100%;height:100%}
+.dir{position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--muted);background:var(--surface-2);border-radius:99px;padding:3px 10px;pointer-events:none;white-space:nowrap}
+.pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:6px;direction:rtl}
+.pick button{direction:ltr;height:50px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-family:var(--f-ar);font-size:28px;line-height:1;cursor:pointer;padding:0}
+.pick button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+/* games */
+.game-area{position:relative;height:420px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,var(--accent-soft),var(--surface));overflow:hidden;touch-action:manipulation}
+.balloon{position:absolute;width:76px;height:92px;border:0;border-radius:50% 50% 46% 46%;font-family:var(--f-ar);font-size:40px;line-height:1;color:#fff;cursor:pointer;display:grid;place-items:center;padding:0 0 8px;box-shadow:inset -8px -10px 0 rgba(0,0,0,.12)}
+.balloon::after{content:"";position:absolute;bottom:-14px;left:50%;width:2px;height:16px;background:var(--muted);opacity:.6}
+.balloon.popd{animation:popb .25s forwards}
+@keyframes popb{to{transform:scale(1.6);opacity:0}}
+.mem{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:560px){.mem{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.mc{aspect-ratio:1/1.1;border-radius:14px;border:2px solid var(--line);background:var(--accent);color:var(--accent-ink);cursor:pointer;display:grid;place-items:center;font-size:20px;font-weight:700;padding:4px;min-width:0}
+.mc.open,.mc.gone{background:var(--surface);color:var(--ink)}
+.mc.gone{border-color:var(--good);background:var(--good-soft);cursor:default}
+.mc .ar{font-size:44px;line-height:1.2}
+.mc .emo{font-size:38px}
+.tiles-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;direction:rtl}
+.ltile{width:62px;height:66px;border-radius:12px;border:2px solid var(--line);background:var(--surface);font-family:var(--f-ar);font-size:36px;line-height:1;cursor:pointer;box-shadow:inset 0 -4px 0 var(--line)}
+.ltile.used{visibility:hidden}
+.ltile.err{border-color:var(--bad);animation:shake .3s}
+.build{min-height:96px;border-radius:16px;border:2px dashed var(--line);background:var(--surface-2);display:grid;place-items:center;font-family:var(--f-ar);font-size:56px;line-height:1.5;color:var(--accent)}
+.sm-word{font-family:var(--f-ar);font-size:64px;line-height:1.5;text-align:center}
+.bins{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.bin{min-height:88px;border-radius:16px;border:2px solid var(--line);background:var(--surface);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-weight:700;font-size:16px}
+.bin svg{width:40px;height:40px}
+.bin.sun svg{color:var(--gold)} .bin.moon svg{color:var(--accent)}
+
+/* surah reader */
+.ayah{display:flex;flex-direction:column;gap:8px;padding:16px 0;border-bottom:1px solid var(--line)}
+.ayah:last-child{border-bottom:0}
+.ayah-ar{font-family:var(--f-ar);direction:rtl;font-size:clamp(30px,4.6vw,40px);line-height:2.1;text-align:right;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.w{cursor:pointer;border-radius:8px;padding:0 4px;transition:background .15s}
+.w:hover,.w.on{background:var(--gold-soft)}
+.anum{display:inline-grid;place-items:center;width:36px;height:36px;font-family:var(--f-display);font-size:13px;font-weight:700;color:var(--gold);border:2px solid var(--gold);border-radius:50%;transform:rotate(45deg)}
+.anum span{transform:rotate(-45deg)}
+.wpop{background:var(--ink);color:var(--bg);border-radius:12px;padding:8px 12px;font-size:14px}
+.basmala{font-family:var(--f-ar);font-size:34px;text-align:center;color:var(--accent);direction:rtl;line-height:2}
+
+/* rules */
+.rule{border-left:4px solid var(--tq);padding:4px 0 4px 14px}
+.letter-chips{display:flex;gap:8px;flex-wrap:wrap;direction:rtl}
+.letter-chips span{font-family:var(--f-ar);font-size:30px;line-height:1.3;min-width:46px;text-align:center;padding:2px 8px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line)}
+.letter-chips.sun span{background:var(--gold-soft);border-color:var(--gold)}
+.letter-chips.moon span{background:var(--accent-soft);border-color:var(--accent)}
+.ex-list{display:flex;flex-direction:column;gap:8px}
+.ex-list div{display:flex;gap:12px;align-items:center;background:var(--surface-2);border-radius:10px;padding:6px 12px;flex-wrap:wrap}
+.ex-list .ar{font-size:32px;line-height:1.6}
+
+/* uzbek bridge */
+.uzb{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.uz{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.uz .ar{font-size:40px;line-height:1.5;color:var(--accent);text-align:right}
+.uz b{font-family:var(--f-display);font-size:20px;color:var(--gold)}
+
+/* progress */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stat-c{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
+.stat-c .v{font-family:var(--f-display);font-size:28px;font-weight:800;font-variant-numeric:tabular-nums}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.bdg{border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center;background:var(--surface);font-size:13px}
+.bdg .ar{display:block;font-size:40px;line-height:1.3;color:var(--gold)}
+.bdg.off{opacity:.4;filter:grayscale(1)}
+
+footer{border-top:1px solid var(--line);margin-top:24px}
+footer .in{max-width:1320px;margin:0 auto;padding-inline:clamp(16px,3vw,32px);padding-block:16px;font-size:13px;color:var(--muted);text-align:center}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:14px;font-weight:600;z-index:60;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+.confetti{position:fixed;top:-20px;width:10px;height:14px;z-index:70;pointer-events:none;border-radius:2px;animation:fall 1.6s ease-in forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.7}}
+/* letter-table drill */
+.gridt{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;direction:rtl}
+.gc{direction:ltr;height:58px;border:1px solid var(--line);border-radius:10px;background:var(--surface);display:grid;place-items:center;font-family:var(--f-ar);font-size:32px;line-height:1}
+.gc.cur{border:2px solid var(--accent);background:var(--accent-soft)}
+.gc.ok{background:var(--good-soft);border-color:var(--good)} .gc.no{background:var(--bad-soft);border-color:var(--bad)}
+.br-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
+.br{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:6px 4px;text-align:center;display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.br b{font-family:var(--f-display);font-size:20px;color:var(--gold)}
+.br .ar{font-size:34px;line-height:1.4;color:var(--accent)}
+/* iOS / older Safari fallbacks */
+@supports not (color: color-mix(in srgb, red 50%, blue)){
+ .top{background:var(--bg)}
+ .cont{background:var(--accent)}
+ .tile.feat p,.tile.feat .stat{color:var(--bg);opacity:.75}
+}
+@supports not (aspect-ratio:1/1){
+ .canvas-box{height:min(420px,calc(100vw - 32px))}
+ .mc{height:100px}
+}
+button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button:disabled{color:inherit;-webkit-text-fill-color:currentColor;opacity:1}
+.canvas-box,.canvas-box canvas,.game-area{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.face{-webkit-transform:translateZ(0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.confetti{display:none}}
+</style>
+
+<header class="top"><div class="top-in">
+  <button class="brand" onclick="go('home')" aria-label="Iqra">
+    <span id="logo-s"></span>
+    <span><div class="brand-name">Iqra <span class="ar">اقْرَأْ</span></div><div class="brand-by">by Muratov Anvar</div></span>
+  </button>
+  <div class="top-sp"></div>
+  <button class="kid-btn" id="kidbtn" onclick="toggleKids()"></button>
+  <div class="seg" id="langseg" role="group" aria-label="Language">
+    <button data-l="ru" onclick="setLang('ru')">RU</button>
+    <button data-l="en" onclick="setLang('en')">EN</button>
+    <button data-l="uz" onclick="setLang('uz')">UZ</button>
+    <button data-l="uzc" onclick="setLang('uzc')">ЎЗ</button>
+  </div>
+  <button class="icon-btn" id="themebtn" onclick="toggleTheme()" aria-label="Theme"></button>
+</div></header>
+<main class="wrap" id="app"></main>
+<footer><div class="in">© 2026 Muratov Anvar. All rights reserved. / Все права защищены. / Barcha huquqlar himoyalangan.</div></footer>
+<div id="toast" class="toast" hidden></div>
+
+<script>
+/* ===== DATA ===== */
+const LET_RAW=`ا|أَلِف|Alif|Алиф|Alif|ā|а|air|Не имеет своего звука: носитель гласной и долгое «а»|No sound of its own: carries a vowel or makes a long ā|O‘z tovushi yo‘q: unli tashuvchisi va cho‘ziq «a»|أَسَد|asad|🦁|лев|lion|sher
+ب|بَاء|Ba|Ба|Bo|b|б|lips|Как русское «б»|Like English b|O‘zbekcha «b» kabi|بَطَّة|baṭṭa|🦆|утка|duck|o‘rdak
+ت|تَاء|Ta|Та|To|t|т|tip|Как русское «т»|Like English t|O‘zbekcha «t» kabi|تُفَّاحَة|tuffāḥa|🍎|яблоко|apple|olma
+ث|ثَاء|Tha|Са|So|th|с|teeth|Межзубный «с», как th в англ. think|Like th in think|Tishlararo «s», inglizcha think dagi th|ثَعْلَب|thaʿlab|🦊|лиса|fox|tulki
+ج|جِيم|Jim|Джим|Jim|j|дж|mid|«дж»|Like j in jam|O‘zbekcha «j» kabi|جَمَل|jamal|🐪|верблюд|camel|tuya
+ح|حَاء|Ḥa|Ха (гортанная)|Ḥo|ḥ|х|throatM|Сильный выдох из середины горла|Strong breathy h from the mid-throat|Bo‘g‘iz o‘rtasidan kuchli «h»|حِصَان|ḥiṣān|🐴|лошадь|horse|ot
+خ|خَاء|Kha|Хо|Xo|kh|х|throatT|Твёрдое «х», как в слове «хор»|Like ch in Scottish loch|O‘zbekcha «x» kabi|خَرُوف|kharūf|🐑|барашек|lamb|qo‘zichoq
+د|دَال|Dal|Даль|Dol|d|д|tip|Как русское «д»|Like English d|O‘zbekcha «d» kabi|دُبّ|dubb|🐻|медведь|bear|ayiq
+ذ|ذَال|Dhal|Заль|Zol|dh|з|teeth|Межзубный «з», как th в англ. this|Like th in this|Tishlararo «z», inglizcha this dagi th|ذُرَة|dhura|🌽|кукуруза|corn|makkajo‘xori
+ر|رَاء|Ra|Ра|Ro|r|р|tip|Раскатистое «р»|Rolled r|O‘zbekcha «r» kabi|رِيشَة|rīsha|🪶|перо|feather|pat
+ز|زَاي|Zay|Зай|Zay|z|з|tip|Как русское «з»|Like English z|O‘zbekcha «z» kabi|زَرَافَة|zarāfa|🦒|жираф|giraffe|jirafa
+س|سِين|Sin|Син|Sin|s|с|tip|Как русское «с»|Like English s|O‘zbekcha «s» kabi|سَمَكَة|samaka|🐟|рыба|fish|baliq
+ش|شِين|Shin|Шин|Shin|sh|ш|mid|Как русское «ш»|Like English sh|O‘zbekcha «sh» kabi|شَمْس|shams|☀️|солнце|sun|quyosh
+ص|صَاد|Ṣad|Сад|Sod|ṣ|с|tip|Твёрдое, «толстое» «с»|Heavy, emphatic s|Qalin (yo‘g‘on) «s»|صَارُوخ|ṣārūkh|🚀|ракета|rocket|raketa
+ض|ضَاد|Ḍad|Дад|Zod|ḍ|д|sides|Твёрдое «д», краями языка|Heavy, emphatic d|Qalin «d», til chetlari bilan|ضِفْدَع|ḍifdaʿ|🐸|лягушка|frog|qurbaqa
+ط|طَاء|Ṭa|Та (твёрдая)|To (qalin)|ṭ|т|tip|Твёрдое «т»|Heavy, emphatic t|Qalin «t»|طَائِرَة|ṭāʾira|✈️|самолёт|airplane|samolyot
+ظ|ظَاء|Ẓa|За (твёрдая)|Zo (qalin)|ẓ|з|teeth|Твёрдый межзубный «з»|Heavy th, as in this|Qalin tishlararo «z»|ظَرْف|ẓarf|✉️|конверт|envelope|konvert
+ع|عَيْن|ʿAyn|Айн|Ayn|ʿ|ъ|throatM|Гортанный звук: сжатие середины горла|Voiced sound made by tightening the throat|Bo‘g‘izni siqib chiqariladigan tovush|عِنَب|ʿinab|🍇|виноград|grapes|uzum
+غ|غَيْن|Ghayn|Гайн|G‘ayn|gh|г|throatT|Картавое «г», как французское r|Gargled g, like French r|O‘zbekcha «g‘» kabi|غَيْمَة|ghayma|☁️|облако|cloud|bulut
+ف|فَاء|Fa|Фа|Fo|f|ф|lipteeth|Как русское «ф»|Like English f|O‘zbekcha «f» kabi|فِيل|fīl|🐘|слон|elephant|fil
+ق|قَاف|Qaf|Каф (глубокая)|Qof|q|к|back|Глубокое «к» из корня языка|Deep k from the back of the throat|O‘zbekcha «q» kabi|قَمَر|qamar|🌙|луна|moon|oy
+ك|كَاف|Kaf|Кяф|Kof|k|к|back2|Как русское «к»|Like English k|O‘zbekcha «k» kabi|كِتَاب|kitāb|📖|книга|book|kitob
+ل|لَام|Lam|Лям|Lom|l|л|sides|Мягкое «л»|Like English l|O‘zbekcha «l» kabi|لَيْمُون|laymūn|🍋|лимон|lemon|limon
+م|مِيم|Mim|Мим|Mim|m|м|lips|Как русское «м»|Like English m|O‘zbekcha «m» kabi|مَوْز|mawz|🍌|банан|banana|banan
+ن|نُون|Nun|Нун|Nun|n|н|tipnose|Как русское «н»|Like English n|O‘zbekcha «n» kabi|نَجْمَة|najma|⭐|звезда|star|yulduz
+ه|هَاء|Ha|Ха (лёгкая)|Ha|h|һ|throatL|Лёгкий выдох, как h в англ. hat|Light h, as in hat|Yengil «h», inglizcha hat kabi|هَدِيَّة|hadiyya|🎁|подарок|gift|sovg‘a
+و|وَاو|Waw|Вав|Vov|w|в|lips|Губное «в» (w); также долгое «у»|w as in wet; also long ū|Lab «v» (w); cho‘ziq «u» ham|وَرْدَة|warda|🌹|роза|rose|atirgul
+ي|يَاء|Ya|Йа|Yo|y|й|mid|Как «й»; также долгое «и»|y as in yes; also long ī|«y» kabi; cho‘ziq «i» ham|يَد|yad|✋|рука|hand|qo‘l`;
+const LETTERS=LET_RAW.split('\n').map((l,i)=>{const f=l.split('|');return{i,c:f[0],an:f[1],lat:f[2],cyr:f[3],uzn:f[4],tl:f[5],cy:f[6],mk:f[7],s:[f[8],f[9],f[10]],w:f[11],wt:f[12],e:f[13],m:[f[14],f[15],f[16]]}});
+const UZN=['Alif','Bā','Tā','S:ā','Jīm','H:ā','Xō','Dāl','Z:āl','Rō','Zā','Sīn','Shīn','Sōd','Dōd','Tō','Z:ō','ʿAyyn','G‘oyyn','Fā','Qōf','Kāf','Lām','Mīm','Nūn','Hā','Vāv','Yā'];
+const UZS=['O‘z tovushi yo‘q: unli tashuvchisi va cho‘ziq «ā»','O‘zbekcha «b» kabi','O‘zbekcha «t» kabi (ingichka)','O‘zbek tilida yo‘q: til uchi tishlar orasida, «s»ga yaqin','O‘zbekcha «j» kabi','O‘zbek tilida yo‘q: bo‘g‘iz o‘rtasidan chiqadigan kuchli «h»','O‘zbekcha «x» kabi (qalin)','O‘zbekcha «d» kabi','O‘zbek tilida yo‘q: til uchi tishlar orasida, «z»ga yaqin','O‘zbekcha «r» kabi (ko‘pincha qalin)','O‘zbekcha «z» kabi','O‘zbekcha «s» kabi','O‘zbekcha «sh» kabi','Qalin «s»: til orqasi ko‘tariladi','Qalin «d»: til chetlari bilan','Qalin «t»','Qalin tishlararo «z»','O‘zbek tilida yo‘q: bo‘g‘iz o‘rtasini siqib chiqariladigan tovush','O‘zbekcha «g‘» kabi','O‘zbekcha «f» kabi','O‘zbekcha «q» kabi','O‘zbekcha «k» kabi','O‘zbekcha «l» kabi','O‘zbekcha «m» kabi','O‘zbekcha «n» kabi','O‘zbekcha «h» kabi (yengil)','«v» (w); cho‘ziq «ū» ham','O‘zbekcha «y» kabi; cho‘ziq «ī» ham'];
+LETTERS.forEach((l,i)=>{l.uzn=UZN[i];l.s[2]=UZS[i]});
+const LAMALIF={c:'لا',lat:'Lām-alif',cyr:'Лям-алиф',uzn:'Lām-alif',an:'لَامْ أَلِف'};
+const LAMALIF_NOTE=['Лям-алиф (لا) иногда считают 29-й буквой алфавита. Это соединение лям и алифа, читается «ла».','Lām-alif (لا) is sometimes counted as the 29th letter. It is lam joined with alif and reads lā.','Lām-alif (لا) ba’zan alifboning 29-harfi hisoblanadi. U lām va alif birikmasi bo‘lib, «lā» deb o‘qiladi.'];
+const G5=[
+{c:'دذرزطظو',t:['Не меняют форму','Never change shape','Hech o‘zgarmaydigan harflar'],s:['Не меняется','Never changes','O‘zgarmaydi'],x:['Пишутся одинаково в любом месте слова.','Written the same everywhere in a word.','So‘zning qayerida kelmasin, bir xil yoziladi.'],ex:[['دَرْسٌ','darsun'],['طَالِبٌ','ṭālibun'],['وَطَنٌ','waṭanun'],['جَوْرَبٌ','jawrabun']]},
+{c:'جحخسشصضفقلم',t:['Хвост уходит к следующей букве','Tail joins the next letter','Dumi keyingi harfga qo‘shiladigan harflar'],s:['Хвост к следующей','Tail joins next','Dumi qo‘shiladi'],x:['При соединении со следующей буквой нижняя часть («хвост») уходит в соединение, а основа остаётся прежней.','When joined to the next letter, the part below the line merges into the join; the main body stays.','Keyingi harfga birikkanda satr ostidagi qismi birikib ketadi, asosiy qismi o‘zgarmaydi.'],ex:[['قَلَمٌ','qalamun'],['صَبْرٌ','ṣabrun'],['جَهْلٌ','jahlun'],['نَسْلٌ','naslun']]},
+{c:'بتثني',t:['Сжимаются, различаются только точками','Shrink; told apart only by dots','Qisqarib, faqat nuqtalari bilan farqlanadigan harflar'],s:['Сжимается, точки','Shrinks; dots','Qisqaradi, nuqtalar'],x:['В начале и середине слова пишутся одинаково, маленьким «зубцом»; различают их только точки.','At the start and in the middle of a word they look the same, a small tooth; only the dots tell them apart.','So‘z boshida va o‘rtasida bir xil, kichik «tishcha» shaklida yoziladi; ularni faqat nuqtalar farqlaydi.'],ex:[['ثَوَابٌ','thawābun'],['نَارٌ','nārun'],['تَرَاوِيحُ','tarāwīḥu'],['أَبْرَارٌ','abrārun']]},
+{c:'عغكه',t:['Сильно меняют форму','Change shape strongly','Shaklini keskin o‘zgartiradigan harflar'],s:['Сильно меняется','Changes strongly','Keskin o‘zgaradi'],x:['Всего 4 буквы: в разных позициях они выглядят совсем по-разному. Их формы стоит выучить отдельно.','Only 4 letters, and they look very different in each position. Learn their forms separately.','Bor-yo‘g‘i 4 ta: har xil o‘rinda butunlay boshqacha ko‘rinadi. Ularning shakllarini alohida yodlang.'],ex:[['عِلْمٌ','ʿilmun'],['بَعْدَ','baʿda'],['كِتَابٌ','kitābun'],['وَجْهٌ','wajhun']]},
+{c:'ا',t:['Особые: алиф и лям-алиф','Special: alif and lām-alif','O‘ziga xos: alif va lām-alif'],s:['Особая','Special','O‘ziga xos'],x:['Алиф соединяется только с предыдущей буквой. Лям-алиф (لا) — особое соединение лям и алифа.','Alif joins only the letter before it. Lām-alif (لا) is a special join of lam and alif.','Alif faqat o‘zidan oldingi harfga birikadi. Lām-alif (لا) — lām va alifning maxsus birikmasi.'],ex:[['كِتَابٌ','kitābun'],['كَافُورٌ','kāfūrun'],['لَا','lā']]}];
+const HAMZA_EX=[['لَا','lā'],['أَحَد','aḥad'],['إِيَّاكَ','iyyāka'],['مُؤْمِن','muʾmin'],['سُئِلَ','suʾila'],['شَيْء','shayʾ'],['السَّمَاء','as-samāʾ'],['سُؤَال','suʾāl']];
+const HQ=[{big:'لَا',o:['lā','lam','al','lī']},
+{q:['Какой знак — хамза?','Which sign is hamza?','Qaysi belgi hamza?'],o:['ء','ـ','ّ','ْ'],ar:1},
+{q:['Где хамза стоит под алифом?','Where is hamza written under the alif?','Hamza qayerda alif ostida yoziladi?'],o:['إ','أ','ؤ','ئ'],ar:1},
+{q:['Хамза на букве вав — это…','Hamza on a waw is…','Vāv ustidagi hamza…'],o:['ؤ','و','ئ','أ'],ar:1},
+{big:'مُؤْمِن',o:['muʾmin','mumin','mawmin','muwmin']},
+{big:'شَيْء',o:['shayʾ','shay','shiʾ','shāʾ']},
+{big:'سُؤَال',o:['suʾāl','suwāl','sāl','suʾul']},
+{big:'إِيَّاكَ',o:['iyyāka','ayyāka','uyyāka','iyāka']},
+{q:['Как называется соединение لا?','What is the join لا called?','لا birikmasi qanday ataladi?'],o:[['Лям-алиф','Lām-alif','Lām-alif'],['Алиф-лям','Alif-lām','Alif-lām'],['Хамза','Hamza','Hamza'],['Шадда','Shadda','Shadda']]}];
+const BRIDGE=[['Б','B','ب'],['В','V','و'],['Д','D','د'],['Ж','J','ج'],['З','Z','ز'],['Й','Y','ي'],['К','K','ك'],['Л','L','ل'],['М','M','م'],['Н','N','ن'],['Р','R','ر'],['С','S','س'],['Т','T','ت'],['Ф','F','ف'],['Х','X','خ'],['Ш','Sh','ش'],['Қ','Q','ق'],['Ғ','G‘','غ'],['Ҳ','H','ه']];
+const MAKHRAJ={air:['Полость рта и горла (воздух)','Open mouth and throat (air)','Og‘iz va bo‘g‘iz bo‘shlig‘i (havo)'],lips:['Губы','Lips','Lablar'],tip:['Кончик языка','Tip of the tongue','Til uchi'],teeth:['Кончик языка между зубами','Tongue tip between the teeth','Til uchi tishlar orasida'],mid:['Середина языка и нёбо','Middle of the tongue and palate','Til o‘rtasi va tanglay'],throatM:['Середина горла','Middle of the throat','Bo‘g‘iz o‘rtasi'],throatT:['Верх горла','Upper throat','Bo‘g‘iz yuqorisi'],throatL:['Низ горла','Lower throat','Bo‘g‘iz pasti'],lipteeth:['Нижняя губа и верхние зубы','Lower lip and upper teeth','Pastki lab va yuqori tishlar'],back:['Корень языка (глубже)','Back of the tongue (deep)','Til ildizi (chuqur)'],back2:['Корень языка (ближе ко рту)','Back of the tongue (closer to the mouth)','Til ildizi (og‘izga yaqinroq)'],sides:['Края языка','Sides of the tongue','Til chetlari'],tipnose:['Кончик языка и нос','Tongue tip and nose','Til uchi va burun']};
+const GROUPS=['بتثني','جحخ','دذ','رز','سش','صض','طظ','عغ','فق','كل','مه'];
+const NONJOIN='اذدرزو';
+const H={fatha:'َ',kasra:'ِ',damma:'ُ',sukun:'ْ',shadda:'ّ',an:'ً',in:'ٍ',un:'ٌ'};
+const TATWEEL='ـ';
+const SUN='تثدذرزسشصضطظلن', MOON='ابجحخعغفقكمهوي';
+
+const SUKUN_Q=[['مِنْ','min','mini','man','mun'],['لَمْ','lam','lama','lim','lum'],['قُلْ','qul','qula','qal','qil'],['عَنْ','ʿan','ʿana','ʿin','ʿun'],['هَلْ','hal','hala','hil','hul'],['بَلْ','bal','bala','bil','bul'],['قَدْ','qad','qada','qud','qid'],['أَنْتَ','anta','ant','anti','unta']];
+const SHADDA_Q=[['رَبّ','rabb','rab','rubb','ribb'],['أُمّ','umm','um','amm','imm'],['حَقّ','ḥaqq','ḥaq','ḥuqq','ḥiqq'],['جَنَّة','janna','jana','junna','jinna'],['كُلّ','kull','kul','kall','kill'],['ثُمَّ','thumma','thuma','thamma','thimma'],['إِنَّ','inna','ina','anna','unna'],['مَدَّ','madda','mada','mudda','midda']];
+
+const SM_WORDS=[['الشَّمْس','ash-shams',1],['الْقَمَر','al-qamar',0],['الرَّحْمٰن','ar-raḥmān',1],['النُّور','an-nūr',1],['الْكِتَاب','al-kitāb',0],['السَّلَام','as-salām',1],['الْبَاب','al-bāb',0],['الدِّين','ad-dīn',1],['الْفِيل','al-fīl',0],['التُّفَّاح','at-tuffāḥ',1],['الْجَمَل','al-jamal',0],['الزَّرَافَة','az-zarāfa',1],['الْعِنَب','al-ʿinab',0],['اللَّيْل','al-layl',1],['الْوَرْدَة','al-warda',0],['الصِّرَاط','aṣ-ṣirāṭ',1],['الْحَمْد','al-ḥamd',0],['النَّاس','an-nās',1],['الْمَوْز','al-mawz',0],['الْيَد','al-yad',0]];
+
+const RULES=[
+{t:['Солнечные и лунные буквы','Sun and moon letters','Quyosh va oy harflari'],
+ x:['После артикля «ал» (ال) лям либо читается, либо нет. Перед лунной буквой лям звучит: аль-камар. Перед солнечной буквой лям не читается, а следующая буква удваивается (шадда): аш-шамс.','After the article al- (ال) the lam is either pronounced or silent. Before a moon letter it is pronounced: al-qamar. Before a sun letter the lam is silent and the next letter is doubled (shadda): ash-shams.','«Al» (ال) artiklidan keyin lām yo o‘qiladi, yo o‘qilmaydi. Oy harfi oldidan lām o‘qiladi: al-qamar. Quyosh harfi oldidan lām o‘qilmaydi, keyingi harf esa ikkilanadi (shadda): ash-shams.'],
+ sunmoon:1, ex:[['الشَّمْس','ash-shams'],['الْقَمَر','al-qamar'],['الرَّحْمٰن','ar-raḥmān'],['الْحَمْد','al-ḥamd']]},
+{t:['Калькаля (эхо)','Qalqalah (echo)','Qalqala (aks-sado)'],
+ x:['Пять букв ق ط ب ج د, когда на них сукун, произносятся с лёгким «отскоком», как эхо. Их легко запомнить фразой قُطْبُ جَدٍّ.','The five letters ق ط ب ج د bounce with a light echo when they carry sukun. A phrase to remember them: قُطْبُ جَدٍّ.','Besh harf ق ط ب ج د sukunli bo‘lganda yengil aks-sado bilan o‘qiladi. Eslab qolish uchun: قُطْبُ جَدٍّ.'],
+ chips:'قطبجد', ex:[['لَمْ يَلِدْ','lam yalid'],['أَحَدْ','aḥad'],['الْفَلَقْ','al-falaq'],['وَقَبْ','waqab']]},
+{t:['Гунна (носовой звук)','Ghunnah (nasal sound)','G‘unna (burun tovushi)'],
+ x:['Буквы ن и م с шаддой тянутся через нос примерно на 2 счёта.','The letters ن and م with shadda are held through the nose for about 2 counts.','Shaddali ن va م harflari burun orqali taxminan 2 hisob cho‘ziladi.'],
+ chips:'نم', ex:[['إِنَّ','inna'],['ثُمَّ','thumma'],['النَّاس','an-nās'],['الْجِنَّة','al-jinna']]},
+{t:['Естественный мадд','Natural madd','Tabiiy madd'],
+ x:['Долгие гласные ا و ي после «своей» огласовки тянутся на 2 счёта: фатха + ا, дамма + و, касра + ي.','The long vowels ا و ي after their matching vowel are held for 2 counts: fatha + ا, damma + و, kasra + ي.','O‘ziga mos harakatdan keyingi ا و ي cho‘ziq unlilari 2 hisob cho‘ziladi: fatha + ا, zamma + و, kasra + ي.'],
+ chips:'اوي', ex:[['قَالَ','qāla'],['يَقُولُ','yaqūlu'],['قِيلَ','qīla']]},
+{t:['Лям в слове «Аллах»','The lam in “Allah”','«Alloh» so‘zidagi lām'],
+ x:['После фатхи или даммы лям в слове اللَّه звучит твёрдо и полно. После касры он звучит мягко и тонко.','After fatha or damma the lam in اللَّه is heavy and full. After kasra it is light and thin.','Fatha yoki zammadan keyin اللَّه so‘zidagi lām qalin o‘qiladi. Kasradan keyin u ingichka o‘qiladi.'],
+ ex:[['قُلْ هُوَ اللَّهُ','qul huwa-llāhu'],['بِسْمِ اللَّهِ','bismi-llāhi']]},
+{t:['Остановка (вакф)','Stopping (waqf)','To‘xtash (vaqf)'],
+ x:['Когда вы останавливаетесь в конце аята, последняя огласовка не читается и превращается в сукун. Та-марбута ة на остановке звучит как лёгкое «х».','When you stop at the end of an ayah, the last vowel is dropped and becomes sukun. Ta marbuta ة at a stop sounds like a light h.','Oyat oxirida to‘xtaganda oxirgi harakat o‘qilmaydi va sukunga aylanadi. To‘xtashda ة yengil «h» kabi o‘qiladi.'],
+ ex:[['الرَّحِيمِ','ar-raḥīm'],['الْعَالَمِينَ','al-ʿālamīn'],['الْجِنَّةِ','al-jinnah']]}
+];
+
+const TJQ=[
+{q:['Какая из этих букв — солнечная?','Which of these is a sun letter?','Qaysi biri quyosh harfi?'],o:['ش','ق','ب','م'],ar:1},
+{q:['Какая из этих букв — лунная?','Which of these is a moon letter?','Qaysi biri oy harfi?'],o:['ق','ر','س','ن'],ar:1},
+{q:['Как читается الشَّمْس?','How is الشَّمْس read?','الشَّمْس qanday o‘qiladi?'],o:['ash-shams','al-shams','shams-al','al-ashams']},
+{q:['Как читается الْقَمَر?','How is الْقَمَر read?','الْقَمَر qanday o‘qiladi?'],o:['al-qamar','aq-qamar','qamar-al','al-aqmar']},
+{q:['Какие буквы — буквы калькали?','Which are the qalqalah letters?','Qalqala harflari qaysilar?'],o:['ق ط ب ج د','س ش ص ض','ا و ي','م ن'],ar:1},
+{q:['В каком слове звучит гунна?','Which word has ghunnah?','Qaysi so‘zda g‘unna bor?'],o:['إِنَّ','قُلْ','كِتَاب','عَنْ'],ar:1},
+{q:['На сколько счётов тянется естественный мадд?','How many counts is a natural madd?','Tabiiy madd necha hisob cho‘ziladi?'],o:['2','1','4','6']},
+{q:['Как звучит лям в «قُلْ هُوَ اللَّهُ»?','How does the lam sound in «قُلْ هُوَ اللَّهُ»?','«قُلْ هُوَ اللَّهُ» da lām qanday o‘qiladi?'],o:[['Твёрдо','Heavy','Qalin'],['Мягко','Light','Ingichka'],['Не читается','Silent','O‘qilmaydi'],['Как «н»','Like n','«n» kabi']]},
+{q:['Остановка на الرَّحِيمِ: как прочитать конец?','Stopping on الرَّحِيمِ: how does it end?','الرَّحِيمِ da to‘xtash: oxiri qanday o‘qiladi?'],o:['ar-raḥīm','ar-raḥīmi','ar-raḥīman','ar-raḥī']},
+{q:['В каком слове слышна калькаля?','Which word has qalqalah?','Qaysi so‘zda qalqala eshitiladi?'],o:['أَحَدْ','مِنْ','قُلْ','عَنْ'],ar:1}
+];
+
+const SURAHS=[
+{id:'fatiha',n:1,ar:'الْفَاتِحَة',name:['Аль-Фатиха (Открывающая)','Al-Fatihah (The Opening)','Al-Fotiha (Ochuvchi)'],basm:0,ayat:[
+ {a:'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',l:'Bismi-llāhi-r-raḥmāni-r-raḥīm',c:'Бисмилляхи-р-рахмани-р-рахим',t:['Во имя Аллаха, Милостивого, Милосердного.','In the name of Allah, the Most Gracious, the Most Merciful.','Mehribon va rahmli Alloh nomi bilan.'],
+  w:[['bismi','во имя','in the name','nomi bilan'],['Allāhi','Аллаха','of Allah','Allohning'],['ar-raḥmāni','Милостивого','the Most Gracious','Mehribon'],['ar-raḥīm','Милосердного','the Most Merciful','Rahmli']]},
+ {a:'الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ',l:'Al-ḥamdu li-llāhi rabbi-l-ʿālamīn',c:'Аль-хамду лилляхи раббиль-‘алямин',t:['Хвала Аллаху, Господу миров,','All praise is for Allah, Lord of the worlds,','Hamd olamlar Robbi Allohgadir,'],
+  w:[['al-ḥamdu','хвала','all praise','hamd'],['li-llāhi','Аллаху','for Allah','Allohga'],['rabbi','Господу','Lord','Robbi'],['al-ʿālamīn','миров','of the worlds','olamlar']]},
+ {a:'الرَّحْمَٰنِ الرَّحِيمِ',l:'Ar-raḥmāni-r-raḥīm',c:'Ар-рахмани-р-рахим',t:['Милостивому, Милосердному,','the Most Gracious, the Most Merciful,','Mehribon va rahmliga,'],
+  w:[['ar-raḥmāni','Милостивому','the Most Gracious','Mehribon'],['ar-raḥīm','Милосердному','the Most Merciful','Rahmli']]},
+ {a:'مَالِكِ يَوْمِ الدِّينِ',l:'Māliki yawmi-d-dīn',c:'Малики йаумид-дин',t:['Властелину Дня воздаяния.','Master of the Day of Judgement.','Jazo kunining Egasiga.'],
+  w:[['māliki','Властелину','Master','Egasi'],['yawmi','дня','of the Day','kunining'],['ad-dīn','воздаяния','of Judgement','jazo']]},
+ {a:'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ',l:'Iyyāka naʿbudu wa iyyāka nastaʿīn',c:'Иййака на‘буду ва иййака наста‘ин',t:['Тебе одному мы поклоняемся и Тебя одного молим о помощи.','You alone we worship, and You alone we ask for help.','Faqat Senga ibodat qilamiz va faqat Sendan yordam so‘raymiz.'],
+  w:[['iyyāka','Тебе одному','You alone','faqat Senga'],['naʿbudu','мы поклоняемся','we worship','ibodat qilamiz'],['wa iyyāka','и Тебя одного','and You alone','va faqat Sendan'],['nastaʿīn','молим о помощи','we ask for help','yordam so‘raymiz']]},
+ {a:'اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ',l:'Ihdinā-ṣ-ṣirāṭa-l-mustaqīm',c:'Ихдинас-сыратал-мустакым',t:['Веди нас прямым путём,','Guide us to the straight path,','Bizni to‘g‘ri yo‘lga hidoyat qil,'],
+  w:[['ihdinā','веди нас','guide us','bizni hidoyat qil'],['aṣ-ṣirāṭa','путём','to the path','yo‘lga'],['al-mustaqīm','прямым','the straight','to‘g‘ri']]},
+ {a:'صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ',l:'Ṣirāṭa-lladhīna anʿamta ʿalayhim ghayri-l-maghḍūbi ʿalayhim wa la-ḍ-ḍāllīn',c:'Сыраталлязина ан‘амта ‘алейхим гайриль-магдуби ‘алейхим валяд-даллин',t:['путём тех, кого Ты облагодетельствовал, не тех, на кого пал гнев, и не заблудших.','the path of those You have blessed, not of those who earned anger, nor of those who went astray.','Sen ne’mat bergan zotlarning yo‘liga; g‘azabga uchraganlar va adashganlarning yo‘liga emas.'],
+  w:[['ṣirāṭa','путём','the path','yo‘liga'],['alladhīna','тех, кого','of those','zotlarning'],['anʿamta','Ты облагодетельствовал','You have blessed','ne’mat berding'],['ʿalayhim','их','upon them','ularga'],['ghayri','не','not','emas'],['al-maghḍūbi','на кого пал гнев','those who earned anger','g‘azabga uchraganlar'],['ʿalayhim','на них','upon them','ularga'],['wa lā','и не','and not','va emas'],['aḍ-ḍāllīn','заблудших','those astray','adashganlar']]}
+]},
+{id:'ikhlas',n:112,ar:'الْإِخْلَاص',name:['Аль-Ихлас (Искренность)','Al-Ikhlas (Sincerity)','Al-Ixlos (Ixlos)'],basm:1,ayat:[
+ {a:'قُلْ هُوَ اللَّهُ أَحَدٌ',l:'Qul huwa-llāhu aḥad',c:'Куль хуваллаху ахад',t:['Скажи: «Он — Аллах Единый,','Say: He is Allah, the One,','Ayting: U — Alloh yagonadir,'],
+  w:[['qul','скажи','say','ayting'],['huwa','Он','He','U'],['Allāhu','Аллах','Allah','Alloh'],['aḥad','Единый','the One','yagona']]},
+ {a:'اللَّهُ الصَّمَدُ',l:'Allāhu-ṣ-ṣamad',c:'Аллахус-самад',t:['Аллах Самодостаточный.','Allah, the Eternal Refuge.','Alloh behojatdir.'],
+  w:[['Allāhu','Аллах','Allah','Alloh'],['aṣ-ṣamad','Самодостаточный','the Eternal Refuge','behojat']]},
+ {a:'لَمْ يَلِدْ وَلَمْ يُولَدْ',l:'Lam yalid wa lam yūlad',c:'Лям йалид ва лям йуляд',t:['Он не родил и не был рождён,','He neither begets nor was born,','U tug‘magan va tug‘ilmagan,'],
+  w:[['lam','не','not','emas'],['yalid','родил','begot','tug‘di'],['wa lam','и не','and not','va emas'],['yūlad','был рождён','was born','tug‘ildi']]},
+ {a:'وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ',l:'Wa lam yakun lahū kufuwan aḥad',c:'Ва лям йакул-ляху куфуван ахад',t:['и нет никого, равного Ему».','and there is none comparable to Him.','va Unga hech kim teng emas.'],
+  w:[['wa lam','и не','and not','va emas'],['yakun','был','is','bo‘lgan'],['lahū','Ему','to Him','Unga'],['kufuwan','равным','equal','teng'],['aḥad','никто','anyone','hech kim']]}
+]},
+{id:'kawthar',n:108,ar:'الْكَوْثَر',name:['Аль-Каусар (Изобилие)','Al-Kawthar (Abundance)','Al-Kavsar (Kavsar)'],basm:1,ayat:[
+ {a:'إِنَّا أَعْطَيْنَاكَ الْكَوْثَرَ',l:'Innā aʿṭaynāka-l-kawthar',c:'Инна а‘тайнакаль-каусар',t:['Воистину, Мы даровали тебе аль-Каусар (изобилие).','Indeed, We have granted you al-Kawthar (abundance).','Albatta, Biz sizga Kavsarni ato etdik.']},
+ {a:'فَصَلِّ لِرَبِّكَ وَانْحَرْ',l:'Fa-ṣalli li-rabbika wa-nḥar',c:'Фасалли ли раббика ванхар',t:['Поэтому молись своему Господу и закалывай жертву.','So pray to your Lord and sacrifice.','Bas, Robbingiz uchun namoz o‘qing va qurbonlik qiling.']},
+ {a:'إِنَّ شَانِئَكَ هُوَ الْأَبْتَرُ',l:'Inna shāniʾaka huwa-l-abtar',c:'Инна шани‘ака хуваль-абтар',t:['Воистину, твой ненавистник сам окажется отрезанным.','Indeed, your enemy is the one cut off.','Albatta, sizni yomon ko‘ruvchining o‘zi nasli uzilgandir.']}
+]},
+{id:'nasr',n:110,ar:'النَّصْر',name:['Ан-Наср (Помощь)','An-Nasr (The Help)','An-Nasr (Yordam)'],basm:1,ayat:[
+ {a:'إِذَا جَاءَ نَصْرُ اللَّهِ وَالْفَتْحُ',l:'Idhā jāʾa naṣru-llāhi wa-l-fatḥ',c:'Иза джа‘а насруллахи валь-фатх',t:['Когда придёт помощь Аллаха и победа,','When the help of Allah comes, and the victory,','Allohning yordami va g‘alaba kelganda,']},
+ {a:'وَرَأَيْتَ النَّاسَ يَدْخُلُونَ فِي دِينِ اللَّهِ أَفْوَاجًا',l:'Wa raʾayta-n-nāsa yadkhulūna fī dīni-llāhi afwājā',c:'Ва ра‘айтан-наса йадхулюна фи диниллахи афваджа',t:['и ты увидишь, как люди толпами принимают религию Аллаха,','and you see the people entering the religion of Allah in multitudes,','va odamlarning Allohning diniga to‘da-to‘da bo‘lib kirayotganini ko‘rsangiz,']},
+ {a:'فَسَبِّحْ بِحَمْدِ رَبِّكَ وَاسْتَغْفِرْهُ إِنَّهُ كَانَ تَوَّابًا',l:'Fa-sabbiḥ bi-ḥamdi rabbika wa-staghfirh, innahū kāna tawwābā',c:'Фасаббих бихамди раббика вастагфирх, иннаху кана таввааба',t:['то прославляй хвалой своего Господа и проси у Него прощения. Воистину, Он принимает покаяние.','then glorify the praise of your Lord and ask His forgiveness. Indeed, He is ever accepting of repentance.','Robbingizga hamd ila tasbeh ayting va Undan mag‘firat so‘rang. Albatta, U tavbalarni qabul qiluvchidir.']}
+]},
+{id:'falaq',n:113,ar:'الْفَلَق',name:['Аль-Фаляк (Рассвет)','Al-Falaq (The Daybreak)','Al-Falaq (Tong)'],basm:1,ayat:[
+ {a:'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ',l:'Qul aʿūdhu bi-rabbi-l-falaq',c:'Куль а‘узу бираббиль-фаляк',t:['Скажи: «Прибегаю к защите Господа рассвета','Say: I seek refuge in the Lord of the daybreak','Ayting: Tong Robbidan panoh so‘rayman'] },
+ {a:'مِن شَرِّ مَا خَلَقَ',l:'Min sharri mā khalaq',c:'Мин шарри ма халяк',t:['от зла того, что Он сотворил,','from the evil of what He created,','U yaratgan narsalarning yomonligidan,']},
+ {a:'وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ',l:'Wa min sharri ghāsiqin idhā waqab',c:'Ва мин шарри гасикин иза вакаб',t:['от зла мрака, когда он наступает,','from the evil of darkness when it settles,','qorong‘ulik cho‘kkandagi kechaning yomonligidan,']},
+ {a:'وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ',l:'Wa min sharri-n-naffāthāti fi-l-ʿuqad',c:'Ва мин шарри-ннаффасати филь-‘укад',t:['от зла колдуний, дующих на узлы,','from the evil of those who blow on knots,','tugunlarga dam soluvchilarning yomonligidan,']},
+ {a:'وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ',l:'Wa min sharri ḥāsidin idhā ḥasad',c:'Ва мин шарри хасидин иза хасад',t:['от зла завистника, когда он завидует».','and from the evil of an envier when he envies.','hasad qilgan paytdagi hasadchining yomonligidan.']}
+]},
+{id:'nas',n:114,ar:'النَّاس',name:['Ан-Нас (Люди)','An-Nas (Mankind)','An-Nos (Odamlar)'],basm:1,ayat:[
+ {a:'قُلْ أَعُوذُ بِرَبِّ النَّاسِ',l:'Qul aʿūdhu bi-rabbi-n-nās',c:'Куль а‘узу бираббин-нас',t:['Скажи: «Прибегаю к защите Господа людей,','Say: I seek refuge in the Lord of mankind,','Ayting: Odamlarning Robbidan panoh so‘rayman,']},
+ {a:'مَلِكِ النَّاسِ',l:'Maliki-n-nās',c:'Маликин-нас',t:['Царя людей,','the King of mankind,','Odamlarning Podshohidan,']},
+ {a:'إِلَٰهِ النَّاسِ',l:'Ilāhi-n-nās',c:'Илахин-нас',t:['Бога людей,','the God of mankind,','Odamlarning Ilohidan,']},
+ {a:'مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ',l:'Min sharri-l-waswāsi-l-khannās',c:'Мин шарриль-васвасиль-ханнас',t:['от зла искусителя, отступающего (при поминании Аллаха),','from the evil of the whisperer who withdraws,','vasvasa qilib, (Alloh zikr qilinganda) yashirinuvchining yomonligidan,']},
+ {a:'الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ',l:'Alladhī yuwaswisu fī ṣudūri-n-nās',c:'Аллязи йувасвису фи судурин-нас',t:['который нашёптывает в сердца людей,','who whispers into the hearts of mankind,','u odamlarning ko‘ksiga vasvasa soladi,']},
+ {a:'مِنَ الْجِنَّةِ وَالنَّاسِ',l:'Mina-l-jinnati wa-n-nās',c:'Миналь-джиннати ван-нас',t:['из джиннов и людей».','from among jinn and mankind.','jinlardan va odamlardan.']}
+]}
+];
+const BASMALA='بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ';
+
+const UZB=[['كِتَاب','kitāb','kitob','книга','book'],['عِلْم','ʿilm','ilm','знание','knowledge'],['سَلَام','salām','salom','мир, приветствие','peace, greeting'],['رَحْمَة','raḥma','rahmat','милость (по-узбекски «спасибо»)','mercy (in Uzbek: thank you)'],['دُنْيَا','dunyā','dunyo','мир, этот свет','the world'],['قَلَم','qalam','qalam','перо, ручка','pen'],['مَكْتَب','maktab','maktab','по-арабски «контора, стол», по-узбекски «школа»','Arabic: office, desk; Uzbek: school'],['وَقْت','waqt','vaqt','время','time'],['خَبَر','khabar','xabar','новость','news'],['فِكْر','fikr','fikr','мысль','thought'],['صَبْر','ṣabr','sabr','терпение','patience'],['قَلْب','qalb','qalb','сердце','heart'],['عَقْل','ʿaql','aql','ум','mind'],['كُرْسِيّ','kursiyy','kursi','стул','chair'],['مَسْجِد','masjid','masjid','мечеть','mosque'],['نُور','nūr','nur','свет','light'],['جُمُعَة','jumuʿa','juma','пятница','Friday'],['حَيَوَان','ḥayawān','hayvon','животное','animal']];
+const UZB_NOTE={3:'arabchada: rahm-shafqat',6:'arabchada: idora, stol'};
+
+/* lessons */
+const MODULES=[
+ {k:'abc',t:['Алфавит','The alphabet','Alifbo'],g:'ا ب ت',les:[[0,1,2,3],[4,5,6,7],[8,9,10,11],[12,13,14,15],[16,17,18,19],[20,21,22,23],[24,25,26,27]].map((ix,i)=>({id:'abc'+i,type:'letters',ix}))},
+ {k:'forms',t:['Формы букв','Letter forms','Harf shakllari'],g:'بـ ـبـ',les:[{id:'forms0',type:'groups'},{id:'forms1',type:'nonjoin'},{id:'forms2',type:'hamza'}]},
+ {k:'harakat',t:['Огласовки','Short vowels','Harakatlar'],g:'بَ بِ بُ',les:[{id:'h_fatha',type:'harakat',h:['fatha']},{id:'h_kasra',type:'harakat',h:['kasra']},{id:'h_damma',type:'harakat',h:['damma']},{id:'h_mix',type:'harakat',h:['fatha','kasra','damma']}]},
+ {k:'signs',t:['Сукун, шадда, танвин','Sukun, shadda, tanwin','Sukun, shadda, tanvin'],g:'بْ بّ بٌ',les:[{id:'s_sukun',type:'words',set:'sukun'},{id:'s_shadda',type:'words',set:'shadda'},{id:'s_tanwin',type:'tanwin'}]},
+ {k:'madd',t:['Долгие гласные и слова','Long vowels and words','Cho‘ziq unlilar va so‘zlar'],g:'بَا بُو بِي',les:[{id:'madd',type:'madd'},{id:'w1',type:'kidwords',r:[0,14]},{id:'w2',type:'kidwords',r:[14,28]}]},
+ {k:'tajweed',t:['Основы таджвида','Tajweed basics','Tajvid asoslari'],g:'الشَّمْس',les:[{id:'tj0',type:'tajweed',r:[0]},{id:'tj1',type:'tajweed',r:[1,2]},{id:'tj2',type:'tajweed',r:[3,4,5]}]},
+ {k:'surah',t:['Короткие суры','Short surahs','Qisqa suralar'],g:'الْفَاتِحَة',les:SURAHS.map(s=>({id:'su_'+s.id,type:'surah',s:s.id}))}
+];
+const ALL_LES=MODULES.flatMap(m=>m.les);
+</script>
+
+<script>
+/* ===== I18N ===== */
+const TX=`hello|Ассаляму алейкум!|Assalamu alaykum!|Assalomu alaykum!
+helloSub|Сегодня ещё один шаг к чтению Корана.|One more step towards reading the Quran.|Bugun Qur’on o‘qishga yana bir qadam.
+kidsHello|Привет! Я Нур, твой фонарик. Давай учить буквы!|Hi! I’m Nur, your little lantern. Let’s learn letters!|Salom! Men Nur — sening chirog‘ingman. Keling, harflarni o‘rganamiz!
+dayGoal|Цель дня|Daily goal|Kunlik maqsad
+xp|очков|XP|ball
+streak|Серия дней|Day streak|Ketma-ket kunlar
+days|дн.|days|kun
+continue|Продолжить|Continue|Davom etish
+sections|Разделы|Sections|Bo‘limlar
+path|Путь обучения|Learning path|O‘quv yo‘li
+pathD|7 модулей: от букв до коротких сур|7 modules: from letters to short surahs|7 modul: harflardan qisqa suralargacha
+alphabet|Алфавит|Alphabet|Alifbo
+alphabetD|28 букв: звук, формы, пример|28 letters: sound, forms, example|28 harf: tovush, shakllar, misol
+trace|Прописи|Tracing|Yozuv mashqi
+traceD|Пишите буквы пальцем или мышкой|Write letters with a finger or mouse|Harflarni barmoq yoki sichqoncha bilan yozing
+syll|Конструктор слогов|Syllable builder|Bo‘g‘in konstruktori
+syllD|Буква + огласовка = слог|Letter + vowel mark = syllable|Harf + harakat = bo‘g‘in
+games|Игры|Games|O‘yinlar
+gamesD|Шарики, пары, собери слово|Balloons, pairs, build a word|Sharlar, juftliklar, so‘z yig‘ish
+tajweed|Таджвид|Tajweed|Tajvid
+tajweedD|6 основных правил чтения|6 basic reading rules|6 ta asosiy o‘qish qoidasi
+surahs|Суры|Surahs|Suralar
+surahsD|Аль-Фатиха и 4 короткие суры по словам|Al-Fatihah and 4 short surahs, word by word|Al-Fotiha va 4 qisqa sura, so‘zma-so‘z
+uzb|Узбекский мост|Uzbek bridge|O‘zbek ko‘prigi
+uzbD|Арабские слова, которые вы уже знаете|Arabic words you already know|Siz allaqachon biladigan arabcha so‘zlar
+progress|Прогресс|Progress|Natijalar
+progressD|Звёзды, серия дней, награды|Stars, streak, badges|Yulduzlar, ketma-ketlik, mukofotlar
+lessons|уроков|lessons|dars
+letters|Буквы|Letters|Harflar
+module|Модуль|Module|Modul
+lesson|Урок|Lesson|Dars
+stepLearn|Изучение|Learn|O‘rganish
+stepPractice|Практика|Practice|Mashq
+stepTrace|Прописи|Tracing|Yozuv
+stepResult|Итог|Result|Natija
+toPractice|К практике|Go to practice|Mashqqa o‘tish
+next|Дальше|Next|Keyingi
+prev|Назад|Back|Orqaga
+skip|Пропустить|Skip|O‘tkazib yuborish
+finish|Завершить|Finish|Yakunlash
+retry|Ещё раз|Try again|Qayta urinish
+nextLesson|Следующий урок|Next lesson|Keyingi dars
+toPath|К пути обучения|Back to the path|O‘quv yo‘liga
+right|Верно!|Correct!|To‘g‘ri!
+rightKids|Молодец! Так держать!|Well done! Keep going!|Barakalla! Shunday davom et!
+wrong|Не совсем. Правильный ответ:|Not quite. The answer is:|Unchalik emas. To‘g‘ri javob:
+qName|Как называется эта буква?|What is this letter called?|Bu harf qanday ataladi?
+qFind|Найдите букву|Find the letter|Harfni toping
+qStarts|С какой буквы начинается это слово?|Which letter does this word start with?|Bu so‘z qaysi harf bilan boshlanadi?
+qForm|Какая это буква?|Which letter is this?|Bu qaysi harf?
+qNonJoin|Какая буква НЕ соединяется со следующей?|Which letter does NOT join the next one?|Qaysi harf keyingi harfga ULANMAYDI?
+qRead|Как это читается?|How is this read?|Bu qanday o‘qiladi?
+qPickWord|Какое слово означает|Which word means|Qaysi so‘zning ma’nosi
+qSunMoon|Буква после ال — солнечная или лунная?|Is the letter after ال a sun or a moon letter?|ال dan keyingi harf quyosh harfimi yoki oy harfimi?
+sun|Солнечная|Sun|Quyosh
+moon|Лунная|Moon|Oy
+qAyah|Какой аят имеет этот смысл?|Which ayah has this meaning?|Qaysi oyatning ma’nosi shunday?
+qWord|Что означает это слово?|What does this word mean?|Bu so‘z nimani anglatadi?
+correctOf|правильных из|correct out of|to‘g‘ri, jami
+earned|Получено|Earned|Olindi
+newBest|Новый рекорд!|New best!|Yangi rekord!
+sound|Звук|Sound|Tovush
+makhraj|Махрадж (откуда звук)|Makhraj (where the sound is made)|Maxraj (tovush chiqish joyi)
+name|Название|Name|Nomi
+forms|Формы|Forms|Shakllar
+fIso|отдельно|isolated|alohida
+fIni|в начале|initial|boshida
+fMed|в середине|medial|o‘rtada
+fFin|в конце|final|oxirida
+example|Пример|Example|Misol
+withVowels|С огласовками|With vowel marks|Harakatlar bilan
+writeIt|Написать эту букву|Write this letter|Bu harfni yozish
+flash|Карточки|Flashcards|Kartochkalar
+tapFlip|Нажмите, чтобы перевернуть|Tap to flip|Aylantirish uchun bosing
+shuffle|Перемешать|Shuffle|Aralashtirish
+clear|Стереть|Clear|O‘chirish
+check|Проверить|Check|Tekshirish
+rtl|← пишем справа налево|← write right to left|← o‘ngdan chapga yozamiz
+traceHint|Обведите серую букву. Начинайте справа: по-арабски пишут справа налево.|Trace over the grey letter. Start on the right: Arabic is written right to left.|Kulrang harf ustidan yozing. O‘ngdan boshlang: arabcha o‘ngdan chapga yoziladi.
+tr3|Прекрасно! Очень аккуратно.|Excellent! Very neat.|Ajoyib! Juda chiroyli.
+tr2|Хорошо! Ещё чуть точнее.|Good! A little more precise.|Yaxshi! Biroz aniqroq.
+tr1|Неплохо. Постарайтесь обвести всю букву.|Not bad. Try to cover the whole letter.|Yomon emas. Butun harfni yozib chiqing.
+tr0|Пока не похоже. Ведите линию по серой букве.|Not yet. Follow the lines of the grey letter.|Hali o‘xshamadi. Kulrang harf chiziqlari bo‘ylab yozing.
+drawFirst|Сначала напишите букву|Draw the letter first|Avval harfni yozing
+mark|Огласовка|Vowel mark|Harakat
+noVoice|На этом устройстве нет арабского голоса. Послушайте чтеца на quran.com.|This device has no Arabic voice. Listen to a reciter on quran.com.|Bu qurilmada arabcha ovoz yo‘q. Qorini quran.com saytida tinglang.
+gFind|Найди букву|Find the letter|Harfni top
+gFindD|Видите название — найдите букву|See the name, find the letter|Nomini ko‘ring — harfni toping
+gBalloon|Лопни шарик|Pop the balloon|Sharni yor
+gBalloonD|Лопайте только шарики с нужной буквой|Pop only the balloons with the target letter|Faqat kerakli harfli sharlarni yoring
+gMem|Пары|Pairs|Juftliklar
+gMemD|Найдите букву и картинку к ней|Match each letter with its picture|Harfni rasmi bilan juftlang
+gBuild|Собери слово|Build a word|So‘z yig‘
+gBuildD|Нажимайте буквы по порядку, справа налево|Tap the letters in order, right to left|Harflarni tartib bilan, o‘ngdan chapga bosing
+gSM|Солнце или луна|Sun or moon|Quyosh yoki oy
+gSMD|Разложите слова по правилу «аль»|Sort the words by the al- rule|So‘zlarni «al» qoidasi bo‘yicha ajrating
+round|Раунд|Round|Raund
+time|Время|Time|Vaqt
+popThis|Лопай букву|Pop the letter|Shu harfni yor
+moves|Ходы|Moves|Yurishlar
+gameOver|Игра окончена|Game over|O‘yin tugadi
+playAgain|Играть снова|Play again|Yana o‘ynash
+points|Очки|Points|Ochko
+showTr|Транслитерация|Transliteration|Transliteratsiya
+showMean|Перевод смыслов|Meaning|Ma’no tarjimasi
+ayat|аятов|ayahs|oyat
+listenQari|Слушать чтеца на quran.com|Listen to a reciter on quran.com|Qorini quran.com da tinglash
+surahNote|Нажмите на слово, чтобы увидеть его значение. Транслитерация — только подсказка: правильное чтение проверяйте с учителем или по записи чтеца. Перевод передаёт смысл приблизительно.|Tap a word to see its meaning. Transliteration is only a hint: check your reading with a teacher or a reciter’s recording. The translation conveys the meaning approximately.|So‘z ma’nosini ko‘rish uchun ustiga bosing. Transliteratsiya faqat yordamchi: to‘g‘ri o‘qishni ustoz yoki qori yozuvi bilan tekshiring. Tarjima ma’noni taxminan beradi.
+iRead|Я прочитал(а) — к практике|I’ve read it — go to practice|O‘qib chiqdim — mashqqa
+uzbIntro|В узбекском языке сотни слов арабского происхождения. Посмотрите, как они пишутся по-арабски: знакомые слова помогают быстрее запомнить буквы.|Uzbek has hundreds of words of Arabic origin. See how they are written in Arabic: familiar words help you remember the letters faster.|O‘zbek tilida arab tilidan kirgan yuzlab so‘zlar bor. Ular arabcha qanday yozilishini ko‘ring: tanish so‘zlar harflarni tezroq eslab qolishga yordam beradi.
+totalXP|Всего очков|Total XP|Jami ball
+lessonsDone|Уроков пройдено|Lessons done|O‘tilgan darslar
+starsT|Звёзды|Stars|Yulduzlar
+lettersMastered|Изученные буквы|Letters learned|O‘rganilgan harflar
+badges|Награды|Badges|Mukofotlar
+reset|Сбросить прогресс|Reset progress|Natijalarni o‘chirish
+resetSure|Точно? Нажмите ещё раз|Sure? Tap again|Rostdanmi? Yana bosing
+resetDone|Прогресс сброшен|Progress reset|Natijalar o‘chirildi
+kids|Детям|Kids|Bolalar
+kidsOn|Детский режим включён|Kids mode on|Bolalar rejimi yoqildi
+kidsOff|Обычный режим|Standard mode|Oddiy rejim
+upNext|Следующий|Up next|Navbatdagi
+examples|Примеры|Examples|Misollar
+sunLetters|Солнечные буквы|Sun letters|Quyosh harflari
+moonLetters|Лунные буквы|Moon letters|Oy harflari
+startLes|Начать урок|Start lesson|Darsni boshlash
+formsT|Как буквы соединяются|How letters join|Harflar qanday ulanadi
+nonjoinT|Шесть «одиночек»|The six non-joiners|Olti «yolg‘iz» harf
+mixT|Все три вместе|All three together|Uchalasi birga
+maddT|Долгие гласные|Long vowels|Cho‘ziq unlilar
+wordsT|Первые слова|First words|Birinchi so‘zlar
+sukunT|Сукун|Sukun|Sukun
+shaddaT|Шадда|Shadda|Shadda
+tanwinT|Танвин|Tanwin|Tanvin
+formsIntro|Арабские буквы пишутся слитно, справа налево. Большинство букв меняют форму: отдельно, в начале, в середине и в конце слова. Основа буквы остаётся узнаваемой, а «хвостик» исчезает при соединении.|Arabic letters are joined and written right to left. Most letters change shape: isolated, initial, medial and final. The core of the letter stays recognisable; its tail disappears when it joins.|Arab harflari qo‘shib, o‘ngdan chapga yoziladi. Ko‘p harflar shaklini o‘zgartiradi: alohida, so‘z boshida, o‘rtasida va oxirida. Harfning asosi tanish bo‘lib qoladi, ulanganda «dumcha»si yo‘qoladi.
+nonjoinIntro|Шесть букв соединяются только с предыдущей буквой (справа), но никогда со следующей. Буква после них пишется так, будто слово начинается заново.|Six letters join only the letter before them (on the right), never the next one. The letter after them is written as if the word starts again.|Olti harf faqat oldingi (o‘ngdagi) harfga ulanadi, keyingisiga hech qachon ulanmaydi. Ulardan keyingi harf so‘z go‘yo qaytadan boshlangandek yoziladi.
+sukunIntro|Сукун (ْ) — маленький кружок над буквой. Он значит, что после согласной нет гласной: مِنْ = min.|Sukun (ْ) is a small circle above a letter. It means no vowel follows the consonant: مِنْ = min.|Sukun (ْ) — harf ustidagi kichik doiracha. U undoshdan keyin unli yo‘qligini bildiradi: مِنْ = min.
+shaddaIntro|Шадда (ّ) похожа на маленькую «w». Она удваивает букву: رَبّ = rabb. Огласовка ставится вместе с шаддой.|Shadda (ّ) looks like a small w. It doubles the letter: رَبّ = rabb. The vowel mark sits together with it.|Shadda (ّ) kichik «w» ga o‘xshaydi. U harfni ikkilantiradi: رَبّ = rabb. Harakat shadda bilan birga qo‘yiladi.
+tanwinIntro|Танвин — двойная огласовка в конце слова. Он добавляет звук «н»: ـً = -ан, ـٍ = -ин, ـٌ = -ун. С фатхатаном обычно пишется алиф: بًا.|Tanwin is a doubled vowel mark at the end of a word. It adds an n: ـً = -an, ـٍ = -in, ـٌ = -un. Fathatan is usually written with an alif: بًا.|Tanvin — so‘z oxiridagi qo‘sh harakat. U «n» tovushini qo‘shadi: ـً = -an, ـٍ = -in, ـٌ = -un. Fathatan odatda alif bilan yoziladi: بًا.
+maddIntro|Долгие гласные: фатха + ا = ā, касра + ي = ī, дамма + و = ū. Тянем их на 2 счёта.|Long vowels: fatha + ا = ā, kasra + ي = ī, damma + و = ū. Hold them for 2 counts.|Cho‘ziq unlilar: fatha + ا = ā, kasra + ي = ī, zamma + و = ū. Ularni 2 hisob cho‘zamiz.
+wordsIntro|Теперь читаем целые слова: справа налево, слог за слогом. ة в конце слова (та-марбута) читается как «-а».|Now we read whole words: right to left, syllable by syllable. ة at the end of a word (ta marbuta) is read as -a.|Endi butun so‘zlarni o‘qiymiz: o‘ngdan chapga, bo‘g‘inma-bo‘g‘in. So‘z oxiridagi ة (toi marbuta) «-a» deb o‘qiladi.
+lettersIntro|Нажмите на динамик, чтобы услышать название. Следите за точками: они отличают похожие буквы.|Tap the speaker to hear the name. Watch the dots: they tell similar letters apart.|Nomini eshitish uchun karnaycha belgisini bosing. Nuqtalarga e’tibor bering: ular o‘xshash harflarni farqlaydi.
+harakatIntro|Нажмите на слог, чтобы его услышать.|Tap a syllable to hear it.|Bo‘g‘inni eshitish uchun ustiga bosing.
+fathaN|Фатха|Fatha|Fatha
+kasraN|Касра|Kasra|Kasra
+dammaN|Дамма|Damma|Zamma
+fathaX|Чёрточка над буквой — звук «а».|A small stroke above the letter: the sound a.|Harf ustidagi chiziqcha — «a» tovushi.
+kasraX|Чёрточка под буквой — звук «и».|A small stroke below the letter: the sound i.|Harf ostidagi chiziqcha — «i» tovushi.
+dammaX|Маленькая «вав» над буквой — звук «у».|A small waw above the letter: the sound u.|Harf ustidagi kichik «vov» — «u» tovushi.
+trSyl|Чтение|Reading|O‘qilishi
+rules|Правила|Rules|Qoidalar
+tjLessons|Уроки по таджвиду|Tajweed lessons|Tajvid darslari
+none|—|—|—
+mascotTip1|Каждая точка важна: ب, ت и ث отличаются только точками!|Every dot matters: ب, ت and ث differ only by their dots!|Har bir nuqta muhim: ب, ت va ث faqat nuqtalari bilan farq qiladi!
+mascotTip2|Арабский читают справа налево — как будто листаешь книгу с конца!|Arabic is read right to left, like opening a book from the back!|Arabcha o‘ngdan chapga o‘qiladi — kitobni oxiridan ochgandek!
+mascotTip3|Ты уже знаешь слово «kitob»! По-арабски это كِتَاب.|You already know the word “kitob”! In Arabic it’s كِتَاب.|Sen «kitob» so‘zini bilasan! Arabchada bu كِتَاب.
+mascotTip4|Собери 3 звезды в уроке — и я засияю ярче!|Get 3 stars in a lesson and I’ll shine brighter!|Darsda 3 yulduz to‘pla — men yanada yorqin porlayman!
+bFirst|Первый урок|First lesson|Birinchi dars
+bAbc|Весь алфавит|Whole alphabet|Butun alifbo
+bHar|Мастер огласовок|Vowel master|Harakat ustasi
+bTj|Знаток таджвида|Tajweed learner|Tajvid bilimdoni
+bFat|Аль-Фатиха|Al-Fatihah|Al-Fotiha
+bTr|10 прописей|10 tracings|10 ta yozuv
+bSt|7 дней подряд|7-day streak|7 kun ketma-ket
+bStars|30 звёзд|30 stars|30 yulduz
+groupsT|5 групп букв|5 letter groups|Harflarning 5 guruhi
+groupsIntro|По тому, как буквы соединяются с соседними, их удобно разделить на 5 групп. Выучив группы, вы быстро узнаете любую букву внутри слова.|By how they join their neighbours, letters fall into 5 groups. Once you know the groups, you can recognise any letter inside a word.|Harflarni yonidagi harflarga birikish xususiyatiga ko‘ra 5 guruhga ajratish mumkin. Guruhlarni bilsangiz, so‘z ichidagi har qanday harfni tez taniysiz.
+qGroup|К какой группе относится эта буква?|Which group does this letter belong to?|Bu harf qaysi guruhga kiradi?
+hamzaT|Лям-алиф и хамза|Lām-alif and hamza|Lām-alif va hamza
+hamzaIntro|Лям-алиф (لا) — это лям и алиф, соединённые в особую лигатуру; своего звука у неё нет, читается «ла». Хамза (ء) — короткая смычка голоса, «запинка». Она пишется на алифе (أ, а с касрой под алифом: إ), на вав (ؤ), на йа без точек (ئ) или отдельно (ء), но звучит всегда одинаково.|Lām-alif (لا) is lam and alif joined into a special ligature; it has no sound of its own and reads lā. Hamza (ء) is a short catch in the voice. It sits on an alif (أ; with kasra, under it: إ), on a waw (ؤ), on a dotless ya (ئ) or alone (ء), but always sounds the same.|Lām-alif (لا) — lām va alifning maxsus birikmasi; alohida tovushi yo‘q, «lā» deb o‘qiladi. Hamza (ء) — ovozning qisqa uzilishi. U alif ustida (أ; kasra bilan alif ostida: إ), vāv ustida (ؤ), nuqtasiz yā ustida (ئ) yoki yolg‘iz (ء) yoziladi, lekin doim bir xil o‘qiladi.
+hamzaSeats|Где пишется хамза|Where hamza is written|Hamza qayerda yoziladi
+nameSys|||Harf nomlarida: ā — ingichka harf, ō — qalin harf; ikki nuqta (:) — o‘zbek tilida yo‘q maxsus tovush (S:ā, Z:āl, H:ā); harf ustidagi chiziq — cho‘ziq unli.
+bridgeT|Ваши буквы уже есть в арабском|Your letters already exist in Arabic|Harflaringiz arab tilida ham bor
+bridgeX|19 из 23 согласных узбекского языка есть и в арабском. Значит, почти три четверти арабских звуков вам уже знакомы.|19 of the 23 Uzbek consonants also exist in Arabic, so almost three quarters of Arabic sounds are already familiar to you.|O‘zbek tilidagi 23 ta undoshdan 19 tasi arab tilida ham bor. Demak, arab tovushlarining qariyb ¾ qismi sizga tanish.
+arabOnly|Звуки, которых нет в узбекском|Sounds Uzbek does not have|O‘zbek tilida yo‘q tovushlar
+wordsBridge|Знакомые слова|Familiar words|Tanish so‘zlar
+gGrid|Таблица букв|Letter table|Harflar jadvali
+gGridD|Называйте буквы по порядку: справа налево, сверху вниз или снизу вверх|Name the letters in order: right to left, top down or bottom up|Harflarni tartib bilan ayting: o‘ngdan chapga, yuqoridan pastga yoki pastdan yuqoriga
+dirRtl|Справа налево|Right to left|O‘ngdan chapga
+dirDown|Сверху вниз|Top down|Yuqoridan pastga
+dirUp|Снизу вверх|Bottom up|Pastdan yuqoriga`;
+const T={ru:{},en:{},uz:{}};
+TX.split('\n').forEach(l=>{const [k,a,b,c]=l.split('|');T.ru[k]=a;T.en[k]=b;T.uz[k]=c});
+Object.assign(T.uz,{fIso:'yolg‘iz holda',fIni:'so‘z boshida',fMed:'so‘z o‘rtasida',fFin:'so‘z oxirida'});
+const WD={ru:['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],en:['Mo','Tu','We','Th','Fr','Sa','Su'],uz:['Du','Se','Ch','Pa','Ju','Sh','Ya']};
+
+/* ===== STATE ===== */
+const KEY='iqra_v1';
+let S={lang:'ru',kids:false,theme:null,xp:0,days:{},stars:{},traces:0};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)S=Object.assign(S,s)}catch(e){}
+if(S.uzc===undefined)S.uzc=false;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const LI=()=>({ru:0,en:1,uz:2}[S.lang]);
+const t=k=>{const d=T[S.lang]||T.ru;const v=(k in d&&d[k]!==undefined)?d[k]:(k in T.ru?T.ru[k]:k);return uzc(v)};
+const L=a=>Array.isArray(a)?uzc(a[LI()]||a[0]):a;
+function uzc(s){return(S.lang==='uz'&&S.uzc&&typeof s==='string'&&s)?toCyr(s):s}
+const CYR_CACHE={};
+function toCyr(s){if(CYR_CACHE[s])return CYR_CACHE[s];const out=s.split(/(\S+\.[a-z]{2,}\S*)/i).map((part,i)=>i%2?part:cyrConv(part)).join('');CYR_CACHE[s]=out;return out}
+function cyrConv(p){
+ const W='A-Za-zА-Яа-яЁёЎўҚқҒғҲҳĀāĪīŪūŌō';
+ p=p.replace(/ʿ([A-ZĀ])/g,(m,c)=>'Ъ'+c.toLowerCase()).replace(/ʿ/g,'ъ')
+  .replace(/O[‘ʻ'`]/g,'Ў').replace(/o[‘ʻ'`]/g,'ў').replace(/G[‘ʻ'`]/g,'Ғ').replace(/g[‘ʻ'`]/g,'ғ')
+  .replace(/S[Hh]/g,'Ш').replace(/sh/g,'ш').replace(/C[Hh]/g,'Ч').replace(/ch/g,'ч').replace(/ts/g,'ц')
+  .replace(/Y[Oo]/g,'Ё').replace(/yo/g,'ё').replace(/Y[Uu]/g,'Ю').replace(/yu/g,'ю').replace(/Y[Aa]/g,'Я').replace(/ya/g,'я').replace(/Y[Ee]/g,'Е').replace(/ye/g,'е')
+  .replace(new RegExp('(^|[^'+W+'])E','g'),'$1Э').replace(new RegExp('(^|[^'+W+'])e','g'),'$1э')
+  .replace(/[’]/g,'ъ');
+ const M={a:'а',b:'б',d:'д',e:'е',f:'ф',g:'г',h:'ҳ',i:'и',j:'ж',k:'к',l:'л',m:'м',n:'н',o:'о',p:'п',q:'қ',r:'р',s:'с',t:'т',u:'у',v:'в',x:'х',y:'й',z:'з',c:'с',w:'в','ā':'а̄','ī':'ӣ','ū':'ӯ','ō':'о̄'};
+ return p.replace(/[A-Za-zĀāĪīŪūŌō]/g,ch=>{const lo=ch.toLowerCase();const r=M[lo];if(!r)return ch;return ch===lo?r:r.charAt(0).toUpperCase()+r.slice(1)})}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const dkey=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+function addXP(n){S.xp+=n;const k=today();S.days[k]=(S.days[k]||0)+n;save()}
+function streak(){let n=0;const d=new Date();if(!S.days[dkey(d)])d.setDate(d.getDate()-1);while(S.days[dkey(d)]){n++;d.setDate(d.getDate()-1)}return n}
+const lname=l=>S.lang==='ru'?l.cyr:S.lang==='uz'?uzc(l.uzn):l.lat;
+const strip=s=>s.replace(/[ً-ْٰ]/g,'');
+const joins=c=>!NONJOIN.includes(c);
+function formsOf(c){return[c,joins(c)?c+TATWEEL:c,TATWEEL+c+(joins(c)?TATWEEL:''),TATWEEL+c]}
+const LBY=c=>LETTERS.find(l=>l.c===c);
+function similar(c,n){const g=GROUPS.find(g=>g.includes(c))||'';let pool=[...g].filter(x=>x!==c);pool=shuf(pool);const rest=shuf(LETTERS.map(l=>l.c).filter(x=>x!==c&&!pool.includes(x)));return pool.concat(rest).slice(0,n)}
+
+/* ===== ICONS ===== */
+const IC={
+back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
+spk:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+star:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.3l6.6-.8z"/></svg>',
+sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>',
+moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>',
+check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>'
+};
+function logo(){return `<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="9" y="9" width="30" height="30" rx="4" style="fill:var(--accent)"/><rect x="9" y="9" width="30" height="30" rx="4" transform="rotate(45 24 24)" style="fill:var(--accent)"/><circle cx="24" cy="24" r="11" style="fill:var(--gold)"/><path d="M18.5 19.5c2-.9 3.8-.9 5.5.3 1.7-1.2 3.5-1.2 5.5-.3v9.5c-2-.9-3.8-.9-5.5.3-1.7-1.2-3.5-1.2-5.5-.3z" style="fill:var(--surface)"/><path d="M24 19.8v9.5" style="stroke:var(--gold);stroke-width:1.2"/></svg>`}
+function mascot(mood){const m=mood||'happy';const mouth=m==='sad'?'M33 58q7-5 14 0':m==='wow'?'M37 56a3 3 0 1 0 6 0a3 3 0 1 0-6 0':'M32 55q8 8 16 0';
+return `<svg viewBox="0 0 80 92" aria-hidden="true"><path d="M40 2v8" style="stroke:var(--gold);stroke-width:3;stroke-linecap:round"/><circle cx="40" cy="4" r="3.5" style="fill:none;stroke:var(--gold);stroke-width:2.5"/><path d="M24 22 30 11h20l6 11z" style="fill:var(--gold)"/><rect x="14" y="21" width="52" height="56" rx="18" style="fill:var(--tq)"/><rect x="21" y="29" width="38" height="40" rx="13" style="fill:var(--gold-soft)"/><circle cx="33" cy="45" r="3.6" style="fill:var(--ink)"/><circle cx="47" cy="45" r="3.6" style="fill:var(--ink)"/><circle cx="34.2" cy="43.8" r="1.2" style="fill:#fff"/><circle cx="48.2" cy="43.8" r="1.2" style="fill:#fff"/><circle cx="27" cy="53" r="3" style="fill:var(--bad);opacity:.35"/><circle cx="53" cy="53" r="3" style="fill:var(--bad);opacity:.35"/><path d="${mouth}" style="fill:${m==='wow'?'var(--ink)':'none'};stroke:var(--ink);stroke-width:2.6;stroke-linecap:round"/><path d="M22 77h36l-5 9H27z" style="fill:var(--gold)"/><path d="M6 30l4 2M74 30l-4 2M4 46h5M76 46h-5" style="stroke:var(--gold);stroke-width:2.5;stroke-linecap:round"/></svg>`}
+const stars=(n,cls)=>`<div class="${cls||'stars'}">${[1,2,3].map(i=>`<span class="${i<=n?'':'off'}">${IC.star}</span>`).join('')}</div>`;
+
+/* ===== TTS & registry ===== */
+let REG=[];const reg=f=>{REG.push(f);return REG.length-1};
+let VOICE=null,warned=false;
+function initVoices(){try{const vs=speechSynthesis.getVoices();VOICE=vs.find(v=>/^ar/i.test(v.lang))||null}catch(e){}}
+try{initVoices();speechSynthesis.onvoiceschanged=initVoices}catch(e){}
+function say(txt){try{if(!('speechSynthesis' in window)){toast(t('noVoice'));return}const ss=window.speechSynthesis;if(!VOICE)initVoices();if(ss.speaking||ss.pending)ss.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang='ar-SA';if(VOICE)u.voice=VOICE;else{const all=ss.getVoices();if(all.length&&!warned){warned=true;toast(t('noVoice'))}}u.rate=.75;ss.speak(u)}catch(e){toast(t('noVoice'))}}
+const sayBtn=txt=>`<button class="say" aria-label="Listen" onclick="event.stopPropagation();REG[${reg(()=>say(txt))}]()">${IC.spk}</button>`;
+const on=f=>`REG[${reg(f)}]()`;
+let toastT;function toast(m){const el=document.getElementById('toast');el.textContent=m;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,2600)}
+function confetti(n){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const cols=['var(--gold)','var(--tq)','var(--accent)','var(--bad)','var(--good)'];for(let i=0;i<(n||24);i++){const s=document.createElement('i');s.className='confetti';s.style.left=Math.random()*100+'vw';s.style.background=pick(cols);s.style.animationDelay=Math.random()*.4+'s';s.style.animationDuration=1.2+Math.random()*.9+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),2600)}}
+
+/* ===== ROUTER ===== */
+let V={v:'home',a:null};let GAME=null;
+function go(v,a){if(GAME&&GAME.stop)GAME.stop();GAME=null;try{speechSynthesis.cancel()}catch(e){}V={v,a};render();window.scrollTo({top:0})}
+function crumb(title,backTo,sub){return `<div class="crumb"><button class="back" aria-label="${t('prev')}" onclick="${on(()=>go(backTo||'home'))}">${IC.back}</button><div><h1>${title}</h1>${sub?`<p class="muted">${sub}</p>`:''}</div></div>`}
+function render(){REG=[];
+ const cy=S.lang==='uz'&&S.uzc;document.documentElement.lang=cy?'uz-Cyrl':S.lang;
+ document.querySelectorAll('#langseg button').forEach(b=>b.classList.toggle('on',b.dataset.l==='uzc'?cy:(b.dataset.l===S.lang&&!cy)));
+ document.body.classList.toggle('kids',S.kids);
+ const kb=document.getElementById('kidbtn');kb.innerHTML=mascot()+`<span>${t('kids')}</span>`;kb.classList.toggle('on',S.kids);
+ const dark=isDark();document.getElementById('themebtn').innerHTML=dark?IC.sun:IC.moon;
+ const R={home,path:viewPath,lesson:viewLesson,alphabet:viewAlphabet,letter:viewLetter,flash:viewFlash,trace:viewTrace,syll:viewSyll,games:viewGames,game:viewGame,tajweed:viewTajweed,surahs:viewSurahs,surah:viewSurah,uzb:viewUzb,progress:viewProgress};
+ const app=document.getElementById('app');app.innerHTML=(R[V.v]||home)(V.a);
+ if(AFTER){const f=AFTER;AFTER=null;f()}
+}
+let AFTER=null;
+function setLang(l){if(l==='uzc'){S.lang='uz';S.uzc=true}else{S.lang=l;if(l==='uz')S.uzc=false}save();render()}
+function toggleKids(){S.kids=!S.kids;save();toast(S.kids?t('kidsOn'):t('kidsOff'));if(S.kids)confetti(30);render()}
+function isDark(){const th=document.documentElement.dataset.theme;if(th)return th==='dark';return matchMedia('(prefers-color-scheme: dark)').matches}
+function toggleTheme(){const d=isDark();document.documentElement.dataset.theme=d?'light':'dark';S.theme=document.documentElement.dataset.theme;save();render()}
+if(S.theme)document.documentElement.dataset.theme=S.theme;
+
+/* ===== PROGRESS HELPERS ===== */
+const done=id=>(S.stars[id]||0)>0;
+const nextLes=()=>ALL_LES.find(l=>!done(l.id))||ALL_LES[ALL_LES.length-1];
+function lesTitle(l){
+ switch(l.type){
+  case'letters':return{g:l.ix.map(i=>LETTERS[i].c).join(' '),n:t('letters')+' '+(l.ix[0]+1)+'–'+(l.ix[l.ix.length-1]+1)};
+  case'forms':return{g:'بـ ـبـ ـب',n:t('formsT')};
+  case'groups':return{g:'د ج ب ع',n:t('groupsT')};
+  case'hamza':return{g:'لا ء',n:t('hamzaT')};
+  case'nonjoin':return{g:'ا د ر و',n:t('nonjoinT')};
+  case'harakat':return l.h.length>1?{g:'بَ بِ بُ',n:t('mixT')}:{g:'ب'+H[l.h[0]],n:t(l.h[0]+'N')};
+  case'words':return l.set==='sukun'?{g:'مِنْ',n:t('sukunT')}:{g:'رَبّ',n:t('shaddaT')};
+  case'tanwin':return{g:'بٌ بٍ بًا',n:t('tanwinT')};
+  case'madd':return{g:'بَا بِي بُو',n:t('maddT')};
+  case'kidwords':return{g:l.r[0]?'قَمَر':'جَمَل',n:t('wordsT')+' '+(l.r[0]?2:1)};
+  case'tajweed':return{g:l.r[0]===0?'الشَّمْس':l.r[0]===1?'أَحَدْ':'قَالَ',n:l.r.map(i=>L(RULES[i].t)).join(', ')};
+  case'surah':{const s=SURAHS.find(x=>x.id===l.s);return{g:s.ar,n:L(s.name)}}
+ }}
+function learnedLetters(){const set=new Set();MODULES[0].les.forEach(l=>{if(done(l.id))l.ix.forEach(i=>set.add(i))});return set}
+function totalStars(){return Object.values(S.stars).reduce((a,b)=>a+b,0)}
+
+/* ===== HOME ===== */
+function home(){
+ const g=50,x=S.days[today()]||0,p=Math.min(1,x/g),C=2*Math.PI*40;
+ const nl=nextLes(),nt=lesTitle(nl),st=streak();
+ const wk=[];const d=new Date();const dow=(d.getDay()+6)%7;for(let i=0;i<7;i++){const dd=new Date(d);dd.setDate(d.getDate()-dow+i);wk.push(`<span class="${S.days[dkey(dd)]?'on':''}">${uzc(WD[S.lang][i])}</span>`)}
+ const nDone=ALL_LES.filter(l=>done(l.id)).length;
+ const tile=(v,glyph,title,desc,stat,cls,deco)=>`<button class="tile ${cls||''}" onclick="${on(()=>go(v))}">${deco?`<span class="deco ar" aria-hidden="true">${deco}</span>`:''}<span class="glyph ar">${glyph}</span><h3>${title}</h3><p>${desc}</p><span class="stat">${stat||''}</span></button>`;
+ const tips=['mascotTip1','mascotTip2','mascotTip3','mascotTip4'];
+ return `<div class="dash"><aside class="side">
+  ${S.kids?`<div class="panel wide"><div class="mascot-box">${mascot(x>=g?'wow':'happy')}<div class="speech">${esc(t(pick(tips)))}</div></div></div>`:''}
+  <div class="panel"><h2>${S.kids?esc(t('kidsHello')).split('!')[0]+'!':t('hello')}</h2><p class="muted" style="margin-top:4px">${t('helloSub')}</p></div>
+  <div class="panel"><div class="lbl">${t('dayGoal')}</div><div class="ring-row" style="margin-top:8px"><svg class="ring" viewBox="0 0 96 96"><circle class="bgc" cx="48" cy="48" r="40" fill="none" stroke-width="10"/><circle class="fgc" cx="48" cy="48" r="40" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-p)}" transform="rotate(-90 48 48)"/><text x="48" y="54" text-anchor="middle" font-size="20">${Math.round(p*100)}%</text></svg><div><div class="big-num" style="font-size:30px">${x}<span class="muted" style="font-size:16px"> / ${g}</span></div><div class="muted">${t('xp')}</div></div></div></div>
+  <div class="panel"><div class="lbl">${t('streak')}</div><div class="big-num" style="font-size:30px;margin-top:6px">${st} <span class="muted" style="font-size:16px">${t('days')}</span></div><div class="week">${wk.join('')}</div></div>
+  <button class="panel cont wide" style="text-align:left;cursor:pointer" onclick="${on(()=>{LS=null;go('lesson',nl.id)})}"><div class="lbl">${t('upNext')}</div><div class="ar" style="font-size:30px;line-height:1.5;color:inherit">${nt.g}</div><h3>${esc(nt.n)}</h3><div class="row" style="margin-top:10px"><span class="btn light sm">${t('continue')} →</span></div></button>
+ </aside><section>
+  <div class="main-head"><h1>${t('sections')}</h1></div>
+  <div class="tiles">
+   ${tile('path','اقْرَأْ',t('path'),t('pathD'),`<span>${nDone} / ${ALL_LES.length} ${t('lessons')}</span><span>★ ${totalStars()}</span>`,'feat')}
+   ${tile('alphabet','أ ب ت',t('alphabet'),t('alphabetD'),`<span>${learnedLetters().size} / 28</span>`)}
+   ${S.kids?tile('games','🎈',t('games'),t('gamesD'),'<span>5</span>','gold'):tile('trace','ج',t('trace'),t('traceD'),`<span>${S.traces}</span>`,'tq')}
+   ${tile('syll','بَ بِ بُ',t('syll'),t('syllD'),'','')}
+   ${S.kids?tile('trace','ج',t('trace'),t('traceD'),`<span>${S.traces}</span>`,'tq'):tile('games','لُعْبَة',t('games'),t('gamesD'),'<span>5</span>','gold')}
+   ${tile('tajweed','تَجْوِيد',t('tajweed'),t('tajweedD'),'','tq')}
+   ${tile('surahs','الْفَاتِحَة',t('surahs'),t('surahsD'),'<span>5</span>','gold')}
+   ${tile('uzb','كِتَاب',t('uzb'),t('uzbD'),`<span>${UZB.length}</span>`)}
+   ${tile('progress','★',t('progress'),t('progressD'),`<span>${S.xp} ${t('xp')}</span>`)}
+  </div></section></div>`}
+
+/* ===== PATH ===== */
+function viewPath(){const nl=nextLes();
+ return crumb(t('path'),'home',t('pathD'))+MODULES.map((m,mi)=>`<div class="mod"><div class="mod-head"><span class="mod-num">${mi+1}</span><div><div class="lbl">${t('module')} ${mi+1}</div><h2>${L(m.t)}</h2></div></div><div class="path">${m.les.map((l,li)=>{const tt=lesTitle(l),s=S.stars[l.id]||0;return `<button class="les ${s?'done':''} ${l===nl?'next':''}" onclick="${on(()=>{LS=null;go('lesson',l.id)})}"><span class="n">${t('lesson')} ${li+1}</span><span class="ar">${tt.g}</span><b>${esc(tt.n)}</b>${stars(s,'st')}</button>`}).join('')}</div></div>`).join('')}
+
+/* ===== LESSON ENGINE ===== */
+let LS=null;
+function viewLesson(id){
+ if(!LS||LS.id!==id){const les=ALL_LES.find(l=>l.id===id);LS={id,les,step:0,qs:buildQuiz(les),qi:0,ok:0,ans:null,trace:les.type==='letters'}}
+ const les=LS.les,tt=lesTitle(les);
+ const labels=[t('stepLearn'),t('stepPractice')].concat(LS.trace?[t('stepTrace')]:[]).concat([t('stepResult')]);
+ const resIdx=labels.length-1;
+ const steps=`<div class="steps">${labels.map((x,i)=>`<span class="${i===LS.step?'on':i<LS.step?'ok':''}">${x}</span>`).join('')}</div>`;
+ let body='';
+ if(LS.step===0)body=learn(les)+`<div class="row" style="margin-top:18px"><button class="btn" onclick="${on(()=>{LS.step=1;render();scrollTo({top:0})})}">${t('toPractice')} →</button></div>`;
+ else if(LS.step===1)body=quizView();
+ else if(LS.trace&&LS.step===2){const ch=LS.tch||LETTERS[les.ix[0]].c;
+  body=`<div class="card"><div class="pick" style="margin-bottom:12px">${les.ix.map(i=>`<button class="${LETTERS[i].c===ch?'on':''}" onclick="${on(()=>{LS.tch=LETTERS[i].c;render()})}">${LETTERS[i].c}</button>`).join('')}</div>${traceBlock(ch,0)}</div><div class="row" style="margin-top:16px"><button class="btn" onclick="${on(()=>finishLesson())}">${t('finish')} →</button><button class="btn ghost" onclick="${on(()=>finishLesson())}">${t('skip')}</button></div>`}
+ else if(LS.step===resIdx)body=resultView();
+ return crumb(`<span class="ar" style="font-size:.9em;color:var(--accent)">${tt.g}</span> ${esc(tt.n)}`,'path')+steps+body}
+
+function finishLesson(){const n=LS.qs.length,pct=LS.ok/n;const s=pct>=.9?3:pct>=.7?2:pct>=.5?1:0;LS.res={s,pct,best:s>(S.stars[LS.id]||0)};if(LS.res.best)S.stars[LS.id]=s;addXP(LS.ok*10+(s===3?20:0));LS.step=LS.trace?3:2;if(s>=2)confetti(s===3?50:25);render()}
+
+function resultView(){const r=LS.res,n=LS.qs.length;const idx=ALL_LES.findIndex(l=>l.id===LS.id);const nx=ALL_LES[idx+1];
+ return `<div class="card anim" style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px;padding:32px 18px">${S.kids?`<div style="width:100px">${mascot(r.s>=2?'wow':r.s?'happy':'sad')}</div>`:''}${stars(r.s)}<div class="big-num">${LS.ok} / ${n}</div><p class="muted">${LS.ok} ${t('correctOf')} ${n} · ${t('earned')}: +${LS.ok*10+(r.s===3?20:0)} ${t('xp')}</p>${r.best&&r.s?`<p style="color:var(--gold);font-weight:700">${t('newBest')}</p>`:''}
+ <div class="row" style="justify-content:center">${nx?`<button class="btn" onclick="${on(()=>{LS=null;go('lesson',nx.id)})}">${t('nextLesson')} →</button>`:''}<button class="btn ghost" onclick="${on(()=>{const id=LS.id;LS=null;go('lesson',id)})}">${t('retry')}</button><button class="btn ghost" onclick="${on(()=>{LS=null;go('path')})}">${t('toPath')}</button></div></div>`}
+
+/* quiz */
+function mkQ(prompt,big,correct,dis,o){o=o||{};const opts=shuf([correct].concat(dis.filter((d,i,a)=>d!==correct&&a.indexOf(d)===i).slice(0,o.n||3)));return{prompt,big,opts,c:opts.indexOf(correct),ar:!!o.ar,emo:o.emo,sayTxt:o.say,bigAr:o.bigAr!==false}}
+const VOW={fatha:'a',kasra:'i',damma:'u'};
+const lettersNoAlif=()=>LETTERS.slice(1);
+function buildQuiz(l){let qs=[];
+ if(l.type==='letters'){l.ix.forEach(i=>{const x=LETTERS[i];
+   qs.push(mkQ(t('qName'),x.c,lname(x),similar(x.c,3).map(c=>lname(LBY(c))),{say:x.an}));
+   qs.push(mkQ(t('qFind')+' «'+lname(x)+'»',null,x.c,similar(x.c,3),{ar:1,say:x.an}));
+   qs.push(mkQ(t('qStarts'),null,x.c,similar(x.c,3),{ar:1,emo:`${x.e}<div class="ar" style="font-size:44px;color:var(--ink)">${x.w}</div><div class="muted" style="font-size:16px">${esc(L(x.m))}</div>`,say:x.w}))});
+  qs=shuf(qs).slice(0,10)}
+ else if(l.type==='forms'){for(let k=0;k<9;k++){const x=pick(LETTERS);const f=formsOf(x.c);const fi=1+Math.floor(Math.random()*3);qs.push(mkQ(t('qForm'),f[fi],x.c,similar(x.c,3),{ar:1}))}}
+ else if(l.type==='nonjoin'){for(let k=0;k<5;k++){const c=pick([...NONJOIN]);qs.push(mkQ(t('qNonJoin'),null,c,shuf(LETTERS.map(x=>x.c).filter(x=>joins(x))),{ar:1}))}
+  for(let k=0;k<4;k++){const c=pick([...NONJOIN]);qs.push(mkQ(t('qForm'),TATWEEL+c,c,similar(c,3),{ar:1}))}qs=shuf(qs)}
+ else if(l.type==='harakat'){for(let k=0;k<10;k++){const x=pick(lettersNoAlif()),h=pick(l.h);const corr=x.tl+VOW[h];const others=['fatha','kasra','damma'].filter(v=>v!==h).map(v=>x.tl+VOW[v]);const sim=LBY(similar(x.c,1)[0]);qs.push(mkQ(t('qRead'),x.c+H[h],corr,others.concat([sim.tl+VOW[h]]),{say:x.c+H[h]}))}}
+ else if(l.type==='words'){const set=l.set==='sukun'?SUKUN_Q:SHADDA_Q;qs=shuf(set).map(w=>mkQ(t('qRead'),w[0],w[1],w.slice(2),{say:w[0]}))}
+ else if(l.type==='tanwin'){const tv={an:'an',in:'in',un:'un'};for(let k=0;k<10;k++){const x=pick(lettersNoAlif().filter(z=>z.c!=='ي'&&z.c!=='و')),h=pick(['an','in','un']);const disp=x.c+H[h]+(h==='an'?'ا':'');const corr=x.tl+tv[h];qs.push(mkQ(t('qRead'),disp,corr,['an','in','un'].filter(z=>z!==h).map(z=>x.tl+z).concat([x.tl+h[0]]),{say:disp}))}}
+ else if(l.type==='madd'){const LV={fatha:['ā','ا'],kasra:['ī','ي'],damma:['ū','و']};for(let k=0;k<10;k++){const x=pick(lettersNoAlif()),h=pick(['fatha','kasra','damma']),long=Math.random()<.65;const disp=x.c+H[h]+(long?LV[h][1]:'');const corr=x.tl+(long?LV[h][0]:VOW[h]);const pool=['fatha','kasra','damma'].flatMap(v=>[x.tl+VOW[v],x.tl+LV[v][0]]);qs.push(mkQ(t('qRead'),disp,corr,shuf(pool),{say:disp}))}}
+ else if(l.type==='kidwords'){const ws=LETTERS.slice(l.r[0],l.r[1]);const all=LETTERS;ws.forEach((x,i)=>{if(i%2===0)qs.push(mkQ(t('qRead'),x.w,x.wt,shuf(all.filter(z=>z!==x).map(z=>z.wt)),{say:x.w}));else qs.push(mkQ(t('qPickWord')+' «'+L(x.m)+'»?',null,x.w,shuf(all.filter(z=>z!==x).map(z=>z.w)),{ar:1,emo:x.e,say:x.w}))});qs=shuf(qs).slice(0,10)}
+ else if(l.type==='tajweed'){const map={0:[0,1,2,3],1:[4,9],2:[5],3:[6],4:[7],5:[8]};
+  if(l.r.includes(0))shuf(SM_WORDS).slice(0,6).forEach(w=>qs.push(mkQ(t('qSunMoon'),w[0],w[2]?t('sun'):t('moon'),[w[2]?t('moon'):t('sun')],{n:1,say:w[0]})));
+  l.r.forEach(r=>map[r].forEach(i=>{const q=TJQ[i];const o=q.o.map(L);qs.push(mkQ(L(q.q),null,o[0],o.slice(1),{ar:q.ar}))}));
+  if(qs.length<6){shuf(SM_WORDS).slice(0,4).forEach(w=>qs.push(mkQ(t('qRead'),w[0],w[1],shuf(SM_WORDS.filter(z=>z!==w).map(z=>z[1])),{say:w[0]})))}qs=shuf(qs)}
+ else if(l.type==='groups'){const labels=G5.map(g=>L(g.s));const all=LETTERS.map(x=>x.c);
+  shuf(all).slice(0,7).forEach(c=>{const gi=G5.findIndex(g=>g.c.includes(c));qs.push(mkQ(t('qGroup'),c,labels[gi],shuf(labels.filter((x,i)=>i!==gi))))});
+  ['ع','غ','ك','ه','ب','ن','ي'].sort(()=>Math.random()-.5).slice(0,3).forEach(c=>{const fi=1+Math.floor(Math.random()*3);qs.push(mkQ(t('qForm'),formsOf(c)[fi],c,similar(c,3),{ar:1}))});qs=shuf(qs)}
+ else if(l.type==='hamza'){qs=HQ.map(h=>h.big?mkQ(t('qRead'),h.big,h.o[0],h.o.slice(1),{say:h.big}):(()=>{const o=h.o.map(L);return mkQ(L(h.q),null,o[0],o.slice(1),{ar:h.ar})})());qs=shuf(qs)}
+ else if(l.type==='surah'){const s=SURAHS.find(x=>x.id===l.s);s.ayat.forEach(a=>qs.push(mkQ(t('qAyah')+'<div class="muted" style="font-size:16px;font-weight:500;margin-top:4px">«'+esc(L(a.t))+'»</div>',null,a.a,shuf(s.ayat.filter(z=>z!==a).map(z=>z.a)),{ar:1})));
+  const ws=[];s.ayat.forEach(a=>{if(a.w){const arw=a.a.split(' ');a.w.forEach((w,i)=>ws.push({ar:arw[i],tl:w[0],m:L([w[1],w[2],w[3]])}))}});
+  if(ws.length){const uniq=ws.filter((w,i,a)=>a.findIndex(z=>z.m===w.m)===i);shuf(uniq).slice(0,Math.max(3,8-qs.length)).forEach(w=>qs.push(mkQ(t('qWord'),w.ar,w.m,shuf(uniq.filter(z=>z!==w).map(z=>z.m)),{say:w.ar})))}
+  qs=shuf(qs).slice(0,10)}
+ return qs}
+
+function quizView(){const q=LS.qs[LS.qi],n=LS.qs.length;
+ const fb=LS.ans===null?'':LS.ans===q.c?`<div class="fb good anim">${S.kids?mascot('wow'):IC.check}<span>${S.kids?t('rightKids'):t('right')}</span></div>`:`<div class="fb bad anim">${S.kids?mascot('sad'):''}<span>${t('wrong')} <b class="${q.ar?'ar':''}" style="${q.ar?'font-size:28px':''}">${q.opts[q.c]}</b></span></div>`;
+ return `<div class="card"><div class="q-top"><span class="muted" style="font-variant-numeric:tabular-nums">${LS.qi+1} / ${n}</span><div class="bar"><i style="width:${(LS.qi)/n*100}%"></i></div><span style="color:var(--good);font-weight:700">✓ ${LS.ok}</span></div>
+ <div class="q-prompt"><span>${q.prompt}</span>${q.sayTxt?sayBtn(q.sayTxt):''}</div>
+ ${q.emo?`<div class="q-emo">${q.emo}</div>`:''}${q.big?`<div class="q-big">${q.big}</div>`:''}
+ <div class="opts">${q.opts.map((o,i)=>{const cls=LS.ans===null?'':i===q.c?'right':i===LS.ans?'wrong':'';return `<button class="opt ${q.ar?'ar':''} ${cls}" ${LS.ans!==null?'disabled':''} onclick="${on(()=>answer(i))}">${o}</button>`}).join('')}</div>
+ ${fb}${LS.ans!==null?`<div class="row" style="margin-top:14px"><button class="btn" id="nextq" onclick="${on(()=>nextQ())}">${LS.qi+1<n?t('next'):t('finish')} →</button></div>`:''}</div>`}
+function answer(i){if(LS.ans!==null)return;LS.ans=i;const q=LS.qs[LS.qi];if(i===q.c){LS.ok++;if(S.kids)confetti(14)}render();AFTER=null;const b=document.getElementById('nextq');if(b)b.focus()}
+function nextQ(){LS.ans=null;if(LS.qi+1<LS.qs.length){LS.qi++;render()}else if(LS.trace){LS.step=2;render();scrollTo({top:0})}else finishLesson()}
+
+/* learn screens */
+function letterCard(x){const f=formsOf(x.c);return `<div class="card stack anim"><div class="row" style="justify-content:space-between;align-items:center"><div class="ar" style="font-size:96px;line-height:1.3;color:var(--accent)">${x.c}</div><div style="text-align:right"><div class="ar" style="font-size:30px">${x.an}</div><div style="font-weight:700;font-size:18px">${esc(lname(x))}</div><div class="tr">${esc(x.lat)} · [${esc(x.tl||'—')}]</div></div></div>
+ <div class="row">${sayBtn(x.an)}<span class="muted" style="font-size:14px">${esc(L(x.s))}</span></div>
+ <div class="forms">${f.map((ff,i)=>`<div><span class="ar">${ff}</span><small>${t(['fIso','fIni','fMed','fFin'][i])}</small></div>`).join('')}</div>
+ <div class="ex-word"><span class="emo">${x.e}</span><span class="ar">${x.w}</span><div style="flex:1;min-width:0"><b>${esc(L(x.m))}</b><div class="tr">${esc(x.wt)}</div></div>${sayBtn(x.w)}</div></div>`}
+function sylGrid(items){return `<div class="syl-grid">${items.map(it=>`<button class="syl" onclick="${on(()=>say(it[0]))}"><span class="ar">${it[0]}</span><small>${esc(it[1])}</small>${it[2]?`<i>${esc(it[2])}</i>`:''}</button>`).join('')}</div>`}
+const cyV={fatha:'а',kasra:'и',damma:'у'};
+function learn(l){const intro=k=>`<div class="note" style="margin-bottom:14px">${esc(t(k))}</div>`;
+ switch(l.type){
+ case'letters':return (t('nameSys')?intro('nameSys'):'')+intro('lettersIntro')+`<div class="grid2">${l.ix.map(i=>letterCard(LETTERS[i])).join('')}</div>`;
+ case'forms':return intro('formsIntro')+`<div class="grid2">${['ب','ج','س','ع','ه','ك','م','ي'].map(c=>{const x=LBY(c);return `<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:8px"><b>${esc(lname(x))}</b>${sayBtn(x.an)}</div><div class="forms">${formsOf(c).map((ff,i)=>`<div><span class="ar">${ff}</span><small>${t(['fIso','fIni','fMed','fFin'][i])}</small></div>`).join('')}</div></div>`}).join('')}</div>`;
+ case'nonjoin':return intro('nonjoinIntro')+`<div class="card stack"><div class="letter-chips">${[...NONJOIN].map(c=>`<span>${c}</span>`).join('')}</div><div class="ex-list">${['وَرْدَة','دُبّ','زَرَافَة','ذُرَة','رِيشَة'].map(w=>{const x=LETTERS.find(z=>z.w===w);return `<div><span class="ar">${w}</span><span style="font-size:28px">${x.e}</span><span class="tr">${x.wt}</span><b>${esc(L(x.m))}</b>${sayBtn(w)}</div>`}).join('')}</div></div>`;
+ case'harakat':return intro('harakatIntro')+l.h.map(h=>`<div class="card stack" style="margin-bottom:14px"><div class="row"><div class="mark-demo">ـ${H[h]}</div><div><h2>${t(h+'N')}</h2><p class="muted">${esc(t(h+'X'))}</p></div></div>${sylGrid(lettersNoAlif().map(x=>[x.c+H[h],x.tl+VOW[h],S.lang==='ru'?x.cy+cyV[h]:'']))}</div>`).join('');
+ case'words':{const set=l.set==='sukun'?SUKUN_Q:SHADDA_Q;return intro(l.set+'Intro')+`<div class="card"><div class="mark-demo">ـ${l.set==='sukun'?H.sukun:H.shadda}</div>${sylGrid(set.map(w=>[w[0],w[1]]))}</div>`}
+ case'tanwin':return intro('tanwinIntro')+`<div class="card">${sylGrid(['ب','ك','ن','م','ر','ق'].flatMap(c=>{const x=LBY(c);return[[c+H.an+'ا',x.tl+'an'],[c+H.in,x.tl+'in'],[c+H.un,x.tl+'un']]}))}</div>`;
+ case'madd':return intro('maddIntro')+`<div class="card stack">${sylGrid(['ب','ت','ن','م','ق','ر','س','ل'].flatMap(c=>{const x=LBY(c);return[[c+H.fatha+'ا',x.tl+'ā'],[c+H.kasra+'ي',x.tl+'ī'],[c+H.damma+'و',x.tl+'ū']]}))}<div class="lbl">${t('examples')}</div>${sylGrid([['نُور','nūr'],['دِين','dīn'],['بَاب','bāb'],['فِيل','fīl'],['نَار','nār']])}</div>`;
+ case'kidwords':return intro('wordsIntro')+`<div class="grid2">${LETTERS.slice(l.r[0],l.r[1]).map(x=>`<div class="ex-word"><span class="emo">${x.e}</span><span class="ar">${x.w}</span><div style="flex:1;min-width:0"><b>${esc(L(x.m))}</b><div class="tr">${esc(x.wt)}</div></div>${sayBtn(x.w)}</div>`).join('')}</div>`;
+ case'tajweed':return `<div class="stack">${l.r.map(ruleCard).join('')}</div>`;
+ case'groups':return intro('groupsIntro')+`<div class="stack">${G5.map((g,gi)=>`<div class="card stack"><div class="rule"><div class="lbl">${gi+1} / 5</div><h2>${esc(L(g.t))}</h2><p style="margin-top:6px">${esc(L(g.x))}</p></div>
+  <div class="letter-chips ${gi%2?'moon':'sun'}">${[...g.c].map(c=>`<span>${c}</span>`).join('')}${gi===4?'<span>لا</span>':''}</div>
+  ${gi===2||gi===3?`<div class="grid2">${[...g.c].map(c=>`<div class="forms">${formsOf(c).map((ff,k)=>`<div><span class="ar" style="font-size:36px">${ff}</span><small>${t(['fIso','fIni','fMed','fFin'][k])}</small></div>`).join('')}</div>`).join('')}</div>`:''}
+  <div class="ex-list">${g.ex.map(e=>`<div><span class="ar">${e[0]}</span><span class="tr">${esc(e[1])}</span>${sayBtn(e[0])}</div>`).join('')}</div></div>`).join('')}</div>`;
+ case'hamza':return intro('hamzaIntro')+`<div class="grid2"><div class="card stack"><h2>Lām-alif</h2><div class="forms" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div><span class="ar">لا</span><small>${t('fIso')}</small></div><div><span class="ar">ـلا</span><small>${t('fFin')}</small></div></div><p class="muted">${esc(L(LAMALIF_NOTE))}</p></div>
+  <div class="card stack"><h2>${t('hamzaSeats')}</h2><div class="letter-chips sun">${['أ','إ','ؤ','ئ','ء'].map(c=>`<span>${c}</span>`).join('')}</div></div></div>
+  <div class="card" style="margin-top:14px"><div class="lbl" style="margin-bottom:8px">${t('examples')}</div>${sylGrid(HAMZA_EX)}</div>`;
+ case'surah':return surahReader(l.s,true);
+ }}
+function ruleCard(i){const r=RULES[i];return `<div class="card stack"><div class="rule"><h2>${esc(L(r.t))}</h2><p style="margin-top:6px">${esc(L(r.x))}</p></div>
+ ${r.sunmoon?`<div class="lbl">${t('sunLetters')}</div><div class="letter-chips sun">${[...SUN].map(c=>`<span>${c}</span>`).join('')}</div><div class="lbl">${t('moonLetters')}</div><div class="letter-chips moon">${[...MOON].map(c=>`<span>${c}</span>`).join('')}</div>`:''}
+ ${r.chips?`<div class="letter-chips sun">${[...r.chips].map(c=>`<span>${c}</span>`).join('')}</div>`:''}
+ <div class="lbl">${t('examples')}</div><div class="ex-list">${r.ex.map(e=>`<div><span class="ar">${e[0]}</span><span class="tr">${esc(e[1])}</span>${sayBtn(e[0])}</div>`).join('')}</div></div>`}
+
+/* ===== ALPHABET ===== */
+function viewAlphabet(){const ll=learnedLetters();return crumb(t('alphabet'),'home',t('alphabetD'))+(t('nameSys')?`<div class="note" style="margin-bottom:14px">${esc(t('nameSys'))}</div>`:'')+`<div class="row" style="margin-bottom:16px"><button class="btn" onclick="${on(()=>go('flash'))}">${t('flash')}</button><button class="btn ghost" onclick="${on(()=>go('trace'))}">${t('trace')}</button></div>
+ <div class="abc">${LETTERS.map(x=>`<button class="lt ${ll.has(x.i)?'done':''}" onclick="${on(()=>go('letter',x.i))}"><span class="g">${x.c}</span><span class="n">${esc(lname(x))}</span>${S.kids?`<span class="e">${x.e}</span>`:''}</button>`).join('')}</div>
+ <div class="card row" style="margin-top:14px;align-items:center"><span class="ar" style="font-size:60px;line-height:1.3;color:var(--accent)">لا</span><div style="flex:1;min-width:0"><b>${esc(lname(LAMALIF))}</b><p class="muted">${esc(L(LAMALIF_NOTE))}</p></div>${sayBtn('لَا')}</div>`}
+function viewLetter(i){const x=LETTERS[i];const prev=LETTERS[(i+27)%28],nxt=LETTERS[(i+1)%28];
+ const vow=x.c==='ا'?'':`<div class="card stack"><div class="lbl">${t('withVowels')}</div>${sylGrid(['fatha','kasra','damma'].map(h=>[x.c+H[h],x.tl+VOW[h],S.lang==='ru'?x.cy+cyV[h]:'']).concat([[x.c+H.fatha+'ا',x.tl+'ā'],[x.c+H.kasra+'ي',x.tl+'ī'],[x.c+H.damma+'و',x.tl+'ū']]))}</div>`;
+ return crumb(esc(lname(x)),'alphabet',`${i+1} / 28`)+`<div class="grid2"><div class="card stack"><div class="big-letter">${x.c}</div><div class="row" style="justify-content:center">${sayBtn(x.an)}<span class="ar" style="font-size:32px">${x.an}</span></div>
+ <dl class="kv"><dt>${t('name')}</dt><dd>${esc(x.lat)} · ${esc(x.cyr)} · ${esc(x.uzn)}</dd><dt>${t('sound')}</dt><dd>${esc(L(x.s))}</dd><dt>${t('makhraj')}</dt><dd>${esc(L(MAKHRAJ[x.mk]))}</dd></dl>
+ <button class="btn gold" onclick="${on(()=>go('trace',i))}">${t('writeIt')}</button></div>
+ <div class="stack"><div class="card stack"><div class="lbl">${t('forms')}</div><div class="forms">${formsOf(x.c).map((ff,k)=>`<div><span class="ar">${ff}</span><small>${t(['fIso','fIni','fMed','fFin'][k])}</small></div>`).join('')}</div></div>
+ <div class="card stack"><div class="lbl">${t('example')}</div><div class="ex-word"><span class="emo">${x.e}</span><span class="ar">${x.w}</span><div style="flex:1;min-width:0"><b>${esc(L(x.m))}</b><div class="tr">${esc(x.wt)}</div></div>${sayBtn(x.w)}</div></div>${vow}</div></div>
+ <div class="row" style="margin-top:16px;justify-content:space-between"><button class="btn ghost" onclick="${on(()=>go('letter',prev.i))}">← <span class="ar" style="font-size:24px">${prev.c}</span></button><button class="btn ghost" onclick="${on(()=>go('letter',nxt.i))}"><span class="ar" style="font-size:24px">${nxt.c}</span> →</button></div>`}
+
+/* flashcards */
+let FC={order:LETTERS.map(l=>l.i),i:0,flip:false};
+function viewFlash(){const x=LETTERS[FC.order[FC.i]];
+ return crumb(t('flash'),'alphabet',`${FC.i+1} / 28 · ${t('tapFlip')}`)+`<div class="flash ${FC.flip?'flip':''}" id="fl"><div class="flash-in" onclick="${on(()=>{FC.flip=!FC.flip;document.getElementById('fl').classList.toggle('flip',FC.flip)})}">
+ <div class="face"><span class="ar">${x.c}</span>${S.kids?`<span style="font-size:48px">${x.e}</span>`:''}</div>
+ <div class="face bk"><div class="ar" style="font-size:40px;line-height:1.4">${x.an}</div><h2>${esc(lname(x))}</h2><p class="muted">${esc(L(x.s))}</p><div class="ex-word" style="width:100%;justify-content:center"><span class="emo">${x.e}</span><span class="ar">${x.w}</span><span class="tr">${esc(x.wt)}</span></div></div></div></div>
+ <div class="row" style="justify-content:center;margin-top:18px"><button class="btn ghost" onclick="${on(()=>{FC.i=(FC.i+27)%28;FC.flip=false;render()})}">← ${t('prev')}</button>${sayBtn(x.an)}<button class="btn ghost" onclick="${on(()=>{FC.order=shuf(FC.order);FC.i=0;FC.flip=false;render()})}">${t('shuffle')}</button><button class="btn" onclick="${on(()=>{FC.i=(FC.i+1)%28;FC.flip=false;render()})}">${t('next')} →</button></div>`}
+
+/* ===== TRACING ===== */
+let TR={c:'ب',f:0};
+function viewTrace(i){if(typeof i==='number'){TR.c=LETTERS[i].c;TR.f=0;V.a=null}
+ return crumb(t('trace'),'home',t('traceHint'))+`<div class="trace-wrap"><div>${traceBlock(TR.c,TR.f)}</div><div class="stack"><div class="card stack"><div class="lbl">${t('forms')}</div><div class="chips">${['fIso','fIni','fMed','fFin'].map((k,fi)=>`<button class="chip ${fi===TR.f?'on':''}" onclick="${on(()=>{TR.f=fi;render()})}">${t(k)}</button>`).join('')}</div><div class="lbl">${t('letters')}</div><div class="pick">${LETTERS.map(x=>`<button class="${x.c===TR.c?'on':''}" onclick="${on(()=>{TR.c=x.c;render()})}">${x.c}</button>`).join('')}</div></div></div></div>`}
+function traceBlock(c,fi){const x=LBY(c);const glyph=formsOf(c)[fi];
+ AFTER=()=>initTrace(glyph);
+ return `<div class="stack" style="max-width:420px"><div class="row" style="justify-content:space-between"><div><b style="font-size:18px">${esc(lname(x))}</b> <span class="muted">· ${t(['fIso','fIni','fMed','fFin'][fi])}</span></div>${sayBtn(x.an)}</div>
+ <div class="canvas-box" id="cbox"><canvas id="tg"></canvas><canvas id="td"></canvas><span class="dir">${t('rtl')}</span></div>
+ <div class="row"><button class="btn ghost" id="trClear">${t('clear')}</button><button class="btn" id="trCheck">${t('check')}</button></div><div id="trRes"></div></div>`}
+function cssVar(n){return getComputedStyle(document.body).getPropertyValue(n).trim()}
+async function initTrace(glyph){const box=document.getElementById('cbox');if(!box)return;
+ try{await document.fonts.load('100px "Scheherazade New"',glyph)}catch(e){}
+ const tg=document.getElementById('tg'),td=document.getElementById('td');if(!tg)return;
+ const dpr=Math.min(2,window.devicePixelRatio||1);const size=box.clientWidth;const P=Math.round(size*dpr);
+ [tg,td].forEach(cv=>{cv.width=P;cv.height=P});
+ const font=px=>`${px}px "Scheherazade New", "Amiri", serif`;
+ const g=tg.getContext('2d');g.font=font(100);g.textAlign='left';g.textBaseline='alphabetic';g.direction='rtl';
+ let m=g.measureText(glyph);let w=m.actualBoundingBoxLeft+m.actualBoundingBoxRight,h=m.actualBoundingBoxAscent+m.actualBoundingBoxDescent;
+ const sc=Math.min(P*.62/w,P*.62/h);const fs=100*sc;g.font=font(fs);m=g.measureText(glyph);
+ w=m.actualBoundingBoxLeft+m.actualBoundingBoxRight;h=m.actualBoundingBoxAscent+m.actualBoundingBoxDescent;
+ const X=P/2-(m.actualBoundingBoxRight-m.actualBoundingBoxLeft)/2, Y=P/2+(m.actualBoundingBoxAscent-m.actualBoundingBoxDescent)/2;
+ const brush=P*.055;
+ const drawGlyph=(ctx,fill,stroke,lw)=>{ctx.font=font(fs);ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.direction='rtl';ctx.fillStyle=fill;ctx.fillText(glyph,X,Y);if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.lineJoin='round';ctx.strokeText(glyph,X,Y)}};
+ // guide: grid lines + ghost letter
+ g.clearRect(0,0,P,P);g.strokeStyle=cssVar('--line');g.lineWidth=1*dpr;g.setLineDash([6*dpr,6*dpr]);g.beginPath();g.moveTo(0,Y);g.lineTo(P,Y);g.stroke();g.setLineDash([]);
+ drawGlyph(g,cssVar('--ghost'));
+ const mk=(stroke)=>{const c=document.createElement('canvas');c.width=P;c.height=P;const x=c.getContext('2d');drawGlyph(x,'#000',stroke?'#000':null,brush*1.6);return x.getImageData(0,0,P,P).data};
+ const mFill=mk(false),mTol=mk(true);
+ const d=td.getContext('2d');d.lineCap='round';d.lineJoin='round';d.lineWidth=brush;d.strokeStyle=cssVar('--accent');
+ let drawing=false,last=null,any=false;
+ const pos=e=>{const r=td.getBoundingClientRect();return[(e.clientX-r.left)*P/r.width,(e.clientY-r.top)*P/r.height]};
+ td.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});td.onpointerdown=e=>{e.preventDefault();drawing=true;last=pos(e);any=true;td.setPointerCapture(e.pointerId);d.beginPath();d.arc(last[0],last[1],brush/2,0,7);d.fillStyle=d.strokeStyle;d.fill()};
+ td.onpointermove=e=>{if(!drawing)return;const p=pos(e);d.beginPath();d.moveTo(last[0],last[1]);d.lineTo(p[0],p[1]);d.stroke();last=p};
+ td.onpointerup=td.onpointercancel=()=>{drawing=false};
+ document.getElementById('trClear').onclick=()=>{d.clearRect(0,0,P,P);any=false;document.getElementById('trRes').innerHTML=''};
+ document.getElementById('trCheck').onclick=()=>{const out=document.getElementById('trRes');if(!any){out.innerHTML=`<div class="fb bad">${t('drawFirst')}</div>`;return}
+  const dd=d.getImageData(0,0,P,P).data;const G=Math.max(3,Math.round(P/64));const n=Math.ceil(P/G);
+  const cell=(data)=>{const a=new Uint8Array(n*n);for(let y=0;y<P;y+=2)for(let x=0;x<P;x+=2){if(data[(y*P+x)*4+3]>100)a[Math.floor(y/G)*n+Math.floor(x/G)]=1}return a};
+  const cf=cell(mFill),ct=cell(mTol),cd=cell(dd);
+  let lc=0,cov=0,dc=0,sp=0;
+  for(let y=0;y<n;y++)for(let x=0;x<n;x++){const i=y*n+x;if(cf[i]){lc++;let hit=0;for(let dy=-1;dy<=1&&!hit;dy++)for(let dx=-1;dx<=1;dx++){const yy=y+dy,xx=x+dx;if(yy>=0&&xx>=0&&yy<n&&xx<n&&cd[yy*n+xx]){hit=1;break}}cov+=hit}if(cd[i]){dc++;if(!ct[i])sp++}}
+  const coverage=lc?cov/lc:0,spill=dc?sp/dc:1;const score=Math.max(0,coverage-spill*.8);
+  const s=score>=.72?3:score>=.52?2:score>=.32?1:0;
+  out.innerHTML=`<div class="fb ${s?'good':'bad'} anim">${S.kids?mascot(s>=2?'wow':s?'happy':'sad'):''}<div>${stars(s)}<div style="margin-top:4px">${t('tr'+s)}</div></div></div>`;
+  if(s){S.traces++;addXP(5*s);if(s>=2)confetti(s*12)}};
+}
+
+/* ===== SYLLABLE BUILDER ===== */
+let SY={c:'ب',m:'fatha'};
+function viewSyll(){const x=LBY(SY.c);
+ const M={fatha:[H.fatha,VOW.fatha,'а'],kasra:[H.kasra,'i','и'],damma:[H.damma,'u','у'],sukun:[H.sukun,'',''],shadda:[H.shadda+H.fatha,'·a','·а'],an:[H.an+'ا','an','ан'],in:[H.in,'in','ин'],un:[H.un,'un','ун'],aa:[H.fatha+'ا','ā','а̄'],ii:[H.kasra+'ي','ī','ӣ'],uu:[H.damma+'و','ū','ӯ']};
+ const lab={fatha:t('fathaN'),kasra:t('kasraN'),damma:t('dammaN'),sukun:t('sukunT'),shadda:t('shaddaT'),an:'-an',in:'-in',un:'-un',aa:'ā',ii:'ī',uu:'ū'};
+ const mm=M[SY.m];const disp=SY.c+mm[0];
+ let tr=x.tl+mm[1];if(SY.m==='shadda')tr=x.tl+x.tl+'a';if(SY.m==='sukun')tr=(x.tl||'')+' (sukun)';
+ return crumb(t('syll'),'home',t('syllD'))+`<div class="grid2"><div class="card stack" style="align-items:center;text-align:center"><div class="q-big" style="font-size:150px;line-height:1.35;margin:0">${disp}</div><div style="font-size:28px;font-weight:700;font-family:var(--f-display)">${esc(tr)}</div>${S.lang==='ru'&&SY.m!=='sukun'?`<div class="tr">≈ ${esc((SY.m==='shadda'?x.cy+x.cy:x.cy)+mm[2])}</div>`:''}<div class="row">${sayBtn(disp)}</div></div>
+ <div class="stack"><div class="card stack"><div class="lbl">${t('mark')}</div><div class="chips">${Object.keys(M).map(k=>`<button class="chip ${k===SY.m?'on':''}" onclick="${on(()=>{SY.m=k;render()})}"><span class="ar" style="font-size:22px;line-height:1">ـ${M[k][0]}</span> ${lab[k]}</button>`).join('')}</div></div>
+ <div class="card stack"><div class="lbl">${t('letters')}</div><div class="pick">${LETTERS.slice(1).map(l=>`<button class="${l.c===SY.c?'on':''}" onclick="${on(()=>{SY.c=l.c;render()})}">${l.c}</button>`).join('')}</div></div></div></div>`}
+
+/* ===== GAMES ===== */
+const GLIST=[['grid','gGrid','gGridD','ا ب ت'],['find','gFind','gFindD','أ؟'],['balloon','gBalloon','gBalloonD','🎈'],['mem','gMem','gMemD','🃏'],['build','gBuild','gBuildD','كـتـب'],['sm','gSM','gSMD','☀️🌙']];
+function viewGames(){return crumb(t('games'),'home')+`<div class="tiles">${GLIST.map(g=>`<button class="tile ${g[0]==='balloon'?'gold':g[0]==='sm'?'tq':''}" onclick="${on(()=>go('game',g[0]))}"><span class="glyph ${/[؀-ۿ]/.test(g[3])?'ar':''}">${g[3]}</span><h3>${t(g[1])}</h3><p>${t(g[2])}</p></button>`).join('')}</div>`}
+function gameEnd(score,max,again){addXP(Math.min(40,score*3));if(score>0)confetti(30);
+ return `<div class="card anim" style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;padding:28px">${S.kids?`<div style="width:100px">${mascot('wow')}</div>`:''}<h2>${t('gameOver')}</h2><div class="big-num">${score}${max?' / '+max:''}</div><div class="row" style="justify-content:center"><button class="btn" onclick="${on(again)}">${t('playAgain')}</button><button class="btn ghost" onclick="${on(()=>go('games'))}">${t('games')}</button></div></div>`}
+function viewGame(name){const g=GLIST.find(x=>x[0]===name);const head=crumb(t(g[1]),'games',t(g[2]));
+ if(!GAME||GAME.name!==name)GAME=newGame(name);return head+GAME.view()}
+function newGame(name){
+ if(name==='grid'){const G={name,dir:'rtl'};const pool=LETTERS.concat([LAMALIF]);
+  G.setup=()=>{G.cells=Array.from({length:24},()=>pick(pool));const ord=[];if(G.dir==='rtl')for(let i=0;i<24;i++)ord.push(i);else for(let c=0;c<6;c++)for(let r=0;r<4;r++)ord.push((G.dir==='down'?r:3-r)*6+c);G.order=ord;G.k=0;G.score=0;G.st={};G.ans=null;G.mk()};
+  G.mk=()=>{const cur=G.cells[G.order[G.k]];const others=shuf(pool.filter(x=>x!==cur));const sim=similar(cur.c,2).map(LBY).filter(Boolean);G.opts=shuf([cur].concat(sim.length?sim:others.slice(0,2)).concat(others.filter(x=>!sim.includes(x)).slice(0,1)).slice(0,4))};
+  G.setup();
+  G.view=()=>{if(G.k>=24)return gameEnd(G.score,24,()=>{G.setup();render()});const ci=G.order[G.k],cur=G.cells[ci];
+   return `<div class="card stack"><div class="chips">${['rtl','down','up'].map(d=>`<button class="chip ${G.dir===d?'on':''}" onclick="${on(()=>{G.dir=d;G.setup();render()})}">${t(d==='rtl'?'dirRtl':d==='down'?'dirDown':'dirUp')}</button>`).join('')}</div>
+   <div class="q-top" style="margin:0"><span class="muted">${G.k+1} / 24</span><div class="bar"><i style="width:${G.k/24*100}%"></i></div><b>${G.score}</b></div>
+   <div class="gridt">${G.cells.map((x,i)=>`<div class="gc ${i===ci?'cur':G.st[i]||''}">${x.c}</div>`).join('')}</div>
+   <div class="q-prompt" style="margin:0">${t('qName')} ${sayBtn(cur.an)}</div>
+   <div class="opts">${G.opts.map(o=>`<button class="opt ${G.ans===null?'':o===cur?'right':o===G.ans?'wrong':''}" onclick="${on(()=>{if(G.ans!==null)return;G.ans=o;const ok=o===cur;G.st[ci]=ok?'ok':'no';if(ok){G.score++;if(S.kids)confetti(8)}render();setTimeout(()=>{if(GAME!==G)return;G.k++;G.ans=null;if(G.k<24)G.mk();render()},ok?500:1300)})}">${esc(lname(o))}</button>`).join('')}</div></div>`};return G}
+ if(name==='find'){const G={name,r:0,score:0,ans:null,max:10};G.next=()=>{G.x=pick(LETTERS);G.opts=shuf([G.x.c].concat(similar(G.x.c,5)));G.ans=null};G.next();
+  G.view=()=>{if(G.r>=G.max)return gameEnd(G.score,G.max,()=>{GAME=newGame(name);render()});
+   return `<div class="card"><div class="q-top"><span class="muted">${t('round')} ${G.r+1} / ${G.max}</span><div class="bar"><i style="width:${G.r/G.max*100}%"></i></div><b>${G.score}</b></div><div class="q-prompt">${t('qFind')}: «${esc(lname(G.x))}» ${sayBtn(G.x.an)}</div><p class="muted" style="margin:-8px 0 14px">${esc(L(G.x.s))}</p>
+   <div class="opts" style="grid-template-columns:repeat(3,minmax(0,1fr))">${G.opts.map(c=>`<button class="opt ar ${G.ans===null?'':c===G.x.c?'right':c===G.ans?'wrong':''}" style="font-size:46px" onclick="${on(()=>{if(G.ans!==null)return;G.ans=c;if(c===G.x.c){G.score++;if(S.kids)confetti(12)}render();setTimeout(()=>{if(GAME!==G)return;G.r++;G.next();render()},c===G.x.c?700:1400)})}">${c}</button>`).join('')}</div></div>`};return G}
+ if(name==='balloon'){const G={name,score:0,time:30,running:false,ended:false,balloons:[],id:0};G.target=pick(LETTERS.slice(1));
+  const cols=['#E05A47','#2E8BC0','#E0A526','#3BA55C','#9B59B6','#0B8F9C','#D9467A'];
+  G.view=()=>{if(G.ended)return gameEnd(G.score,0,()=>{GAME=newGame(name);render()});
+   if(!G.running){return `<div class="card stack" style="align-items:center;text-align:center"><div class="lbl">${t('popThis')}</div><div class="q-big" style="font-size:110px">${G.target.c}</div><b>${esc(lname(G.target))}</b><button class="btn gold" onclick="${on(()=>{G.running=true;render();G.start()})}">▶ ${t('gBalloon')}</button></div>`}
+   return `<div class="row" style="justify-content:space-between;margin-bottom:10px"><div class="row"><span class="lbl">${t('popThis')}</span><span class="ar" style="font-size:40px;line-height:1.2;color:var(--accent)">${G.target.c}</span></div><div class="row"><b id="bscore">${t('points')}: ${G.score}</b><span class="muted" id="btime">${t('time')}: ${G.time}</span></div></div><div class="game-area" id="garea"></div>`};
+  G.start=()=>{const area=document.getElementById('garea');const W=()=>area.clientWidth,Hh=()=>area.clientHeight;let lastSpawn=0,t0=performance.now(),raf;
+   const spawn=()=>{const isT=Math.random()<.42;const c=isT?G.target.c:pick(similar(G.target.c,4));const b=document.createElement('button');b.className='balloon';b.textContent=c;b.style.background=pick(cols);b.style.left=Math.random()*(W()-80)+'px';b.style.top=Hh()+'px';const o={el:b,y:Hh(),v:40+Math.random()*50+(30-G.time)*2,c,dead:false};
+    b.onpointerdown=e=>{e.preventDefault();if(o.dead)return;if(c===G.target.c){o.dead=true;G.score++;b.classList.add('popd');setTimeout(()=>b.remove(),250);if(S.kids)confetti(6)}else{G.score=Math.max(0,G.score-1);b.style.animation='shake .3s'}document.getElementById('bscore').textContent=t('points')+': '+G.score};area.appendChild(b);G.balloons.push(o)};
+   let prev=t0;const loop=now=>{if(!document.getElementById('garea')){return}const dt=(now-prev)/1000;prev=now;const el=Math.floor((now-t0)/1000);const left=Math.max(0,30-el);if(left!==G.time){G.time=left;const bt=document.getElementById('btime');if(bt)bt.textContent=t('time')+': '+left}
+    if(now-lastSpawn>(S.kids?950:750)){spawn();lastSpawn=now}
+    G.balloons.forEach(o=>{if(o.dead)return;o.y-=o.v*dt;o.el.style.top=o.y+'px';if(o.y<-100){o.dead=true;o.el.remove()}});G.balloons=G.balloons.filter(o=>!o.dead||o.el.isConnected);
+    if(left<=0){G.ended=true;G.running=false;render();return}raf=requestAnimationFrame(loop)};raf=requestAnimationFrame(loop);G.stop=()=>cancelAnimationFrame(raf)};return G}
+ if(name==='mem'){const G={name,moves:0,open:[],gone:new Set(),lock:false};const ls=shuf(LETTERS).slice(0,6);G.cards=shuf(ls.flatMap(x=>[{k:x.c,h:`<span class="ar">${x.c}</span>`},{k:x.c,h:`<span class="emo">${x.e}</span>`}])).map((c,i)=>Object.assign(c,{i}));
+  G.view=()=>{if(G.gone.size===G.cards.length)return gameEnd(Math.max(1,18-Math.max(0,G.moves-6)),0,()=>{GAME=newGame(name);render()});
+   return `<div class="row" style="margin-bottom:12px"><b>${t('moves')}: ${G.moves}</b></div><div class="mem">${G.cards.map(c=>{const isO=G.open.includes(c.i)||G.gone.has(c.i);return `<button class="mc ${G.gone.has(c.i)?'gone':isO?'open':''}" onclick="${on(()=>flipMem(G,c.i))}">${isO?c.h:'<span class="ar" style="font-size:30px;opacity:.6">؟</span>'}</button>`}).join('')}</div>`};return G}
+ if(name==='build'){const pool=LETTERS.filter(x=>strip(x.w).length<=5);const G={name,r:0,max:8,score:0,words:shuf(pool).slice(0,8)};
+  G.setup=()=>{const x=G.words[G.r];G.x=x;G.seq=[...strip(x.w)];G.pos=0;G.tiles=shuf(G.seq.map((c,i)=>({c,i,used:false})).concat(similar(G.seq[0],2).map(c=>({c,i:-1,used:false}))));G.err=0;G.solved=false};G.setup();
+  G.view=()=>{if(G.r>=G.max)return gameEnd(G.score,G.max,()=>{GAME=newGame(name);render()});const x=G.x;const built=G.seq.slice(0,G.pos).join('');
+   return `<div class="card stack"><div class="q-top"><span class="muted">${t('round')} ${G.r+1} / ${G.max}</span><div class="bar"><i style="width:${G.r/G.max*100}%"></i></div><b>${G.score}</b></div>
+   <div style="text-align:center"><div style="font-size:64px;line-height:1.1">${x.e}</div><b style="font-size:18px">${esc(L(x.m))}</b> <span class="tr">${esc(x.wt)}</span></div>
+   <div class="build">${G.solved?x.w:(built||'…')}</div>
+   ${G.solved?`<div class="row" style="justify-content:center">${sayBtn(x.w)}<button class="btn" onclick="${on(()=>{G.r++;if(G.r<G.max)G.setup();render()})}">${t('next')} →</button></div>`:`<div class="tiles-row">${G.tiles.map((tl,k)=>`<button class="ltile ${tl.used?'used':''}" id="lt${k}" onclick="${on(()=>tapTile(G,k))}">${tl.c}</button>`).join('')}</div>`}</div>`};return G}
+ if(name==='sm'){const G={name,r:0,max:12,score:0,ans:null,words:shuf(SM_WORDS).slice(0,12)};
+  G.view=()=>{if(G.r>=G.max)return gameEnd(G.score,G.max,()=>{GAME=newGame(name);render()});const w=G.words[G.r];
+   const fb=G.ans===null?'':`<div class="fb ${G.ans===w[2]?'good':'bad'} anim"><span class="ar" style="font-size:30px">${w[0]}</span> = <b>${w[1]}</b> · ${w[2]?t('sun'):t('moon')}</div>`;
+   return `<div class="card stack"><div class="q-top"><span class="muted">${t('round')} ${G.r+1} / ${G.max}</span><div class="bar"><i style="width:${G.r/G.max*100}%"></i></div><b>${G.score}</b></div><p class="q-prompt" style="margin:0">${t('qSunMoon')}</p><div class="sm-word">${w[0]}</div>
+   <div class="bins"><button class="bin sun" ${G.ans!==null?'disabled':''} onclick="${on(()=>smAns(G,1))}">${IC.sun}${t('sun')}</button><button class="bin moon" ${G.ans!==null?'disabled':''} onclick="${on(()=>smAns(G,0))}">${IC.moon}${t('moon')}</button></div>${fb}</div>`};return G}
+}
+function flipMem(G,i){if(G.lock||G.gone.has(i)||G.open.includes(i))return;G.open.push(i);if(G.open.length===2){G.moves++;const[a,b]=G.open.map(k=>G.cards[k]);if(a.k===b.k&&a.h!==b.h){G.gone.add(a.i);G.gone.add(b.i);G.open=[];if(S.kids)confetti(10);render()}else{G.lock=true;render();setTimeout(()=>{if(GAME!==G)return;G.open=[];G.lock=false;render()},900)}}else render()}
+function tapTile(G,k){const tl=G.tiles[k];if(tl.used)return;if(tl.c===G.seq[G.pos]){tl.used=true;G.pos++;if(G.pos===G.seq.length){G.solved=true;if(!G.err)G.score++;say(G.x.w);if(S.kids)confetti(18)}render()}else{G.err++;const b=document.getElementById('lt'+k);if(b){b.classList.remove('err');void b.offsetWidth;b.classList.add('err')}}}
+function smAns(G,v){if(G.ans!==null)return;G.ans=v;const w=G.words[G.r];if(v===w[2]){G.score++;if(S.kids)confetti(10)}say(w[0]);render();setTimeout(()=>{if(GAME!==G)return;G.r++;G.ans=null;render()},v===w[2]?1100:2000)}
+
+/* ===== TAJWEED ===== */
+function viewTajweed(){const tj=MODULES.find(m=>m.k==='tajweed');return crumb(t('tajweed'),'home',t('tajweedD'))+`<div class="row" style="margin-bottom:16px">${tj.les.map((l,i)=>`<button class="btn ${i?'ghost':''}" onclick="${on(()=>{LS=null;go('lesson',l.id)})}">${t('lesson')} ${i+1} ${stars(S.stars[l.id]||0,'st').replace('class="st"','class="st" style="display:inline-flex;color:var(--gold)"')}</button>`).join('')}<button class="btn gold" onclick="${on(()=>go('game','sm'))}">${t('gSM')}</button></div><div class="stack">${RULES.map((r,i)=>ruleCard(i)).join('')}</div>`}
+
+/* ===== SURAHS ===== */
+let SR={tr:true,mean:true};
+function viewSurahs(){return crumb(t('surahs'),'home',t('surahsD'))+`<div class="tiles">${SURAHS.map(s=>`<button class="tile" onclick="${on(()=>go('surah',s.id))}"><span class="glyph ar" style="font-size:38px">${s.ar}</span><h3>${esc(L(s.name))}</h3><p>№ ${s.n} · ${s.ayat.length} ${t('ayat')}</p><span class="stat">${stars(S.stars['su_'+s.id]||0,'st').replace('class="st"','class="st" style="display:flex;color:var(--gold)"')}</span></button>`).join('')}</div>`}
+function viewSurah(id){const s=SURAHS.find(x=>x.id===id);return crumb(`${esc(L(s.name))}`,'surahs',`№ ${s.n} · ${s.ayat.length} ${t('ayat')}`)+surahReader(id,false)+`<div class="row" style="margin-top:16px"><button class="btn" onclick="${on(()=>{LS=null;go('lesson','su_'+id)})}">${t('startLes')} →</button></div>`}
+function surahReader(id,inLesson){const s=SURAHS.find(x=>x.id===id);
+ const tog=`<div class="chips" style="margin-bottom:12px"><button class="chip ${SR.tr?'on':''}" onclick="${on(()=>{SR.tr=!SR.tr;render()})}">${t('showTr')}</button><button class="chip ${SR.mean?'on':''}" onclick="${on(()=>{SR.mean=!SR.mean;render()})}">${t('showMean')}</button><a class="chip" href="https://quran.com/${s.n}" target="_blank" rel="noopener">${t('listenQari')} ${IC.ext.replace('<svg','<svg width="14" height="14"')}</a></div>`;
+ return `<div class="note" style="margin-bottom:14px">${esc(t('surahNote'))}</div>${tog}<div class="card"><div class="ar" style="text-align:center;font-size:34px;color:var(--gold);line-height:1.6">${s.ar}</div>${s.basm?`<div class="basmala">${BASMALA}</div>`:''}
+ ${s.ayat.map((a,ai)=>{const words=a.a.split(' ');return `<div class="ayah"><div class="ayah-ar">${words.map((w,wi)=>`<span class="w" onclick="${on(()=>wordTap(id,ai,wi))}">${w}</span>`).join('')}<span class="anum"><span>${ai+1}</span></span></div><div id="g_${ai}"></div>
+ ${SR.tr?`<div class="tr">${esc(S.lang==='ru'?a.c:a.l)}${S.lang==='ru'?` <span style="opacity:.7">· ${esc(a.l)}</span>`:''}</div>`:''}${SR.mean?`<div>${esc(L(a.t))}</div>`:''}<div>${sayBtn(a.a)}</div></div>`}).join('')}</div>
+ ${inLesson?'':''}`}
+function wordTap(id,ai,wi){const s=SURAHS.find(x=>x.id===id);const a=s.ayat[ai];const w=a.a.split(' ')[wi];say(w);
+ document.querySelectorAll('.w.on').forEach(e=>e.classList.remove('on'));const els=document.querySelectorAll('.ayah')[ai].querySelectorAll('.w');if(els[wi])els[wi].classList.add('on');
+ const box=document.getElementById('g_'+ai);if(a.w&&a.w[wi]){const g=a.w[wi];box.innerHTML=`<div class="wpop anim"><span class="ar" style="font-size:24px">${w}</span> · <b>${esc(g[0])}</b> — ${esc(L([g[1],g[2],g[3]]))}</div>`}else box.innerHTML=''}
+
+/* ===== UZBEK BRIDGE ===== */
+function viewUzb(){const cyr=S.lang==='ru'||(S.lang==='uz'&&S.uzc);
+ return crumb(t('uzb'),'home')+`<div class="note" style="margin-bottom:16px">${esc(t('uzbIntro'))}</div>
+ <div class="card stack" style="margin-bottom:18px"><h2>${t('bridgeT')}</h2><p class="muted">${esc(t('bridgeX'))}</p>
+ <div class="br-grid">${BRIDGE.map(b=>`<button class="br" onclick="${on(()=>say(LBY(b[2]).an))}"><b>${cyr?b[0]:b[1]}</b><span class="ar">${b[2]}</span></button>`).join('')}</div>
+ <div class="lbl">${t('arabOnly')}</div><div class="letter-chips moon">${['ث','ح','ذ','ص','ض','ط','ظ','ع','ء'].map(c=>`<span>${c}</span>`).join('')}</div></div>
+ <h2 style="margin-bottom:12px">${t('wordsBridge')}</h2><div class="uzb">${UZB.map((u,i)=>`<div class="uz"><div class="ar">${u[0]}</div><b>${esc(uzc(u[2]))}</b><span class="tr">${esc(u[1])}</span><span class="muted" style="font-size:14px">${esc(S.lang==='uz'?uzc(UZB_NOTE[i]||''):S.lang==='en'?u[4]:u[3])}</span><div style="margin-top:6px">${sayBtn(u[0])}</div></div>`).join('')}</div>`}
+
+/* ===== PROGRESS ===== */
+let resetArm=false;
+function viewProgress(){const ll=learnedLetters();const nDone=ALL_LES.filter(l=>done(l.id)).length;const ts=totalStars();const st=streak();
+ const modDone=k=>MODULES.find(m=>m.k===k).les.every(l=>done(l.id));
+ const B=[['bFirst','ا',nDone>0],['bAbc','أ ب',modDone('abc')],['bHar','بَ',modDone('harakat')],['bTj','تَجْوِيد',modDone('tajweed')],['bFat','الْحَمْد',done('su_fatiha')],['bTr','ق',S.traces>=10],['bSt','٧',st>=7],['bStars','٣٠',ts>=30]];
+ return crumb(t('progress'),'home')+`<div class="stats"><div class="stat-c"><div class="lbl">${t('totalXP')}</div><div class="v">${S.xp}</div></div><div class="stat-c"><div class="lbl">${t('lessonsDone')}</div><div class="v">${nDone} <span class="muted" style="font-size:16px">/ ${ALL_LES.length}</span></div></div><div class="stat-c"><div class="lbl">${t('starsT')}</div><div class="v">${ts} <span class="muted" style="font-size:16px">/ ${ALL_LES.length*3}</span></div></div><div class="stat-c"><div class="lbl">${t('streak')}</div><div class="v">${st}</div></div></div>
+ <h2 style="margin:22px 0 12px">${t('lettersMastered')} · ${ll.size} / 28</h2><div class="abc">${LETTERS.map(x=>`<button class="lt ${ll.has(x.i)?'done':''}" onclick="${on(()=>go('letter',x.i))}"><span class="g">${x.c}</span></button>`).join('')}</div>
+ <h2 style="margin:22px 0 12px">${t('badges')}</h2><div class="badges">${B.map(b=>`<div class="bdg ${b[2]?'':'off'}"><span class="ar">${b[1]}</span>${t(b[0])}</div>`).join('')}</div>
+ <div class="row" style="margin-top:24px"><button class="btn ghost" onclick="${on(()=>{if(!resetArm){resetArm=true;toast(t('resetSure'));setTimeout(()=>resetArm=false,4000);return}resetArm=false;S.xp=0;S.days={};S.stars={};S.traces=0;save();toast(t('resetDone'));render()})}">${t('reset')}</button></div>`}
+
+/* ===== BOOT ===== */
+document.getElementById('logo-s').innerHTML=logo();
+render();
+try{document.fonts.ready.then(()=>{if(V.v==='trace'||(V.v==='lesson'&&LS&&LS.step===2))render()})}catch(e){}
+</script>
+
+</body></html>
