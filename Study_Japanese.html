@@ -1,0 +1,994 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Study Japanese by Nasirova Samina</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&family=Mochiy+Pop+One&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: travel-poster game — sticky header, map-first home with a journey sidebar; each city opens as a stage page (scene band + four steps: explore, learn, game, exam). */
+:root{
+  --bg:#EAF0F7; --surface:#FFFFFF; --surface-2:#F4F7FC; --ink:#1A2142; --muted:#5A6388; --line:#D6DDEB;
+  --red:#DE4236; --red-soft:#FBE2DF; --gold:#F2A93B; --gold-soft:#FDF0D8; --matcha:#4A9757; --matcha-soft:#E0F1E1; --sakura:#F393B6; --sakura-soft:#FDE6EF;
+  --sea:#CFE2F2; --sea-line:#B2CFE8; --land:#E7F1D8; --land-edge:#83A96F;
+  --sky-top:#BCDDF5; --sky-bot:#FCEDF3; --sil:#2E3866; --sil-2:#7F8FC2; --snow:#FFFFFF; --deer:#C88A50; --sand:#F4E1B0; --sauce:#6A3A22; --fuji:#5B7EC2; --broth:#F7D9A0;
+  --on-accent:#FFFFFF; --on-gold:#1A2142; --mochi-ink:#1A2142;
+  --shadow:0 1px 0 rgba(26,33,66,.05),0 10px 26px -14px rgba(26,33,66,.28);
+  --f-display:"Unbounded","M PLUS Rounded 1c",system-ui,sans-serif;
+  --f-body:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Yu Gothic",system-ui,sans-serif;
+  --f-kana:"Mochiy Pop One","M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif;
+  --r:20px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1230; --surface:#171E46; --surface-2:#1F2855; --ink:#EEF1FF; --muted:#A3AAD2; --line:#2C366F;
+  --red:#FF6A5C; --red-soft:#43243F; --gold:#FFC04F; --gold-soft:#3B3338; --matcha:#77C57E; --matcha-soft:#1C3B3C; --sakura:#FF9DC2; --sakura-soft:#3C2553;
+  --sea:#13204F; --sea-line:#1E2E69; --land:#244539; --land-edge:#4F8A6E;
+  --sky-top:#18266A; --sky-bot:#3D2C66; --sil:#0B1030; --sil-2:#34408A; --snow:#DCE2FF; --deer:#B87C47; --sand:#6E5E46; --sauce:#3E2214; --fuji:#3A5598; --broth:#B9955A;
+  --on-accent:#FFFFFF; --on-gold:#1A2142; --shadow:0 1px 0 rgba(0,0,0,.2),0 12px 28px -14px rgba(0,0,0,.6); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1230; --surface:#171E46; --surface-2:#1F2855; --ink:#EEF1FF; --muted:#A3AAD2; --line:#2C366F;
+  --red:#FF6A5C; --red-soft:#43243F; --gold:#FFC04F; --gold-soft:#3B3338; --matcha:#77C57E; --matcha-soft:#1C3B3C; --sakura:#FF9DC2; --sakura-soft:#3C2553;
+  --sea:#13204F; --sea-line:#1E2E69; --land:#244539; --land-edge:#4F8A6E;
+  --sky-top:#18266A; --sky-bot:#3D2C66; --sil:#0B1030; --sil-2:#34408A; --snow:#DCE2FF; --deer:#B87C47; --sand:#6E5E46; --sauce:#3E2214; --fuji:#3A5598; --broth:#B9955A;
+  --on-accent:#FFFFFF; --on-gold:#1A2142; --shadow:0 1px 0 rgba(0,0,0,.2),0 12px 28px -14px rgba(0,0,0,.6); color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+button{font-family:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:10px}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+
+/* header */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.brand{display:flex;align-items:center;gap:10px;cursor:pointer;min-width:0;background:none;border:0;padding:0;text-align:left}
+.logo{width:44px;height:44px;flex:none;display:block}
+.brand-txt{min-width:0}
+.brand-name{font-family:var(--f-display);font-weight:800;font-size:16px;line-height:1.1;letter-spacing:-.01em;white-space:nowrap}
+.brand-by{display:block;font-size:12px;color:var(--red);font-weight:700;white-space:nowrap;letter-spacing:.02em}
+.nav{display:flex;gap:4px;margin-left:auto}
+.nav button{display:flex;align-items:center;gap:7px;border:0;background:none;padding:8px 12px;border-radius:999px;font-weight:700;font-size:14px;color:var(--muted);cursor:pointer}
+.nav button svg{width:18px;height:18px}
+.nav button:hover{background:var(--surface-2);color:var(--ink)}
+.nav button[aria-current="page"]{background:var(--ink);color:var(--surface)}
+.tools{display:flex;gap:8px;align-items:center;flex:none}
+.seg{display:flex;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:none;font-weight:800;font-size:12px;padding:5px 9px;border-radius:999px;color:var(--muted);cursor:pointer;letter-spacing:.04em}
+.seg button[aria-pressed="true"]{background:var(--red);color:var(--on-accent)}
+.icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface-2);display:grid;place-items:center;cursor:pointer;flex:none}
+.icon-btn svg{width:19px;height:19px}
+.bottomnav{display:none}
+@media (max-width:900px){
+  .topbar .nav{display:none}
+  .tools{margin-left:auto}
+  .bottomnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding-top:6px;padding-bottom:calc(6px + env(safe-area-inset-bottom,0px));padding-left:max(6px,env(safe-area-inset-left,0px));padding-right:max(6px,env(safe-area-inset-right,0px))}
+  .bottomnav button{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;padding:6px 2px;border-radius:12px;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer}
+  .bottomnav button svg{width:22px;height:22px}
+  .bottomnav button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .bottomnav button[aria-current="page"]{color:var(--red);background:var(--red-soft)}
+  main{padding-bottom:84px}
+}
+@media (max-width:420px){.brand-name{font-size:13px}.brand-by{font-size:11px}.logo{width:38px;height:38px}.seg button{padding:5px 7px}}
+
+/* shared */
+.wrap{max-width:1180px;margin:0 auto;padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.h1{font-family:var(--f-display);font-weight:800;font-size:clamp(22px,3.4vw,32px);line-height:1.15;letter-spacing:-.02em}
+.h2{font-family:var(--f-display);font-weight:700;font-size:18px;line-height:1.25;letter-spacing:-.01em}
+.sub{color:var(--muted);margin-top:6px;max-width:62ch}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--red)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:15px;border:0;border-radius:999px;padding:12px 22px;cursor:pointer;background:var(--red);color:var(--on-accent);box-shadow:0 4px 0 color-mix(in srgb,var(--red) 55%,#000);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb,var(--red) 55%,#000)}
+.btn.ghost{background:var(--surface-2);color:var(--ink);border:1px solid var(--line);box-shadow:0 3px 0 var(--line)}
+.btn.gold{background:var(--gold);color:var(--on-gold);box-shadow:0 4px 0 color-mix(in srgb,var(--gold) 55%,#000)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.back{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--muted);font-weight:700;cursor:pointer;padding:6px 0;margin-bottom:12px}
+.back:hover{color:var(--ink)}
+.stars{display:inline-flex;gap:2px}
+.stars svg{width:16px;height:16px;fill:var(--line)}
+.stars svg.on{fill:var(--gold)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:10px 18px;border-radius:999px;font-weight:700;z-index:60;max-width:calc(100% - 32px);text-align:center;box-shadow:var(--shadow)}
+@media (max-width:900px){.toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}}
+#petals{position:fixed;inset:0;pointer-events:none;z-index:55;width:100%;height:100%}
+
+/* mascot */
+.mochi-box{display:flex;gap:12px;align-items:flex-end}
+.mochi{width:86px;height:auto;flex:none;animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.bubble{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 14px;font-weight:500;box-shadow:var(--shadow);min-width:0;flex:1}
+.bubble::before{content:"";position:absolute;left:-8px;bottom:18px;width:14px;height:14px;background:var(--surface);border-left:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg)}
+.bubble b{color:var(--red)}
+.mochi .m-body{fill:var(--snow);stroke:var(--mochi-ink);stroke-width:2.5}
+.mochi .m-ink{fill:var(--mochi-ink)}
+.mochi .m-line{fill:none;stroke:var(--mochi-ink);stroke-width:2.2;stroke-linecap:round}
+
+/* scene classes */
+.c-red{fill:var(--red)}.c-gold{fill:var(--gold)}.c-sil{fill:var(--sil)}.c-sil2{fill:var(--sil-2)}.c-mat{fill:var(--matcha)}.c-sak{fill:var(--sakura)}.c-sea{fill:var(--sea-line)}.c-snow{fill:var(--snow)}.c-deer{fill:var(--deer)}.c-sand{fill:var(--sand)}.c-surf{fill:var(--surface)}.c-ink{fill:var(--mochi-ink)}.c-sauce{fill:var(--sauce)}.c-fuji{fill:var(--fuji)}.c-broth{fill:var(--broth)}
+.st-sil{stroke:var(--sil);fill:none}.st-snow{stroke:var(--snow);fill:none}.st-gold{stroke:var(--gold);fill:none}.st-deer{stroke:var(--deer);fill:none}.st-sak{stroke:var(--sakura);fill:none}.st-muted{stroke:var(--muted);fill:none}
+.scene{display:block;width:100%;height:auto;max-width:100%}
+
+/* home / map */
+.home{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:980px){.home{grid-template-columns:minmax(0,1fr)}}
+.map-card{padding:20px;overflow:hidden}
+.map-svg{display:block;width:100%;height:auto;margin-top:12px;border-radius:16px}
+.m-sea{fill:var(--sea)}
+.m-wave{fill:none;stroke:var(--sea-line);stroke-width:1.3}
+.m-land{fill:var(--land);stroke:var(--land-edge);stroke-width:2;stroke-linejoin:round}
+.m-isl{font-family:var(--f-kana);font-size:15px;fill:var(--land-edge)}
+.m-sealbl{font-size:12px;font-weight:700;fill:var(--muted);letter-spacing:.18em;text-transform:uppercase}
+.m-inset{fill:var(--sea);stroke:var(--muted);stroke-width:1.4;stroke-dasharray:5 5}
+.m-insetlbl{font-size:11px;font-weight:700;fill:var(--muted)}
+.m-route{fill:none;stroke:var(--muted);stroke-width:2.6;stroke-dasharray:1 8;stroke-linecap:round;opacity:.8}
+.m-route.done{stroke:var(--red);stroke-dasharray:10 6;opacity:1}
+.m-leader{stroke:var(--muted);stroke-width:1.2}
+.m-dot{fill:var(--ink)}
+.m-compass text{font:800 13px var(--f-display);fill:var(--muted)}
+.pin{cursor:pointer;outline:none}
+.pin .b{stroke:var(--surface);stroke-width:3}
+.pin.done .b{fill:var(--red)}
+.pin.cur .b{fill:var(--gold)}
+.pin.lock .b{fill:var(--surface-2);stroke:var(--muted);stroke-width:2;stroke-dasharray:3 3}
+.pin .n{font:800 13px var(--f-display);fill:var(--on-accent);text-anchor:middle;dominant-baseline:central}
+.pin.cur .n{fill:var(--on-gold)}
+.pin.lock .n{fill:var(--muted)}
+.pin .lbl{font-weight:800;font-size:13px;fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:4;stroke-linejoin:round}
+.pin:hover .b,.pin:focus-visible .b{stroke:var(--ink)}
+.pin .ring{fill:none;stroke:var(--gold);stroke-width:3;transform-box:fill-box;transform-origin:center;animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{from{transform:scale(1);opacity:.9}to{transform:scale(2);opacity:0}}
+.pin .fujiic{fill:var(--on-accent)}
+.pin.lock .fujiic{fill:var(--muted)}
+.journey{display:grid;gap:16px;min-width:0}
+.prog{padding:16px 18px}
+.prog-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:700}
+.prog-top b{font-family:var(--f-display);font-size:22px;font-variant-numeric:tabular-nums}
+.bar{height:12px;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-top:10px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:999px}
+.next{display:grid;grid-template-columns:minmax(0,1fr);overflow:hidden}
+.next .scene{border-bottom:1px solid var(--line)}
+.next-body{padding:14px 18px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.next-name{font-family:var(--f-display);font-weight:800;font-size:20px}
+.next-jp{font-family:var(--f-kana);color:var(--red);font-size:18px;margin-left:6px}
+.route-list{list-style:none;margin:0;padding:6px;display:grid;gap:2px}
+.route-list button{width:100%;display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center;background:none;border:0;border-radius:14px;padding:8px 10px;cursor:pointer;text-align:left}
+.route-list button:hover{background:var(--surface-2)}
+.badge{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:800 13px var(--f-display);background:var(--surface-2);color:var(--muted);border:2px dashed var(--line)}
+.badge.done{background:var(--red);color:var(--on-accent);border:2px solid var(--red)}
+.badge.cur{background:var(--gold);color:var(--on-gold);border:2px solid var(--gold)}
+.rl-name{font-weight:800}
+.rl-name small{font-family:var(--f-kana);font-weight:400;color:var(--muted);margin-left:6px;font-size:13px}
+.rl-topic{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lockic{width:18px;height:18px;color:var(--muted)}
+
+/* city */
+.city-hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);overflow:hidden}
+.city-hero .scene{height:100%;object-fit:cover}
+.city-id{padding:24px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.city-jp{font-family:var(--f-kana);font-size:clamp(44px,7vw,68px);color:var(--red);line-height:1.05}
+.city-name{font-family:var(--f-display);font-weight:800;font-size:clamp(24px,3.6vw,34px);line-height:1.1}
+.topic{font-weight:700;color:var(--muted)}
+.namemean{margin-top:8px;font-size:14px;background:var(--surface-2);border-radius:12px;padding:10px 12px;border:1px dashed var(--line)}
+@media (max-width:760px){.city-hero{grid-template-columns:minmax(0,1fr)}}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-block:16px}
+.step{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 10px;border-radius:14px;border:1px solid var(--line);background:var(--surface);font-weight:800;cursor:pointer;font-size:14px;min-width:0}
+.step span.t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.step .ck{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;background:var(--surface-2);color:var(--muted);flex:none;border:1px solid var(--line)}
+.step.done .ck{background:var(--matcha);color:#fff;border-color:var(--matcha)}
+.step[aria-current="step"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+@media (max-width:520px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.section{margin-top:22px}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:820px){.facts{grid-template-columns:minmax(0,1fr)}}
+.fact{padding:18px;display:grid;gap:10px;align-content:start}
+.fact-tag{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.08em}
+.fact-tag .jpt{font-family:var(--f-kana);color:var(--red);font-size:14px;letter-spacing:0}
+.fact p{font-size:16px;font-weight:500}
+.tipcard{margin-top:18px;padding:16px}
+.kgrid-learn{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px}
+.kcard{aspect-ratio:1;max-width:100%;display:grid;place-items:center;align-content:center;gap:2px;background:var(--surface);border:1px solid var(--line);border-radius:16px;cursor:pointer;box-shadow:0 3px 0 var(--line);transition:transform .12s}
+.kcard:hover{transform:translateY(-2px)}
+.kcard .k{font-family:var(--f-kana);font-size:40px;line-height:1.1}
+.kcard .r{font-weight:800;color:var(--red);font-size:14px;letter-spacing:.04em}
+.kcard .m{font-size:11px;color:var(--muted)}
+.pop{animation:popk .35s}
+@keyframes popk{40%{transform:scale(1.1)}}
+.wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.wcard{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px;cursor:pointer;box-shadow:0 3px 0 var(--line)}
+.wcard .e{font-size:32px;grid-row:span 3;line-height:1}
+.wcard .w{font-family:var(--f-kana);font-size:21px;line-height:1.2;overflow-wrap:anywhere}
+.wcard .wr{font-size:13px;color:var(--red);font-weight:800}
+.wcard .wm{font-size:14px;font-weight:700;color:var(--muted)}
+.hint{color:var(--muted);font-size:14px;display:flex;align-items:center;gap:6px}
+.hint svg{width:16px;height:16px}
+
+/* memory game */
+.game{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:20px;align-items:start}
+@media (max-width:760px){.game{grid-template-columns:minmax(0,1fr)}}
+.mgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:540px}
+.mc{position:relative;aspect-ratio:1;max-width:100%;border:0;background:none;padding:0;cursor:pointer;perspective:700px}
+.mc .in{position:absolute;inset:0;transition:transform .45s;transform-style:preserve-3d}
+.mc.open .in,.mc.match .in{transform:rotateY(180deg)}
+.mc .fc,.mc .bk{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:grid;place-items:center}
+.mc .bk{background:radial-gradient(circle at 50% 50%,var(--snow) 0 17%,transparent 18%),var(--red);box-shadow:0 3px 0 color-mix(in srgb,var(--red) 55%,#000)}
+.mc .fc{transform:rotateY(180deg);background:var(--surface);border:2px solid var(--line);font-weight:800;font-size:20px}
+.mc .fc.k{font-family:var(--f-kana);font-weight:400;font-size:clamp(28px,6vw,40px)}
+.mc.match .fc{background:var(--matcha-soft);border-color:var(--matcha)}
+.gside{padding:18px;display:grid;gap:12px}
+.gstat{display:flex;justify-content:space-between;font-weight:700}
+.gstat b{font-family:var(--f-display);font-variant-numeric:tabular-nums}
+.win{padding:14px;border-radius:14px;background:var(--matcha-soft);border:1px solid var(--matcha);font-weight:800}
+.win.lose{background:var(--red-soft);border-color:var(--red)}
+.btn.small{padding:7px 14px;font-size:13px}
+/* games hub */
+.gpick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media (max-width:980px){.gpick{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.gpick{grid-template-columns:minmax(0,1fr)}}
+.gcard{display:grid;gap:6px;align-content:start;justify-items:start;text-align:left;padding:18px;cursor:pointer;transition:transform .12s}
+.gcard:hover{transform:translateY(-3px)}
+.gic{font-size:40px;line-height:1;width:72px;height:72px;display:grid;place-items:center;border-radius:22px;margin-bottom:6px}
+.gic0{background:var(--red-soft)}.gic1{background:var(--sakura-soft)}.gic2{background:var(--gold-soft)}.gic3{background:var(--matcha-soft)}
+.gname{font-family:var(--f-display);font-weight:700;font-size:17px;line-height:1.2}
+.gdesc{color:var(--muted);font-size:14px}
+.gdone{margin-top:6px;font-weight:800;font-size:13px;color:var(--red)}
+.gdone.on{color:var(--matcha)}
+.ghead{display:flex;align-items:center;gap:14px 20px;flex-wrap:wrap;margin-bottom:12px}
+/* sakura catch */
+.chud{display:flex;justify-content:space-between;align-items:center;gap:10px 16px;flex-wrap:wrap;padding:12px 16px;font-weight:700}
+.ctarget{font-family:var(--f-display);font-size:22px;color:var(--red);background:var(--red-soft);padding:2px 14px;border-radius:999px;margin-left:4px}
+.carea{position:relative;height:440px;margin-top:12px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:linear-gradient(var(--sky-top),var(--sky-bot));touch-action:manipulation}
+.carea::after{content:"";position:absolute;left:0;right:0;bottom:0;height:18px;background:var(--matcha);opacity:.8}
+.cover{position:absolute;inset:0;z-index:2;display:grid;place-content:center;justify-items:center;text-align:center;padding:16px;background:color-mix(in srgb,var(--surface) 72%,transparent)}
+.petal{position:absolute;top:0;width:68px;height:68px;border:3px solid var(--snow);padding:0;cursor:pointer;background:var(--sakura);border-radius:50% 50% 50% 50%/58% 58% 42% 42%;display:grid;place-items:center;box-shadow:0 6px 14px -6px rgba(0,0,0,.35);will-change:transform}
+.petal span{font-family:var(--f-kana);font-size:30px;color:var(--on-gold);line-height:1}
+.petal.miss{background:var(--red)}
+/* word builder */
+.build{max-width:640px;margin:0 auto;padding:22px;display:grid;justify-items:center;gap:10px;text-align:center}
+.bemoji{font-size:64px;line-height:1;margin-top:4px}
+.slots{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.slot{width:62px;height:68px;border-radius:14px;border:2px dashed var(--muted);background:var(--surface-2);font-family:var(--f-kana);font-size:30px;cursor:pointer}
+.slot.full{border-style:solid;border-color:var(--ink);background:var(--surface)}
+.build.ok .slot{border-color:var(--matcha);background:var(--matcha-soft)}
+.build.bad .slot{border-color:var(--red);background:var(--red-soft)}
+.build.bad .slots{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.fbline{min-height:26px}
+.tiles{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.tile{width:60px;height:60px;border-radius:14px;border:1px solid var(--line);background:var(--gold-soft);font-family:var(--f-kana);font-size:28px;cursor:pointer;box-shadow:0 3px 0 var(--line)}
+.tile[disabled]{opacity:.25;cursor:default}
+/* ninja */
+.ninja{max-width:580px;margin:0 auto;padding:22px;display:grid;gap:14px}
+.nhud{display:flex;justify-content:space-between;font-weight:800}
+.nhud b{font-family:var(--f-display);font-variant-numeric:tabular-nums}
+.npair{display:flex;justify-content:center;align-items:center;gap:18px;min-height:160px;border-radius:18px;background:var(--surface-2);border:2px solid var(--line);flex-wrap:wrap;padding:12px}
+.npair.ok{border-color:var(--matcha);background:var(--matcha-soft)}
+.npair.bad{border-color:var(--red);background:var(--red-soft);animation:shake .3s}
+.nk{font-family:var(--f-kana);font-size:76px;line-height:1}
+.nk.sm{font-size:44px}
+.neq{font-size:32px;color:var(--muted);font-weight:800}
+.nr{font-family:var(--f-display);font-weight:800;font-size:40px;color:var(--red)}
+.nbtns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.nbtns .btn{font-size:18px;padding:16px}
+.nyes{background:var(--matcha);box-shadow:0 4px 0 color-mix(in srgb,var(--matcha) 55%,#000)}
+
+/* exam */
+.exam{max-width:680px;margin:0 auto;padding:22px}
+.qbar{display:flex;gap:4px}
+.qbar i{flex:1;height:8px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line)}
+.qbar i.ok{background:var(--matcha);border-color:var(--matcha)}
+.qbar i.bad{background:var(--red);border-color:var(--red)}
+.qbar i.cur{background:var(--gold);border-color:var(--gold)}
+.qcount{margin-top:14px;font-size:13px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.qask{font-family:var(--f-display);font-weight:700;font-size:19px;margin-top:2px}
+.qprompt{display:grid;place-items:center;min-height:170px;padding-block:12px;text-align:center}
+.qbig{line-height:1.1}
+.qbig.kana{font-family:var(--f-kana);font-size:clamp(64px,14vw,104px)}
+.qbig.kana.sm{font-size:clamp(40px,9vw,64px)}
+.qbig.latin{font-family:var(--f-display);font-weight:800;font-size:clamp(44px,10vw,72px);color:var(--red)}
+.qrom{color:var(--muted);font-weight:800;margin-top:4px}
+.qemoji{font-size:64px;line-height:1}
+.qtext{font-family:var(--f-display);font-weight:700;font-size:24px;margin-top:8px}
+.listen-big{display:grid;place-items:center;gap:6px;width:130px;height:130px;border-radius:50%;border:0;background:var(--gold);color:var(--on-gold);font-weight:800;cursor:pointer;box-shadow:0 5px 0 color-mix(in srgb,var(--gold) 55%,#000)}
+.listen-big svg{width:42px;height:42px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.opt{padding:14px 12px;border-radius:16px;border:2px solid var(--line);background:var(--surface);font-weight:800;font-size:17px;cursor:pointer;box-shadow:0 3px 0 var(--line);min-height:62px;overflow-wrap:anywhere}
+.opt:hover:not([disabled]){border-color:var(--ink)}
+.opt.k{font-family:var(--f-kana);font-weight:400;font-size:26px}
+.opt.ok{background:var(--matcha-soft);border-color:var(--matcha)}
+.opt.bad{background:var(--red-soft);border-color:var(--red)}
+.opt.dim{opacity:.5}
+.opt[disabled]{cursor:default}
+.qfoot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;min-height:48px}
+.fb{font-weight:800;font-size:16px}
+.fb.ok{color:var(--matcha)}.fb.bad{color:var(--red)}
+.result{text-align:center;display:grid;gap:14px;justify-items:center}
+.result .pct{font-family:var(--f-display);font-weight:800;font-size:56px;line-height:1;font-variant-numeric:tabular-nums}
+.result .stars svg{width:34px;height:34px}
+.hanko{width:132px;height:132px;border-radius:50%;border:5px double var(--red);color:var(--red);display:grid;place-items:center;font-family:var(--f-kana);font-size:34px;transform:rotate(-12deg);background:color-mix(in srgb,var(--red) 6%,transparent);line-height:1}
+.hanko.anim{animation:stamp .55s cubic-bezier(.3,1.6,.5,1)}
+@keyframes stamp{from{transform:rotate(-12deg) scale(2.2);opacity:0}to{transform:rotate(-12deg) scale(1);opacity:1}}
+.intro{max-width:680px;margin:0 auto;padding:26px;display:grid;gap:14px;justify-items:start}
+
+/* alphabet */
+.abc{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start;margin-top:18px}
+@media (max-width:860px){.abc{grid-template-columns:minmax(0,1fr)}.abc .detail{order:-1}}
+.tabs{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px;gap:4px;margin-top:16px}
+.tabs button{border:0;background:none;padding:8px 16px;border-radius:999px;font-weight:800;cursor:pointer;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--red);color:var(--on-accent)}
+.tabs button .jp{font-family:var(--f-kana);font-weight:400;margin-left:4px}
+.ktable{padding:16px}
+.kgrid{display:grid;grid-template-columns:28px repeat(5,minmax(0,1fr));gap:6px;max-width:600px}
+.kgrid .hd{font-size:12px;font-weight:800;color:var(--muted);display:grid;place-items:center;text-transform:uppercase}
+.kcell{aspect-ratio:1;max-width:100%;border:1px solid var(--line);background:var(--surface-2);border-radius:12px;display:grid;place-items:center;align-content:center;cursor:pointer;padding:0;position:relative}
+.kcell .k{font-family:var(--f-kana);font-size:clamp(20px,4.4vw,30px);line-height:1.15}
+.kcell .r{font-size:11px;font-weight:800;color:var(--muted)}
+.kcell.learned{background:var(--matcha-soft);border-color:var(--matcha)}
+.kcell.sel{outline:3px solid var(--gold);outline-offset:1px}
+.kblank{visibility:hidden}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:12px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;background:var(--matcha-soft);border:1px solid var(--matcha);vertical-align:-2px;margin-right:4px}
+.detail{padding:20px;display:grid;gap:10px;justify-items:center;text-align:center;position:sticky;top:90px}
+.detail .big{font-family:var(--f-kana);font-size:110px;line-height:1.05}
+.detail .rom{font-family:var(--f-display);font-weight:800;font-size:28px;color:var(--red)}
+.detail .pair{color:var(--muted);font-weight:700}
+.detail .pair span{font-family:var(--f-kana);color:var(--ink);font-size:22px;margin-left:6px}
+
+/* glossary */
+.gtools{display:grid;gap:12px;margin-top:16px}
+.search{width:100%;font:500 16px var(--f-body);padding:12px 16px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.glist{margin-top:14px;overflow:hidden}
+.grow{display:grid;grid-template-columns:40px minmax(0,1.1fr) minmax(0,1fr) auto auto;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--line)}
+.grow:last-child{border-bottom:0}
+.grow .e{font-size:26px}
+.grow .w{font-family:var(--f-kana);font-size:20px;overflow-wrap:anywhere}
+.grow .w small{display:block;font-family:var(--f-body);font-size:13px;font-weight:800;color:var(--red)}
+.grow .m{font-weight:700;min-width:0}
+.grow .c{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
+.grow .say{width:36px;height:36px}
+@media (max-width:600px){.grow{grid-template-columns:34px minmax(0,1fr) minmax(0,1fr) auto}.grow .c{display:none}}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+
+/* stats */
+.stats{display:grid;gap:18px;margin-top:18px}
+.lvl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:center;padding:20px}
+.ring{width:120px;height:120px}
+.ring .tr{fill:none;stroke:var(--surface-2);stroke-width:12}
+.ring .pr{fill:none;stroke:var(--red);stroke-width:12;stroke-linecap:round}
+.ring text{font:800 24px var(--f-display);fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+.lvl-name{font-family:var(--f-display);font-weight:800;font-size:26px}
+.lvl-steps{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.lvl-steps span{font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+.lvl-steps span.on{background:var(--gold-soft);color:var(--ink);border-color:var(--gold)}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tile{padding:16px}
+.tile .v{font-family:var(--f-display);font-weight:800;font-size:28px;font-variant-numeric:tabular-nums;line-height:1.1}
+.tile .v small{font-size:15px;color:var(--muted);font-weight:700}
+.tile .l{font-size:13px;color:var(--muted);font-weight:700;margin-top:4px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+@media (max-width:860px){.two{grid-template-columns:minmax(0,1fr)}}
+.panel{padding:20px}
+.bars{display:grid;gap:9px;margin-top:14px}
+.brow{display:grid;grid-template-columns:96px minmax(0,1fr) 44px;gap:10px;align-items:center;font-size:13px;font-weight:700}
+.brow .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track{position:relative;height:14px;background:var(--surface-2);border-radius:999px;border:1px solid var(--line)}
+.track i{position:absolute;inset:0 auto 0 0;border-radius:999px;background:var(--matcha)}
+.track i.low{background:var(--gold)}
+.track .pass{position:absolute;top:-4px;bottom:-4px;left:70%;width:2px;background:var(--ink);opacity:.5}
+.brow .val{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.passport{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px}
+@media (max-width:520px){.passport{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.pstamp{display:grid;justify-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--muted);text-align:center}
+.pstamp .hanko{width:68px;height:68px;font-size:17px;border-width:4px}
+.pstamp .hanko.off{border:2px dashed var(--line);color:var(--line);background:none;transform:none}
+.settings{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:16px 20px}
+.confirm{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px;border-radius:14px;background:var(--red-soft);border:1px solid var(--red);font-weight:700}
+
+/* certificate */
+.cert{max-width:780px;margin:0 auto;background:var(--surface);border:3px solid var(--red);border-radius:24px;box-shadow:inset 0 0 0 8px var(--surface),inset 0 0 0 10px var(--gold),var(--shadow);padding:40px 28px;text-align:center;display:grid;gap:12px;justify-items:center;position:relative;overflow:hidden}
+.cert .ttl{font-family:var(--f-display);font-weight:800;font-size:clamp(26px,5vw,40px);letter-spacing:.06em;text-transform:uppercase}
+.cert .ttl-jp{font-family:var(--f-kana);color:var(--red);font-size:20px}
+.cert .who{font-family:var(--f-display);font-weight:800;font-size:clamp(26px,5vw,38px);color:var(--red);border-bottom:2px dashed var(--line);padding-bottom:6px;min-width:60%;overflow-wrap:anywhere}
+.cert .course{font-family:var(--f-display);font-weight:700;font-size:18px}
+.cert .meta{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;color:var(--muted);font-weight:700}
+.namefield{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%}
+.namefield input{font:700 17px var(--f-body);padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);min-width:0;flex:1;max-width:320px}
+
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<header class="topbar"><div class="topbar-in" id="top"></div></header>
+<main class="wrap" id="main"></main>
+<nav class="bottomnav" id="bnav" aria-label="Main"></nav>
+<div class="toast" id="toast" hidden></div>
+<canvas id="petals" hidden></canvas>
+
+<script>
+(function(){
+"use strict";
+/* ---------- state ---------- */
+const LS="sj-nasirova-v1", LANGS=["en","ru","uz"];
+function fresh(){return {lang:"ru",theme:null,sound:true,name:"",st:{},fin:{best:0,passed:0,att:0},ans:{t:0,c:0}}}
+let S=fresh();
+try{const raw=localStorage.getItem(LS);if(raw)S=Object.assign(fresh(),JSON.parse(raw));}catch(e){}
+function save(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
+function st(id){if(!S.st[id])S.st[id]={ex:0,le:0,ga:0,best:0,att:0,pass:0,stars:0};return S.st[id]}
+const tr=a=>a[LANGS.indexOf(S.lang)]||a[0];
+const t=(k,o)=>{let s=tr(U[k]||[k]);if(o)for(const x in o)s=s.split("{"+x+"}").join(o[x]);return s};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+
+/* ---------- UI strings ---------- */
+const U={
+nav_map:["Map","Карта","Xarita"],nav_abc:["Alphabet","Азбука","Alifbo"],nav_gloss:["Glossary","Словарь","Lug‘at"],nav_stats:["Progress","Статистика","Statistika"],nav_final:["Fuji exam","Экзамен Фудзи","Fudzi imtihoni"],
+theme:["Switch light / dark","Светлая / тёмная тема","Yorug‘ / qorong‘i rejim"],
+map_title:["Your journey across Japan","Твоё путешествие по Японии","Yaponiya bo‘ylab sayohating"],
+map_sub:["Every city is a new stage. Pass its exam to unlock the next city. Mount Fuji waits at the end.","Каждый город — новый этап. Сдай экзамен, чтобы открыть следующий город. В конце ждёт гора Фудзи.","Har bir shahar — yangi bosqich. Keyingi shaharni ochish uchun imtihondan o‘ting. Oxirida Fudzi tog‘i kutmoqda."],
+journey:["Journey","Путешествие","Sayohat"],stamps:["stamps","печатей","muhr"],
+next_stop:["Next stop","Следующая остановка","Keyingi bekat"],go:["Let’s go!","Вперёд!","Ketdik!"],
+locked_msg:["Finish the previous city first","Сначала пройди предыдущий город","Avval oldingi shaharni tugating"],
+stage:["Stage","Этап","Bosqich"],
+s_explore:["Explore","Узнай","Tanish"],s_learn:["Learn","Учи","O‘rgan"],s_game:["Game","Игра","O‘yin"],s_exam:["Exam","Экзамен","Imtihon"],
+facts:["Fun facts","Интересные факты","Qiziqarli faktlar"],fact:["FUN FACT","ЗНАЕШЬ ЛИ ТЫ","BILASIZMI"],
+name_means:["What the name means","Что означает название","Nomi nimani anglatadi"],
+tip:["Mochi’s tip","Совет Моти","Mochidan maslahat"],
+to_learn:["Start the lesson","Начать урок","Darsni boshlash"],
+chars:["Characters","Знаки","Belgilar"],words:["Words","Слова","So‘zlar"],
+tap_hint:["Tap any card to hear it","Нажми на карточку, чтобы услышать","Eshitish uchun kartani bosing"],
+learned_btn:["I’ve learned them — play!","Я выучил — играть!","O‘rgandim — o‘ynash!"],
+game_title:["Memory match","Найди пару","Juftini top"],
+g_title:["Games","Игры","O‘yinlar"],
+g_sub:["Pick a game. Win any one to complete this step — or try to win them all!","Выбери игру. Выиграй любую, чтобы пройти этот шаг, — или попробуй выиграть все!","O‘yinni tanlang. Bu qadamni o‘tish uchun istalganida yuting — yoki hammasini yutishga harakat qiling!"],
+g_mem:["Memory match","Найди пару","Juftini top"],g_mem_d:["Open the cards and match each sign with its reading","Открывай карточки и находи знак с его чтением","Kartalarni ochib, belgi va uning o‘qilishini toping"],
+g_catch:["Sakura catch","Поймай сакуру","Sakurani ushla"],g_catch_d:["Tap the falling petal with the right sign before it lands","Лови падающий лепесток с нужным знаком, пока он не упал","Kerakli belgili gulbargni yerga tushmasidan ushlang"],
+g_build:["Word builder","Собери слово","So‘z yig‘"],g_build_d:["Put the kana tiles in the right order to build the word","Расставь знаки в правильном порядке и собери слово","Belgilarni to‘g‘ri tartibda qo‘yib, so‘zni yig‘ing"],
+g_ninja:["Ninja speed","Ниндзя-скорость","Ninja tezligi"],g_ninja_d:["30 seconds! Is the reading right or wrong?","30 секунд! Чтение верное или нет?","30 soniya! O‘qilishi to‘g‘rimi yoki noto‘g‘ri?"],
+g_done:["Won","Пройдено","Yutildi"],g_back:["All games","Все игры","Barcha o‘yinlar"],
+c_find:["Catch:","Лови:","Ushla:"],lives:["Lives","Жизни","Jonlar"],
+c_goal:["Catch 10 petals with the sign that matches the reading. 3 mistakes and the game is over.","Поймай 10 лепестков со знаком, который подходит к чтению. 3 ошибки — и игра окончена.","O‘qilishiga mos belgili 10 ta gulbargni ushlang. 3 ta xato — o‘yin tugaydi."],
+c_win:["10 petals caught! You are super fast!","Поймано 10 лепестков! Ты очень быстрый!","10 ta gulbarg ushlandi! Siz juda tezsiz!"],
+c_lose:["Out of lives. Try again!","Жизни закончились. Попробуй ещё!","Jonlar tugadi. Yana urinib ko‘ring!"],
+b_hint:["Hint","Подсказка","Yordam"],b_word:["Word","Слово","So‘z"],
+b_win:["All 5 words built! Great job!","Все 5 слов собраны! Молодец!","Barcha 5 ta so‘z yig‘ildi! Barakalla!"],
+b_wrong:["Wrong order — try again","Не тот порядок — попробуй снова","Tartib noto‘g‘ri — qayta urinib ko‘ring"],
+n_goal:["Is the reading correct? Answer fast! Get 10 right in 30 seconds. Each mistake costs 3 seconds.","Чтение верное? Отвечай быстро! Набери 10 правильных за 30 секунд. Каждая ошибка отнимает 3 секунды.","O‘qilishi to‘g‘rimi? Tez javob bering! 30 soniyada 10 ta to‘g‘ri javob to‘plang. Har bir xato 3 soniyani oladi."],
+n_yes:["Right","Верно","To‘g‘ri"],n_no:["Wrong","Неверно","Noto‘g‘ri"],n_time:["Time","Время","Vaqt"],
+n_win:["Ninja level! {n} correct answers!","Уровень ниндзя! {n} правильных ответов!","Ninja darajasi! {n} ta to‘g‘ri javob!"],
+n_lose:["Time is up: {n} correct. You need 10 — try again!","Время вышло: {n} правильных. Нужно 10 — попробуй ещё!","Vaqt tugadi: {n} ta to‘g‘ri. 10 ta kerak — yana urinib ko‘ring!"],
+game_sub:["Open two cards. Find each sign and its reading.","Открывай по две карточки. Найди знак и его чтение.","Ikkita kartani oching. Belgi va uning o‘qilishini toping."],
+moves:["Moves","Ходы","Yurishlar"],pairs:["Pairs","Пары","Juftlar"],
+game_win:["All pairs found! Great memory!","Все пары найдены! Отличная память!","Barcha juftlar topildi! Ajoyib xotira!"],
+play_again:["Shuffle again","Перемешать","Qayta aralashtirish"],to_exam:["Go to the exam","К экзамену","Imtihonga"],
+exam_intro:["10 questions about this city’s signs and words. Score 70% or more to win the city stamp and open the next city.","10 вопросов по знакам и словам этого города. Набери 70% или больше, чтобы получить печать и открыть следующий город.","Shu shahar belgilari va so‘zlari bo‘yicha 10 ta savol. Shahar muhrini olish va keyingisini ochish uchun 70% yoki undan ko‘p to‘plang."],
+start:["Start","Начать","Boshlash"],
+q_read:["How is this read?","Как это читается?","Bu qanday o‘qiladi?"],q_find:["Find this sign","Найди этот знак","Shu belgini toping"],
+q_mean:["What does it mean?","Что это значит?","Bu nimani anglatadi?"],q_word:["Which word is it?","Какое это слово?","Bu qaysi so‘z?"],q_listen:["Listen and choose","Послушай и выбери","Tinglang va tanlang"],
+correct:["Correct!","Верно!","To‘g‘ri!"],wrong:["Not quite. Answer:","Не совсем. Ответ:","Unchalik emas. Javob:"],
+next:["Next","Далее","Keyingi"],finish:["See result","Результат","Natija"],
+pass_msg:["Excellent! You got the stamp of {city}!","Отлично! Ты получил печать города {city}!","Ajoyib! Siz {city} muhrini oldingiz!"],
+fail_msg:["Almost! You need 70%. Review the cards and try again.","Почти! Нужно 70%. Повтори карточки и попробуй снова.","Oz qoldi! 70% kerak. Kartalarni takrorlab, qayta urinib ko‘ring."],
+try_again:["Try again","Ещё раз","Qayta urinish"],back_map:["Back to map","На карту","Xaritaga"],next_city:["Next city","Следующий город","Keyingi shahar"],
+best:["Best","Лучший","Eng yaxshi"],
+abc_title:["Japanese alphabet","Японская азбука","Yapon alifbosi"],
+abc_sub:["Hiragana is for Japanese words, katakana for words from other languages. Each has 46 basic signs. Tap a sign to hear it.","Хирагана — для японских слов, катакана — для слов из других языков. В каждой 46 основных знаков. Нажми на знак, чтобы услышать.","Hiragana — yapon so‘zlari uchun, katakana — boshqa tillardan kirgan so‘zlar uchun. Har birida 46 ta asosiy belgi bor. Eshitish uchun belgini bosing."],
+hira:["Hiragana","Хирагана","Hiragana"],kata:["Katakana","Катакана","Katakana"],
+basic:["Basic signs","Основные знаки","Asosiy belgilar"],voiced:["Voiced signs ( ゛ and ゜ )","Звонкие знаки ( ゛ и ゜ )","Jarangli belgilar ( ゛ va ゜ )"],
+learned_in:["Learned in","Изучается в городе","O‘rganiladigan shahar"],not_in_course:["Bonus sign — not in the city lessons","Бонусный знак — его нет в уроках городов","Bonus belgi — shahar darslarida yo‘q"],
+pair_of:["Pair in the other script:","Пара в другой азбуке:","Boshqa yozuvdagi jufti:"],
+legend_learned:["learned (city passed)","выучено (город пройден)","o‘rganilgan (shahar o‘tilgan)"],
+listen:["Listen","Слушать","Tinglash"],
+gloss_sub:["Every word from your journey, with its reading and meaning.","Все слова из путешествия — с чтением и переводом.","Sayohatdagi barcha so‘zlar — o‘qilishi va tarjimasi bilan."],
+search:["Search: neko, cat…","Поиск: neko, кошка…","Qidirish: neko, mushuk…"],
+all:["All cities","Все города","Barcha shaharlar"],no_res:["Nothing found. Try another word.","Ничего не найдено. Попробуй другое слово.","Hech narsa topilmadi. Boshqa so‘zni sinab ko‘ring."],
+words_count:["{n} words","{n} слов","{n} ta so‘z"],
+level:["Your level","Твой уровень","Darajangiz"],
+lv:[["Tourist","Traveler","Explorer","Samurai","Sensei"],["Турист","Путешественник","Исследователь","Самурай","Сэнсэй"],["Turist","Sayohatchi","Tadqiqotchi","Samuray","Sensey"]],
+st_cities:["Cities passed","Пройдено городов","O‘tilgan shaharlar"],st_signs:["Signs learned","Выучено знаков","O‘rganilgan belgilar"],st_words:["Words learned","Выучено слов","O‘rganilgan so‘zlar"],st_acc:["Answer accuracy","Точность ответов","Javoblar aniqligi"],
+answers:["answers","ответов","javob"],stars:["stars","звёзд","yulduz"],
+chart:["Best exam score by city","Лучший результат экзамена","Shaharlar bo‘yicha eng yaxshi natija"],chart_note:["Line = 70% pass mark","Черта = порог 70%","Chiziq = 70% o‘tish chegarasi"],
+passport:["Travel passport","Паспорт путешественника","Sayohatchi pasporti"],passport_sub:["One stamp for every city you pass","Печать за каждый пройденный город","Har bir o‘tilgan shahar uchun bitta muhr"],
+sound:["Sound effects","Звуковые эффекты","Ovoz effektlari"],on:["On","Вкл","Yoqilgan"],off:["Off","Выкл","O‘chirilgan"],
+reset:["Reset progress","Сбросить прогресс","Natijalarni o‘chirish"],reset_q:["Delete all progress? This can’t be undone.","Удалить весь прогресс? Это нельзя отменить.","Barcha natijalar o‘chirilsinmi? Buni qaytarib bo‘lmaydi."],
+yes_reset:["Yes, reset","Да, сбросить","Ha, o‘chirish"],cancel:["Cancel","Отмена","Bekor qilish"],reset_done:["Progress reset","Прогресс сброшен","Natijalar o‘chirildi"],
+final_title:["Mount Fuji · Final exam","Гора Фудзи · Итоговый экзамен","Fudzi tog‘i · Yakuniy imtihon"],
+final_sub:["20 questions from the whole journey. Score 70% or more to reach the summit and get your certificate.","20 вопросов из всего путешествия. Набери 70% или больше, чтобы подняться на вершину и получить сертификат.","Butun sayohatdan 20 ta savol. Cho‘qqiga chiqish va sertifikat olish uchun 70% yoki undan ko‘p to‘plang."],
+final_locked:["Pass all 10 cities to start the climb. Cities passed: {n} / 10","Пройди все 10 городов, чтобы начать восхождение. Пройдено: {n} / 10","Chiqishni boshlash uchun barcha 10 shaharni o‘ting. O‘tildi: {n} / 10"],
+final_pass:["You reached the summit of Fuji! You are a Sensei now!","Ты на вершине Фудзи! Теперь ты Сэнсэй!","Siz Fudzi cho‘qqisiga chiqdingiz! Endi siz Senseysiz!"],
+cert:["Certificate","Сертификат","Sertifikat"],open_cert:["Open certificate","Открыть сертификат","Sertifikatni ochish"],
+cert_text:["has completed the journey across Japan and passed the final exam of the course","завершил(а) путешествие по Японии и сдал(а) итоговый экзамен курса","Yaponiya bo‘ylab sayohatni yakunladi va kursning yakuniy imtihonidan o‘tdi"],
+your_name:["Your name","Твоё имя","Ismingiz"],save:["Save","Сохранить","Saqlash"],score:["Score","Результат","Natija"],date:["Date","Дата","Sana"],
+no_speech:["Sound isn’t available in this browser","Звук недоступен в этом браузере","Bu brauzerda ovoz mavjud emas"],
+m_hello:["Hi! I’m <b>Mochi</b>. Let’s travel across Japan and learn Japanese together! Our first stop is <b>Tokyo</b>.","Привет! Я <b>Моти</b>. Давай путешествовать по Японии и учить японский вместе! Первая остановка — <b>Токио</b>.","Salom! Men <b>Mochi</b>man. Keling, Yaponiya bo‘ylab sayohat qilib, yapon tilini birga o‘rganamiz! Birinchi bekat — <b>Tokio</b>."],
+m_next:["You have <b>{n}</b> stamps already! Next stop: <b>{city}</b>.","У тебя уже <b>{n}</b> печатей! Следующая остановка — <b>{city}</b>.","Sizda allaqachon <b>{n}</b> ta muhr bor! Keyingi bekat — <b>{city}</b>."],
+m_fuji:["You visited all 10 cities! <b>Mount Fuji</b> is waiting for the final exam.","Ты побывал во всех 10 городах! <b>Гора Фудзи</b> ждёт итогового экзамена.","Siz barcha 10 shaharda bo‘ldingiz! <b>Fudzi tog‘i</b> yakuniy imtihonni kutmoqda."],
+m_done:["<b>おめでとう!</b> (omedetō — congratulations!) You finished the whole journey. Come back to replay any city.","<b>おめでとう!</b> (омэдэто̄ — поздравляю!) Ты прошёл всё путешествие. Возвращайся и повторяй любые города.","<b>おめでとう!</b> (omedetō — tabriklayman!) Siz butun sayohatni yakunladingiz. Istalgan shaharni takrorlash uchun qayting."]
+};
+
+/* ---------- kana ---------- */
+const HR=["あいうえお","かきくけこ","さしすせそ","たちつてと","なにぬねの","はひふへほ","まみむめも","や_ゆ_よ","らりるれろ","わ___を","ん____"];
+const KR=["アイウエオ","カキクケコ","サシスセソ","タチツテト","ナニヌネノ","ハヒフヘホ","マミムメモ","ヤ_ユ_ヨ","ラリルレロ","ワ___ヲ","ン____"];
+const RR=["a i u e o","ka ki ku ke ko","sa shi su se so","ta chi tsu te to","na ni nu ne no","ha hi fu he ho","ma mi mu me mo","ya _ yu _ yo","ra ri ru re ro","wa _ _ _ wo","n _ _ _ _"];
+const HV=["がぎぐげご","ざじずぜぞ","だぢづでど","ばびぶべぼ","ぱぴぷぺぽ"],KV=["ガギグゲゴ","ザジズゼゾ","ダヂヅデド","バビブベボ","パピプペポ"],RV=["ga gi gu ge go","za ji zu ze zo","da ji zu de do","ba bi bu be bo","pa pi pu pe po"];
+const R={},PAIR={};
+function addRows(H,K,Rm){H.forEach((row,i)=>{const h=[...row],k=[...K[i]],r=Rm[i].split(" ");h.forEach((c,j)=>{if(c==="_")return;R[c]=r[j];R[k[j]]=r[j];PAIR[c]=k[j];PAIR[k[j]]=c;})})}
+addRows(HR,KR,RR);addRows(HV,KV,RV);
+
+/* ---------- cities ---------- */
+const W=(k,r,en,ru,uz,e)=>[k,r,en,ru,uz,e];
+const CITIES=[
+{id:"tokyo",jp:"東京",name:["Tokyo","Токио","Tokio"],ll:[139.69,35.69],pin:[395,400],lp:"r",scene:"tokyo",
+ topic:["Hiragana: vowels","Хирагана: гласные","Hiragana: unlilar"],
+ nm:["東 = east, 京 = capital → “Eastern capital”","東 — восток, 京 — столица → «Восточная столица»","東 — sharq, 京 — poytaxt → «Sharqiy poytaxt»"],
+ chars:[..."あいうえお"],
+ words:[W("あい","ai","love","любовь","sevgi","❤️"),W("いえ","ie","house","дом","uy","🏠"),W("うえ","ue","up, above","вверху","yuqorida","⬆️"),W("あお","ao","blue","синий","ko‘k","🔵"),W("こんにちは","konnichiwa","hello","здравствуйте","salom","👋"),W("ありがとう","arigatō","thank you","спасибо","rahmat","🙏"),W("さようなら","sayōnara","goodbye","до свидания","xayr","🌇")],
+ facts:[["About 37 million people live in Greater Tokyo — one of the biggest city areas in the world.","В агломерации Токио живут около 37 миллионов человек — это одна из крупнейших городских зон мира.","Katta Tokio hududida 37 millionga yaqin odam yashaydi — bu dunyodagi eng yirik shahar hududlaridan biri."],
+  ["At Shibuya Crossing up to 3,000 people cross the street at once when the light turns green.","На перекрёстке Сибуя за один зелёный свет дорогу переходят до 3 000 человек.","Sibuya chorrahasida yashil chiroq yonganda bir vaqtda 3 000 tagacha odam yo‘lni kesib o‘tadi."],
+  ["Tokyo Skytree is 634 m tall — the tallest tower in the world.","Телебашня Токио «Скайтри» высотой 634 м — самая высокая башня в мире.","Tokio Skytree minorasi 634 m balandlikda — dunyodagi eng baland minora."]],
+ tip:["Japanese uses three scripts: hiragana, katakana and kanji. We start with hiragana — its 5 vowels are the base of every sound!","В японском три вида письма: хирагана, катакана и кандзи. Начнём с хираганы — её 5 гласных лежат в основе всех звуков!","Yapon tilida uch xil yozuv bor: hiragana, katakana va kanji. Hiraganadan boshlaymiz — uning 5 ta unlisi barcha tovushlarning asosi!"]},
+{id:"yokohama",jp:"横浜",name:["Yokohama","Иокогама","Yokogama"],ll:[139.64,35.44],pin:[402,452],lp:"r",scene:"yokohama",
+ topic:["Hiragana: K and S rows","Хирагана: ряды К и С","Hiragana: K va S qatorlari"],
+ nm:["横 = side, 浜 = beach → “Beside the beach”","横 — сбоку, 浜 — пляж → «Возле берега»","横 — yon, 浜 — sohil → «Sohil yonida»"],
+ chars:[..."かきくけこさしすせそ"],
+ words:[W("かさ","kasa","umbrella","зонт","soyabon","☂️"),W("すし","sushi","sushi","суши","sushi","🍣"),W("あさ","asa","morning","утро","tong","🌅"),W("えき","eki","station","станция","bekat","🚉"),W("すいか","suika","watermelon","арбуз","tarvuz","🍉"),W("うし","ushi","cow","корова","sigir","🐄"),W("いす","isu","chair","стул","stul","🪑")],
+ facts:[["Yokohama has Japan’s biggest Chinatown, with about 500 shops and restaurants.","В Иокогаме самый большой в Японии Чайна-таун — около 500 магазинов и ресторанов.","Yokogamada Yaponiyadagi eng katta Xitoy shaharchasi bor — 500 ga yaqin do‘kon va restoran."],
+  ["There is a whole museum about instant noodles, where you can decorate your own cup.","Здесь есть целый музей лапши быстрого приготовления — там можно разрисовать свой стаканчик.","Bu yerda tez tayyorlanadigan lag‘mon muzeyi bor — u yerda o‘z stakaningizni bezashingiz mumkin."],
+  ["With about 3.7 million people, Yokohama is the second-largest city in Japan.","Иокогама — второй по величине город Японии: здесь живут около 3,7 миллиона человек.","Yokogama Yaponiyaning ikkinchi eng katta shahri: bu yerda 3,7 millionga yaqin odam yashaydi."]],
+ tip:["し is read “shi”, not “si”. And here is a secret: in こんにちは the last は sounds like “wa”!","し читается «си» (shi), а не «si». И секрет: в こんにちは последний は звучит как «ва»!","し «shi» deb o‘qiladi, «si» emas. Sir: こんにちは so‘zidagi oxirgi は «wa» deb aytiladi!"]},
+{id:"nagoya",jp:"名古屋",name:["Nagoya","Нагоя","Nagoya"],ll:[136.91,35.18],pin:[286,478],lp:"r",scene:"nagoya",
+ topic:["Hiragana: T and N rows","Хирагана: ряды Т и Н","Hiragana: T va N qatorlari"],
+ nm:["名 = name, 古 = old, 屋 = house. The signs were chosen for their sound.","名 — имя, 古 — старый, 屋 — дом. Знаки подобраны по звучанию.","名 — ism, 古 — eski, 屋 — uy. Belgilar talaffuzi uchun tanlangan."],
+ chars:[..."たちつてとなにぬねの"],
+ words:[W("ねこ","neko","cat","кошка","mushuk","🐱"),W("いぬ","inu","dog","собака","it","🐶"),W("くち","kuchi","mouth","рот","og‘iz","👄"),W("て","te","hand","рука","qo‘l","✋"),W("なつ","natsu","summer","лето","yoz","☀️"),W("あき","aki","autumn","осень","kuz","🍁"),W("つくえ","tsukue","desk","письменный стол","parta","✏️"),W("なに","nani","what?","что?","nima?","❓")],
+ facts:[["Nagoya Castle has two golden shachihoko on its roof — magic fish with tiger heads that protect it from fire.","На крыше Нагойского замка две золотые сятихоко — волшебные рыбы с головой тигра, которые берегут его от пожара.","Nagoya qal’asi tomida ikkita oltin shachihoko bor — uni yong‘indan saqlaydigan yo‘lbars boshli sehrli baliqlar."],
+  ["Toyota, one of the world’s biggest car makers, started near Nagoya.","Рядом с Нагоей появилась Toyota — один из крупнейших автопроизводителей мира.","Dunyodagi eng yirik avtomobil ishlab chiqaruvchilardan biri Toyota Nagoya yaqinida paydo bo‘lgan."],
+  ["The Shinkansen bullet train runs from Tokyo to Nagoya, about 350 km, in under 2 hours.","Скоростной поезд синкансэн проезжает 350 км от Токио до Нагои меньше чем за 2 часа.","Shinkansen tezyurar poyezdi Tokiodan Nagoyagacha 350 km ni 2 soatdan kamroq vaqtda bosib o‘tadi."]],
+ tip:["ち is “chi” and つ is “tsu”. Say them quickly and softly, like a little sneeze: tsu!","ち — это «ти» (chi), а つ — «цу» (tsu). Произноси быстро и мягко, как маленький чих: цу!","ち — «chi», つ — «tsu». Ularni tez va yumshoq, xuddi kichkina aksirgandek ayting: tsu!"]},
+{id:"kyoto",jp:"京都",name:["Kyoto","Киото","Kioto"],ll:[135.77,35.01],pin:[238,418],lp:"t",scene:"kyoto",
+ topic:["Hiragana: H and M rows","Хирагана: ряды Х и М","Hiragana: H va M qatorlari"],
+ nm:["京 = capital, 都 = metropolis → “Capital city”","京 — столица, 都 — город → «Столичный город»","京 — poytaxt, 都 — shahar → «Poytaxt shahar»"],
+ chars:[..."はひふへほまみむめも"],
+ words:[W("はな","hana","flower","цветок","gul","🌸"),W("みみ","mimi","ear","ухо","quloq","👂"),W("め","me","eye","глаз","ko‘z","👁️"),W("ほし","hoshi","star","звезда","yulduz","⭐"),W("さかな","sakana","fish","рыба","baliq","🐟"),W("ふね","fune","ship","корабль","kema","🚢"),W("むし","mushi","insect","насекомое","hasharot","🐞"),W("もも","momo","peach","персик","shaftoli","🍑"),W("ひと","hito","person","человек","odam","🧑")],
+ facts:[["Kyoto was the capital of Japan for more than 1,000 years, from 794 to 1868.","Киото был столицей Японии больше 1000 лет — с 794 по 1868 год.","Kioto 1000 yildan ortiq — 794 yildan 1868 yilgacha Yaponiyaning poytaxti bo‘lgan."],
+  ["Kyoto has about 1,600 Buddhist temples and 400 Shinto shrines.","В Киото около 1600 буддийских храмов и 400 синтоистских святилищ.","Kiotoda 1600 ga yaqin buddaviy ibodatxona va 400 ta sinto ziyoratgohi bor."],
+  ["Fushimi Inari Shrine has about 10,000 bright red torii gates on a mountain path.","В святилище Фусими Инари на горной тропе стоят около 10 000 ярко-красных ворот-тории.","Fushimi Inari ziyoratgohida tog‘ yo‘lida 10 000 ga yaqin yorqin qizil torii darvozalari bor."]],
+ tip:["ふ is between “fu” and “hu” — blow softly, like cooling hot tea.","ふ — что-то среднее между «фу» и «ху»: дуй мягко, как на горячий чай.","ふ — «fu» va «hu» o‘rtasidagi tovush: issiq choyni puflagandek yumshoq puflang."]},
+{id:"nara",jp:"奈良",name:["Nara","Нара","Nara"],ll:[135.80,34.69],pin:[262,500],lp:"b",scene:"nara",
+ topic:["Hiragana: Y, R, W and N","Хирагана: Я, Р, ВА и Н","Hiragana: Y, R, W va N"],
+ nm:["奈良 — here the signs only show the sound “na-ra”.","奈良 — здесь знаки передают только звучание «на-ра».","奈良 — bu yerda belgilar faqat «na-ra» tovushini bildiradi."],
+ chars:[..."やゆよらりるれろわをん"],
+ words:[W("しか","shika","deer","олень","kiyik","🦌"),W("やま","yama","mountain","гора","tog‘","⛰️"),W("そら","sora","sky","небо","osmon","🌤️"),W("ほん","hon","book","книга","kitob","📖"),W("くるま","kuruma","car","машина","mashina","🚗"),W("ゆき","yuki","snow","снег","qor","❄️"),W("よる","yoru","night","ночь","tun","🌙"),W("さる","saru","monkey","обезьяна","maymun","🐒"),W("わたし","watashi","I, me","я","men","🙋")],
+ facts:[["About 1,200 friendly deer walk freely around Nara Park.","В парке Нара свободно гуляют около 1200 дружелюбных оленей.","Nara bog‘ida 1200 ga yaqin do‘stona kiyiklar bemalol yurishadi."],
+  ["Some deer bow to people to ask for special crackers called shika senbei.","Некоторые олени кланяются людям, выпрашивая особое печенье «сика-сэмбэй».","Ba’zi kiyiklar «shika senbei» degan maxsus pechenye so‘rab odamlarga ta’zim qilishadi."],
+  ["Todai-ji Temple keeps a giant bronze Buddha about 15 m tall.","В храме Тодай-дзи стоит огромный бронзовый Будда высотой около 15 м.","Todai-ji ibodatxonasida balandligi 15 m ga yaqin ulkan bronza Budda haykali bor."]],
+ tip:["ん is the only sign that is just “n”, with no vowel. It never starts a word!","ん — единственный знак, который читается просто «н», без гласной. Слово с него не начинается!","ん — unlisiz faqat «n» deb o‘qiladigan yagona belgi. So‘z hech qachon u bilan boshlanmaydi!"]},
+{id:"osaka",jp:"大阪",name:["Osaka","Осака","Osaka"],ll:[135.50,34.69],pin:[212,494],lp:"b",scene:"osaka",
+ topic:["Numbers 1–10 in kanji","Числа 1–10 иероглифами","Kanjida 1–10 sonlari"],
+ nm:["大 = big, 阪 = slope → “Big slope”","大 — большой, 阪 — склон → «Большой склон»","大 — katta, 阪 — qiyalik → «Katta qiyalik»"],
+ chars:[{c:"一",r:"ichi",k:"いち",n:1},{c:"二",r:"ni",k:"に",n:2},{c:"三",r:"san",k:"さん",n:3},{c:"四",r:"yon",k:"よん",n:4},{c:"五",r:"go",k:"ご",n:5},{c:"六",r:"roku",k:"ろく",n:6},{c:"七",r:"nana",k:"なな",n:7},{c:"八",r:"hachi",k:"はち",n:8},{c:"九",r:"kyū",k:"きゅう",n:9},{c:"十",r:"jū",k:"じゅう",n:10}],
+ words:[W("たこやき","takoyaki","takoyaki (octopus balls)","такояки (шарики с осьминогом)","takoyaki (sakkizoyoqli sharchalar)","🐙"),W("ひゃく","hyaku","one hundred","сто","yuz","💯"),W("えん","en","yen (money)","иена (деньги)","iyena (pul)","💴"),W("いくら","ikura","how much?","сколько стоит?","qancha turadi?","🏷️"),W("おいしい","oishii","tasty","вкусно","mazali","😋"),W("ひとつ","hitotsu","one thing","одна штука","bitta narsa","☝️")],
+ facts:[["Osaka is called “Japan’s kitchen”. People here say kuidaore — “eat until you drop”!","Осаку называют «кухней Японии». Здесь говорят «куйдаорэ» — «ешь до упаду»!","Osakani «Yaponiya oshxonasi» deyishadi. Bu yerda «kuidaore» — «yiqilguncha ye» deyishadi!"],
+  ["Takoyaki — round snacks with octopus inside — were invented in Osaka.","Такояки — круглые шарики с осьминогом внутри — придумали в Осаке.","Takoyaki — ichida sakkizoyoq bo‘lgan yumaloq gazak — Osakada ixtiro qilingan."],
+  ["On escalators people in Osaka stand on the right, but in Tokyo they stand on the left.","На эскалаторе в Осаке стоят справа, а в Токио — слева.","Osakada eskalatorda o‘ng tomonda turishadi, Tokioda esa chap tomonda."]],
+ tip:["4 and 7 have two readings: よん / し and なな / しち. Most people say よん and なな — easy!","У 4 и 7 по два чтения: よん / し и なな / しち. Чаще говорят よん и なな — это проще!","4 va 7 ikki xil o‘qiladi: よん / し va なな / しち. Ko‘pincha よん va なな deyishadi — oson!"]},
+{id:"hiroshima",jp:"広島",name:["Hiroshima","Хиросима","Xirosima"],ll:[132.46,34.39],pin:[128,505],lp:"b",scene:"hiroshima",
+ topic:["Katakana: A, K, S rows","Катакана: ряды А, К, С","Katakana: A, K, S qatorlari"],
+ nm:["広 = wide, 島 = island → “Wide island”","広 — широкий, 島 — остров → «Широкий остров»","広 — keng, 島 — orol → «Keng orol»"],
+ chars:[..."アイウエオカキクケコサシスセソ"],
+ words:[W("アイス","aisu","ice cream","мороженое","muzqaymoq","🍦"),W("ケーキ","kēki","cake","торт","tort","🎂"),W("スキー","sukī","skiing","лыжи","chang‘i","⛷️"),W("ココア","kokoa","cocoa","какао","kakao","☕"),W("ソース","sōsu","sauce","соус","sous","🥫"),W("キウイ","kiui","kiwi","киви","kivi","🥝"),W("おりがみ","origami","origami (paper folding)","оригами","origami","🦢")],
+ facts:[["The giant red torii of Itsukushima Shrine seems to float on the sea at high tide.","Огромные красные ворота святилища Ицукусима во время прилива будто плывут по морю.","Itsukushima ziyoratgohining ulkan qizil darvozasi suv ko‘tarilganda dengizda suzib yurgandek ko‘rinadi."],
+  ["Hiroshima is a city of peace: children from all over the world send paper cranes to its Peace Park.","Хиросима — город мира: дети со всего света присылают в Парк мира бумажных журавликов.","Xirosima — tinchlik shahri: butun dunyo bolalari Tinchlik bog‘iga qog‘oz turnalar yuborishadi."],
+  ["Hiroshima okonomiyaki is a layered pancake with noodles and lots of cabbage.","Окономияки по-хиросимски — слоёная лепёшка с лапшой и большим количеством капусты.","Xirosimacha okonomiyaki — lag‘mon va ko‘p karam qo‘shilgan qatlamli quymoq."]],
+ tip:["Katakana is for words from other languages. The line ー makes a vowel long: ケーキ = kēki (cake).","Катакана нужна для слов из других языков. Черта ー удлиняет гласный: ケーキ = кэ̄ки (торт).","Katakana boshqa tillardan kirgan so‘zlar uchun. ー chizig‘i unlini cho‘zadi: ケーキ = kēki (tort)."]},
+{id:"fukuoka",jp:"福岡",name:["Fukuoka","Фукуока","Fukuoka"],ll:[130.40,33.59],pin:[52,482],lp:"t",scene:"fukuoka",
+ topic:["Katakana: T, N, H rows","Катакана: ряды Т, Н, Х","Katakana: T, N, H qatorlari"],
+ nm:["福 = good luck, 岡 = hill → “Hill of luck”","福 — счастье, 岡 — холм → «Холм счастья»","福 — baxt, 岡 — tepalik → «Baxt tepaligi»"],
+ chars:[..."タチツテトナニヌネノハヒフヘホ"],
+ words:[W("ラーメン","rāmen","ramen (noodle soup)","рамэн (суп с лапшой)","ramen (lag‘mon sho‘rva)","🍜"),W("テニス","tenisu","tennis","теннис","tennis","🎾"),W("ホテル","hoteru","hotel","гостиница","mehmonxona","🏨"),W("ノート","nōto","notebook","тетрадь","daftar","📓"),W("トマト","tomato","tomato","помидор","pomidor","🍅"),W("ネクタイ","nekutai","necktie","галстук","galstuk","👔"),W("チーズ","chīzu","cheese","сыр","pishloq","🧀")],
+ facts:[["Fukuoka is the home of Hakata ramen — thin noodles in a thick, creamy soup.","Фукуока — родина рамэна «Хаката»: тонкая лапша в густом сливочном бульоне.","Fukuoka — «Xakata» rameni vatani: quyuq, kremsimon sho‘rvadagi ingichka lag‘mon."],
+  ["Every evening about 100 street food stalls called yatai open along the river.","Каждый вечер вдоль реки открываются около 100 уличных кафе-ятай.","Har kuni kechqurun daryo bo‘yida «yatai» deb ataladigan 100 ga yaqin ko‘cha oshxonasi ochiladi."],
+  ["Fukuoka is so close to Busan in Korea that a fast ferry gets there in about 3 hours.","Фукуока так близко к корейскому Пусану, что скоростной паром доходит туда примерно за 3 часа.","Fukuoka Koreyaning Pusan shahriga shunchalik yaqinki, tezyurar parom u yerga 3 soatda yetib boradi."]],
+ tip:["シ (shi) and ツ (tsu) look alike! The strokes of シ rise from the left, the strokes of ツ fall from the top.","シ (си) и ツ (цу) похожи! У シ черты поднимаются слева, у ツ — падают сверху.","シ (shi) va ツ (tsu) o‘xshash! シ chiziqlari chapdan ko‘tariladi, ツ chiziqlari esa yuqoridan tushadi."]},
+{id:"okinawa",jp:"沖縄",name:["Okinawa","Окинава","Okinava"],ll:[127.68,26.21],inset:1,pin:[505,590],lp:"b",scene:"okinawa",
+ topic:["Katakana: M, Y, R, W, N","Катакана: М, Я, Р, ВА, Н","Katakana: M, Y, R, W, N"],
+ nm:["沖 = open sea, 縄 = rope → “A rope in the open sea”","沖 — открытое море, 縄 — верёвка → «Верёвка в открытом море»","沖 — ochiq dengiz, 縄 — arqon → «Ochiq dengizdagi arqon»"],
+ chars:[..."マミムメモヤユヨラリルレロワン"],
+ words:[W("メロン","meron","melon","дыня","qovun","🍈"),W("カメラ","kamera","camera","фотоаппарат","fotoapparat","📷"),W("ミルク","miruku","milk","молоко","sut","🥛"),W("レモン","remon","lemon","лимон","limon","🍋"),W("ゲーム","gēmu","game","игра","o‘yin","🎮"),W("うみ","umi","sea","море","dengiz","🌊"),W("ヨット","yotto","yacht","яхта","yaxta","⛵")],
+ facts:[["Okinawa is a chain of about 160 islands surrounded by coral reefs.","Окинава — это цепочка примерно из 160 островов, окружённых коралловыми рифами.","Okinava — marjon riflari bilan o‘ralgan 160 ga yaqin orollar zanjiri."],
+  ["Okinawa is famous for long lives: many people here live to 100 years.","Окинава знаменита долгожителями: многие здесь доживают до 100 лет.","Okinava uzoq umr ko‘ruvchilari bilan mashhur: bu yerda ko‘pchilik 100 yoshgacha yashaydi."],
+  ["Shisa — lion-dog statues — guard the roofs and gates of houses, always in pairs.","Шиса — статуи львов-собак — охраняют крыши и ворота домов, всегда парами.","Shisa — sher-it haykalchalari — uylarning tomi va darvozasini doim juft bo‘lib qo‘riqlaydi."]],
+ tip:["ン (n) and ソ (so) are twins too: ン is written more from the left, ソ more from the top.","ン (н) и ソ (со) — тоже близнецы: ン пишется больше слева, ソ — больше сверху.","ン (n) va ソ (so) ham egizak: ン ko‘proq chapdan, ソ esa ko‘proq yuqoridan yoziladi."]},
+{id:"sapporo",jp:"札幌",name:["Sapporo","Саппоро","Sapporo"],ll:[141.35,43.06],pin:[433,111],lp:"r",scene:"sapporo",
+ topic:["Voiced sounds ゛","Звонкие звуки ゛","Jarangli tovushlar ゛"],
+ nm:["From the Ainu language: “dry, big river”","Из языка айнов: «сухая большая река»","Aynu tilidan: «quruq katta daryo»"],
+ chars:[..."がぎぐげござじずぜぞばびぶべぼ"],
+ words:[W("ゆきだるま","yukidaruma","snowman","снеговик","qor odam","⛄"),W("ふゆ","fuyu","winter","зима","qish","🌨️"),W("さむい","samui","cold","холодно","sovuq","🥶"),W("おはよう","ohayō","good morning","доброе утро","xayrli tong","🌄"),W("おやすみ","oyasumi","good night","спокойной ночи","xayrli tun","😴"),W("ごはん","gohan","rice, meal","рис, еда","guruch, ovqat","🍚"),W("ぶどう","budō","grapes","виноград","uzum","🍇"),W("かぞく","kazoku","family","семья","oila","👨‍👩‍👧")],
+ facts:[["Every February the Snow Festival fills the city with giant sculptures made of snow and ice.","Каждый февраль на Снежном фестивале город заполняют гигантские фигуры из снега и льда.","Har fevralda Qor festivalida shahar qor va muzdan yasalgan ulkan haykallarga to‘ladi."],
+  ["Sapporo hosted the Winter Olympic Games in 1972.","В 1972 году в Саппоро прошли зимние Олимпийские игры.","1972 yilda Sapporoda Qishki Olimpiya o‘yinlari o‘tkazilgan."],
+  ["Sapporo’s streets form a neat grid, so addresses are like coordinates: “North 3, West 2”.","Улицы Саппоро образуют ровную сетку, и адреса похожи на координаты: «Север 3, Запад 2».","Sapporo ko‘chalari tekis to‘r hosil qiladi, manzillar koordinatalarga o‘xshaydi: «Shimol 3, G‘arb 2»."]],
+ tip:["Two small dots ゛ make a sound voiced: か ka → が ga, さ sa → ざ za, は ha → ば ba.","Две точки ゛ делают звук звонким: か ка → が га, さ са → ざ дза, は ха → ば ба.","Ikki nuqta ゛ tovushni jarangli qiladi: か ka → が ga, さ sa → ざ za, は ha → ば ba."]}
+];
+const FUJI={id:"fuji",jp:"富士山",name:["Mount Fuji","Гора Фудзи","Fudzi tog‘i"],ll:[138.73,35.36],pin:[338,402],
+ nm:["富 = wealth, 士 = warrior, 山 = mountain","富 — богатство, 士 — воин, 山 — гора","富 — boylik, 士 — jangchi, 山 — tog‘"],
+ facts:[["Mount Fuji is 3,776 m high — the tallest mountain in Japan.","Высота Фудзи — 3776 м, это самая высокая гора Японии.","Fudzi tog‘ining balandligi 3776 m — Yaponiyadagi eng baland tog‘."],
+  ["Fuji is a volcano. It last erupted in 1707.","Фудзи — вулкан. Последний раз он извергался в 1707 году.","Fudzi — vulqon. U oxirgi marta 1707 yilda otilgan."],
+  ["Climbers walk at night to watch the sunrise from the top. It is called goraikō.","Альпинисты идут ночью, чтобы встретить рассвет на вершине. Это называется «гораико̄».","Alpinistlar cho‘qqida quyosh chiqishini ko‘rish uchun tunda yo‘lga chiqishadi. Bu «goraikō» deyiladi."]]};
+const CITY={};CITIES.forEach((c,i)=>{c.i=i;CITY[c.id]=c});
+const CHAR_CITY={};CITIES.forEach(c=>c.chars.forEach(ch=>{CHAR_CITY[typeof ch==="string"?ch:ch.c]=c.id}));
+function itemsOf(c){const o=[];c.chars.forEach(ch=>{if(typeof ch==="string")o.push({t:"c",c:ch,r:R[ch],say:ch,city:c.id});else o.push({t:"c",c:ch.c,r:ch.r,say:ch.k,num:ch.n,city:c.id})});
+ c.words.forEach(w=>o.push({t:"w",c:w[0],r:w[1],m:[w[2],w[3],w[4]],e:w[5],say:w[0],city:c.id}));return o}
+const ALL=CITIES.flatMap(itemsOf);
+const passed=id=>!!(S.st[id]&&S.st[id].pass);
+const unlocked=i=>i===0||passed(CITIES[i-1].id);
+const nPassed=()=>CITIES.filter(c=>passed(c.id)).length;
+const curIndex=()=>{const i=CITIES.findIndex(c=>!passed(c.id));return i};
+
+/* ---------- icons ---------- */
+const I={
+map:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg>',
+abc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M8 9h8M12 7v10M9 13c1 3 6 3 6 0s-5-2-6 2"/></svg>',
+book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 21V5M8 7h7M8 11h5"/></svg>',
+chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg>',
+fuji:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M2 20l7-12h6l7 12z"/><path d="M9 8l2 3 1-2 1 2 2-3"/></svg>',
+sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/></svg>',
+sound:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/></svg>',
+lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="lockic"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>',
+back:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>'
+};
+const STAR='<path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/>';
+const stars=n=>'<span class="stars" aria-label="'+n+' / 3">'+[0,1,2].map(i=>`<svg viewBox="0 0 24 24" class="${i<n?"on":""}">${STAR}</svg>`).join("")+"</span>";
+const LOGO='<svg class="logo" viewBox="0 0 48 48" aria-hidden="true"><rect x="1" y="1" width="46" height="46" rx="13" fill="#1A2142" stroke="#3A4680"/><circle cx="24" cy="21" r="12.5" fill="#E1453A"/><path d="M8.5 13.5Q24 18 39.5 13.5L38.6 17.6Q24 21.5 9.4 17.6Z" fill="#fff"/><rect x="12.5" y="22.5" width="23" height="2.6" rx="1" fill="#fff"/><rect x="15" y="17" width="3.2" height="20" fill="#fff"/><rect x="29.8" y="17" width="3.2" height="20" fill="#fff"/><path d="M6 40.5q4.5-4 9 0t9 0 9 0 9 0" stroke="#7FB6E0" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>';
+function mochi(){return '<svg class="mochi" viewBox="0 0 100 92" aria-hidden="true"><ellipse cx="50" cy="60" rx="41" ry="29" class="m-body"/><path d="M13 50Q50 30 87 50L87 57Q50 38 13 57Z" class="c-red"/><circle cx="50" cy="42" r="4.2" class="c-snow"/><path d="M86 52l10-6-2 9z M86 54l9 5-9 1z" class="c-red"/><ellipse cx="37" cy="64" rx="3.6" ry="4.6" class="m-ink"/><ellipse cx="63" cy="64" rx="3.6" ry="4.6" class="m-ink"/><circle cx="38.2" cy="62.4" r="1.2" class="c-snow"/><circle cx="64.2" cy="62.4" r="1.2" class="c-snow"/><ellipse cx="27" cy="72" rx="6" ry="3.4" class="c-sak"/><ellipse cx="73" cy="72" rx="6" ry="3.4" class="c-sak"/><path d="M45 71Q50 76 55 71" class="m-line"/></svg>'}
+
+/* ---------- scenes ---------- */
+function torii(x,y,s){const h=72*s,w=64*s,p=6*s;return `<g><rect x="${x-w*.34}" y="${y-h}" width="${p}" height="${h}" class="c-red"/><rect x="${x+w*.34-p}" y="${y-h}" width="${p}" height="${h}" class="c-red"/><rect x="${x-w*.46}" y="${y-h+13*s}" width="${w*.92}" height="${5*s}" class="c-red"/><path d="M${x-w*.6} ${y-h-5*s}Q${x} ${y-h+3*s} ${x+w*.6} ${y-h-5*s}L${x+w*.55} ${y-h+3*s}Q${x} ${y-h+9*s} ${x-w*.55} ${y-h+3*s}Z" class="c-red"/><path d="M${x-w*.64} ${y-h-9*s}Q${x} ${y-h-1*s} ${x+w*.64} ${y-h-9*s}L${x+w*.61} ${y-h-4*s}Q${x} ${y-h+4*s} ${x-w*.61} ${y-h-4*s}Z" class="c-sil"/></g>`}
+function wins(x,y,w,h){let s="";for(let yy=y+6;yy<y+h-6;yy+=10)for(let xx=x+5;xx<x+w-6;xx+=9)if(((xx*7+yy*3)%5)<3)s+=`<rect x="${xx}" y="${yy}" width="4" height="5"/>`;return s}
+function scene(id,label){
+ let b="";
+ if(id==="tokyo"){const bl=[[24,128,40,52],[72,112,30,68],[108,132,26,48],[186,124,30,56],[222,138,38,42],[266,120,30,60]];
+  b=`<circle cx="250" cy="54" r="26" class="c-red"/><g class="c-sil2"><rect x="8" y="104" width="30" height="76"/><rect x="42" y="88" width="24" height="92"/><rect x="196" y="96" width="28" height="84"/><rect x="232" y="114" width="36" height="66"/><rect x="276" y="84" width="34" height="96"/></g><g class="c-sil">${bl.map(r=>`<rect x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[3]}"/>`).join("")}<polygon points="151,180 158,62 162,62 169,180"/><rect x="149" y="92" width="22" height="8" rx="3"/><rect x="153" y="70" width="14" height="6" rx="3"/><rect x="159" y="22" width="2" height="42"/></g><g class="c-gold" opacity=".85">${bl.map(r=>wins(...r)).join("")}</g>`}
+ if(id==="yokohama"){let sp="",gd="";for(let a=0;a<8;a++){const r=a*Math.PI/4;sp+=`<line x1="96" y1="78" x2="${(96+50*Math.cos(r)).toFixed(1)}" y2="${(78+50*Math.sin(r)).toFixed(1)}"/>`}
+  for(let a=0;a<12;a++){const r=a*Math.PI/6;gd+=`<circle cx="${(96+50*Math.cos(r)).toFixed(1)}" cy="${(78+50*Math.sin(r)).toFixed(1)}" r="5.5" class="${["c-sak","c-gold","c-red"][a%3]}"/>`}
+  b=`<circle cx="268" cy="44" r="18" class="c-gold"/><rect x="200" y="42" width="24" height="92" class="c-sil2"/><rect x="204" y="30" width="16" height="14" class="c-sil2"/><rect y="132" width="320" height="48" class="c-sea"/><g class="st-sil" stroke-width="1.5">${sp}</g><circle cx="96" cy="78" r="50" class="st-sil" stroke-width="4"/><path d="M96 78L64 136M96 78L128 136" class="st-sil" stroke-width="5"/>${gd}<circle cx="96" cy="78" r="7" class="c-sil"/><path d="M232 144h66l-11 15h-46z" class="c-red"/><rect x="246" y="130" width="32" height="14" class="c-surf"/><rect x="264" y="118" width="6" height="12" class="c-sil"/><path d="M10 160q10-5 20 0t20 0M150 168q10-5 20 0t20 0M240 172q10-5 20 0t20 0" class="st-snow" stroke-width="2"/>`}
+ if(id==="nagoya"){b=`<circle cx="262" cy="46" r="20" class="c-gold"/><rect y="164" width="320" height="16" class="c-mat"/><circle cx="40" cy="146" r="22" class="c-mat"/><circle cx="66" cy="152" r="16" class="c-mat"/><circle cx="276" cy="148" r="20" class="c-mat"/><polygon points="96,168 224,168 208,138 112,138" class="c-sil2"/><rect x="120" y="112" width="80" height="28" class="c-surf"/><polygon points="106,116 214,116 197,100 123,100" class="c-mat"/><rect x="130" y="84" width="60" height="18" class="c-surf"/><polygon points="118,88 202,88 188,72 132,72" class="c-mat"/><rect x="140" y="58" width="40" height="16" class="c-surf"/><polygon points="130,62 190,62 178,46 142,46" class="c-mat"/><g class="c-sil"><rect x="132" y="120" width="8" height="10"/><rect x="156" y="120" width="8" height="10"/><rect x="180" y="120" width="8" height="10"/><rect x="146" y="90" width="7" height="8"/><rect x="167" y="90" width="7" height="8"/><rect x="156" y="62" width="8" height="8"/></g><path d="M143 47q-6-10 0-16q2 8 5 16z" class="c-gold"/><path d="M177 47q6-10 0-16q-2 8-5 16z" class="c-gold"/>`}
+ if(id==="kyoto"){let pg="";for(let i=0;i<5;i++){const y=162-i*24,w=86-i*12;pg+=`<rect x="${110-w*.28}" y="${y-14}" width="${w*.56}" height="14" class="c-red"/><path d="M${110-w/2} ${y-12}Q110 ${y-19} ${110+w/2} ${y-12}L${110+w*.34} ${y-21}H${110-w*.34}Z" class="c-sil"/>`}
+  b=`<path d="M0 120Q60 78 120 112T240 100T320 108V180H0Z" class="c-sil2" opacity=".5"/><rect y="168" width="320" height="12" class="c-mat"/><rect x="66" y="162" width="88" height="8" class="c-sil2"/>${pg}<rect x="108.5" y="12" width="3" height="34" class="c-sil"/><circle cx="110" cy="22" r="3" class="c-gold"/><circle cx="110" cy="32" r="3" class="c-gold"/>${torii(238,170,1.15)}<rect x="290" y="120" width="5" height="50" class="c-deer"/><circle cx="286" cy="112" r="16" class="c-sak"/><circle cx="302" cy="122" r="12" class="c-sak"/><circle cx="296" cy="100" r="11" class="c-sak"/><circle cx="34" cy="40" r="3" class="c-sak"/><circle cx="190" cy="30" r="2.5" class="c-sak"/><circle cx="270" cy="56" r="3" class="c-sak"/>`}
+ if(id==="nara"){b=`<path d="M6 76L58 48H152L204 76Z" class="c-sil2"/><rect x="30" y="76" width="150" height="44" class="c-sil2" opacity=".75"/><rect x="92" y="88" width="26" height="32" class="c-sil"/><rect y="150" width="320" height="30" class="c-mat"/><g class="c-deer"><ellipse cx="200" cy="124" rx="40" ry="19"/><path d="M226 118L238 84L252 88L242 122Z"/><ellipse cx="252" cy="82" rx="15" ry="10"/><ellipse cx="240" cy="71" rx="8" ry="3.5" transform="rotate(-30 240 71)"/><rect x="170" y="134" width="7" height="34" rx="3"/><rect x="184" y="136" width="7" height="32" rx="3"/><rect x="210" y="136" width="7" height="32" rx="3"/><rect x="224" y="134" width="7" height="34" rx="3"/><path d="M162 118q-9-4-6-13q6 4 8 9z"/></g><g class="c-snow"><circle cx="188" cy="117" r="2.6"/><circle cx="201" cy="113" r="2.6"/><circle cx="213" cy="119" r="2.6"/><circle cx="196" cy="126" r="2.6"/></g><circle cx="256" cy="79" r="2.2" class="c-ink"/><circle cx="266" cy="84" r="2.6" class="c-ink"/><path d="M247 73l-6-18m3 9l-9-4M255 72l4-18m-2 8l9-4" class="st-sil" stroke-width="3" stroke-linecap="round"/><circle cx="284" cy="96" r="9" class="c-gold"/><circle cx="60" cy="36" r="16" class="c-red"/>`}
+ if(id==="osaka"){const ball=(x,y)=>`<circle cx="${x}" cy="${y}" r="25" class="c-deer"/><path d="M${x-22} ${y-6}Q${x} ${y-34} ${x+22} ${y-6}Q${x} ${y-14} ${x-22} ${y-6}Z" class="c-sauce"/><path d="M${x-14} ${y-14}l6 5 6-5 6 5 6-5" class="st-snow" stroke-width="2" stroke-linecap="round"/><circle cx="${x-6}" cy="${y-20}" r="1.6" class="c-mat"/><circle cx="${x+8}" cy="${y-18}" r="1.6" class="c-mat"/>`;
+  b=`<circle cx="60" cy="44" r="22" class="c-gold"/><g class="c-sil2"><rect x="234" y="70" width="64" height="70"/><polygon points="226,74 306,74 292,58 240,58"/><rect x="246" y="40" width="40" height="20"/><polygon points="238,44 294,44 282,28 250,28"/></g><g class="c-gold"><rect x="252" y="62" width="6" height="6"/><rect x="274" y="62" width="6" height="6"/><rect x="262" y="44" width="8" height="8"/></g><ellipse cx="150" cy="156" rx="118" ry="20" class="c-surf"/><ellipse cx="150" cy="156" rx="118" ry="20" class="st-sil" stroke-width="2" opacity=".35"/>${ball(98,136)}${ball(150,130)}${ball(202,136)}<path d="M214 112L252 80" class="st-deer" stroke-width="3" stroke-linecap="round"/>`}
+ if(id==="hiroshima"){b=`<circle cx="70" cy="46" r="22" class="c-red"/><path d="M0 112Q50 52 110 108Q140 84 176 110Z" class="c-mat"/><rect y="108" width="320" height="72" class="c-sea"/><g transform="translate(0 280) scale(1 -1)" opacity=".28">${torii(200,140,1.35)}</g>${torii(200,140,1.35)}<path d="M20 150q10-5 20 0t20 0M90 166q10-5 20 0t20 0M250 158q10-5 20 0t20 0" class="st-snow" stroke-width="2"/><path d="M252 38l32 10-15 4 15 14-25-8-17 9 6-13z" class="c-snow"/><path d="M252 38l32 10-15 4 15 14-25-8-17 9 6-13z" class="st-sil" stroke-width="1"/>`}
+ if(id==="fukuoka"){b=`<line x1="54" y1="0" x2="54" y2="18" class="st-sil" stroke-width="2"/><ellipse cx="54" cy="46" rx="22" ry="27" class="c-red"/><rect x="42" y="16" width="24" height="6" class="c-sil"/><rect x="42" y="70" width="24" height="6" class="c-sil"/><text x="54" y="54" text-anchor="middle" style="font-family:var(--f-kana);font-size:22px" class="c-snow">ら</text><path d="M150 72q-6-10 0-18t0-18M180 70q-6-10 0-18t0-18M210 72q-6-10 0-18t0-18" class="st-muted" stroke-width="2.4" stroke-linecap="round" opacity=".6"/><path d="M98 112H262Q258 172 180 174Q102 172 98 112Z" class="c-red"/><path d="M110 138h140" class="st-snow" stroke-width="2" stroke-dasharray="2 8" stroke-linecap="round"/><ellipse cx="180" cy="112" rx="82" ry="15" class="c-broth"/><path d="M118 112q10-6 20 0t20 0 20 0 20 0 20 0 20 0" class="st-gold" stroke-width="2.4"/><ellipse cx="148" cy="106" rx="14" ry="10" class="c-snow"/><circle cx="148" cy="106" r="6" class="c-gold"/><rect x="200" y="86" width="20" height="26" class="c-sil" transform="rotate(10 210 99)"/><circle cx="178" cy="104" r="9" class="c-snow"/><path d="M178 104m-2 0a2 2 0 104 0a4 4 0 10-8 0" class="st-sak" stroke-width="2"/><path d="M228 60L292 124M240 56L302 116" class="st-deer" stroke-width="5" stroke-linecap="round"/>`}
+ if(id==="okinawa"){b=`<circle cx="236" cy="52" r="28" class="c-gold"/><rect y="104" width="320" height="76" class="c-sea"/><path d="M0 142Q160 118 320 150V180H0Z" class="c-sand"/><path d="M180 122q12-5 24 0t24 0M40 120q12-5 24 0t24 0" class="st-snow" stroke-width="2"/><path d="M92 164Q98 112 122 72" class="st-deer" stroke-width="8" stroke-linecap="round"/><g class="c-mat"><path d="M122 72Q92 48 60 70Q92 60 122 74Z"/><path d="M122 72Q120 36 92 26Q114 46 120 74Z"/><path d="M122 72Q150 40 180 50Q150 54 124 76Z"/><path d="M122 72Q160 66 178 92Q154 78 122 76Z"/><path d="M122 72Q98 80 86 104Q104 84 122 76Z"/></g><circle cx="118" cy="80" r="5" class="c-deer"/><circle cx="128" cy="80" r="5" class="c-deer"/><g class="c-sak"><circle cx="262" cy="150" r="7"/><circle cx="272" cy="144" r="7"/><circle cx="276" cy="156" r="7"/><circle cx="264" cy="162" r="7"/><circle cx="256" cy="156" r="7"/></g><circle cx="266" cy="153" r="4" class="c-gold"/>`}
+ if(id==="sapporo"){b=`<path d="M0 140Q160 122 320 140V180H0Z" class="c-snow"/><path d="M0 140Q160 122 320 140" class="st-sil" stroke-width="1" opacity=".25"/><g class="c-surf"><rect x="198" y="84" width="84" height="66"/><rect x="222" y="44" width="36" height="42"/></g><g class="st-sil" stroke-width="1.5" opacity=".5"><rect x="198" y="84" width="84" height="66"/><rect x="222" y="44" width="36" height="42"/></g><polygon points="190,88 290,88 240,62" class="c-red"/><polygon points="218,46 262,46 240,22" class="c-red"/><circle cx="240" cy="62" r="11" class="c-snow"/><circle cx="240" cy="62" r="11" class="st-sil" stroke-width="2"/><path d="M240 62v-7M240 62h5" class="st-sil" stroke-width="2" stroke-linecap="round"/><g class="c-sil2"><rect x="210" y="104" width="12" height="18"/><rect x="234" y="104" width="12" height="18"/><rect x="258" y="104" width="12" height="18"/></g><circle cx="94" cy="134" r="30" class="c-snow"/><circle cx="94" cy="88" r="21" class="c-snow"/><circle cx="94" cy="134" r="30" class="st-sil" stroke-width="2" opacity=".5"/><circle cx="94" cy="88" r="21" class="st-sil" stroke-width="2" opacity=".5"/><rect x="74" y="104" width="42" height="9" rx="4" class="c-red"/><rect x="104" y="108" width="9" height="22" rx="3" class="c-red"/><rect x="78" y="60" width="32" height="10" class="c-sil"/><rect x="84" y="44" width="20" height="18" class="c-sil"/><circle cx="87" cy="85" r="2.6" class="c-ink"/><circle cx="101" cy="85" r="2.6" class="c-ink"/><polygon points="94,91 94,96 108,94" class="c-gold"/><g class="c-snow">${[[30,30],[60,60],[150,20],[170,70],[290,30],[140,110],[310,90],[20,96],[130,46]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3"/>`).join("")}</g>`}
+ if(id==="fuji"){b=`<circle cx="226" cy="64" r="30" class="c-red"/><path d="M8 180L130 52Q160 40 190 52L312 180Z" class="c-fuji"/><path d="M130 52Q160 40 190 52L214 78L199 71L187 84L173 71L160 86L147 71L134 82L116 66Z" class="c-snow"/><ellipse cx="60" cy="96" rx="34" ry="9" class="c-snow" opacity=".9"/><ellipse cx="272" cy="118" rx="38" ry="9" class="c-snow" opacity=".9"/><path d="M0 170Q80 150 160 168T320 164V180H0Z" class="c-mat"/>`}
+ return `<svg class="scene" viewBox="0 0 320 180" role="img" aria-label="${esc(label||"")}" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="skyg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--sky-top)"/><stop offset="1" style="stop-color:var(--sky-bot)"/></linearGradient></defs><rect width="320" height="180" fill="url(#skyg)"/>${b}</svg>`;
+}
+
+/* ---------- map ---------- */
+const PX=(lon,lat)=>[(lon-128.6)*34,(45.7-lat)*42];
+const QX=(lon,lat)=>[455+(lon-127.5)*95,528+(27-lat)*95];
+const HOK=[141.9,45.5,142.5,45.0,143.3,44.3,144.3,44.0,145.3,44.3,145.0,43.6,145.8,43.4,144.4,42.95,143.3,42.0,141.7,42.6,141.0,42.4,140.4,41.8,140.0,41.4,140.0,42.0,139.8,42.6,140.4,43.2,141.4,43.3,141.6,44.3,141.7,45.0];
+const HON=[141.4,41.5,141.5,40.6,142.0,39.6,141.6,38.7,141.0,38.3,141.0,37.5,140.9,36.8,140.6,36.2,140.8,35.7,140.4,35.2,139.9,34.9,139.8,35.4,139.6,35.3,139.1,35.1,138.8,34.6,138.6,35.0,138.2,34.6,137.3,34.7,137.0,34.6,136.9,35.0,136.6,34.6,136.9,34.3,136.3,34.0,135.8,33.5,135.1,33.9,135.2,34.3,135.4,34.7,135.0,34.65,134.2,34.6,133.4,34.4,132.5,34.3,131.9,33.9,131.0,34.0,131.0,34.4,131.7,34.7,132.6,35.4,133.4,35.5,134.2,35.6,135.1,35.7,135.6,35.5,136.0,35.7,136.1,36.3,136.7,36.7,136.8,37.3,137.3,37.5,137.0,36.9,137.5,36.8,138.2,37.1,138.8,37.8,139.4,38.3,139.8,39.0,139.9,39.9,140.0,40.6,140.3,41.2,140.8,41.0,141.2,41.2];
+const SHI=[132.4,33.0,132.0,33.35,132.7,33.85,133.4,34.2,134.0,34.35,134.6,34.2,134.7,33.8,134.2,33.3,133.6,33.5,133.0,32.75,132.6,32.8];
+const KYU=[130.9,34.0,131.0,33.6,131.7,33.6,131.7,33.2,131.9,32.8,131.5,32.0,131.1,31.4,130.7,31.0,130.6,31.5,130.2,31.2,130.2,31.6,130.2,32.1,130.6,32.6,130.2,32.6,129.8,32.7,129.7,33.1,129.9,33.5,130.4,33.6];
+const SADO=[138.2,38.3,138.5,38.32,138.55,37.85,138.25,37.8];
+const OKI=[127.65,26.08,127.75,26.2,127.8,26.45,128.0,26.6,128.25,26.85,128.32,26.78,128.05,26.45,127.95,26.3,127.85,26.15,127.7,26.05];
+function pts(a,f){const o=[];for(let i=0;i<a.length;i+=2)o.push(f(a[i],a[i+1]));return o}
+function smooth(p){const n=p.length;let d=`M${p[0][0].toFixed(1)},${p[0][1].toFixed(1)}`;for(let i=0;i<n;i++){const p0=p[(i-1+n)%n],p1=p[i],p2=p[(i+1)%n],p3=p[(i+2)%n];d+=`C${(p1[0]+(p2[0]-p0[0])/6).toFixed(1)},${(p1[1]+(p2[1]-p0[1])/6).toFixed(1)} ${(p2[0]-(p3[0]-p1[0])/6).toFixed(1)},${(p2[1]-(p3[1]-p1[1])/6).toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`}return d+"Z"}
+const LAND=[HOK,HON,SHI,KYU,SADO].map(a=>smooth(pts(a,PX))).join(" ")+" "+smooth(pts(OKI,QX));
+function mapSVG(){
+ const lbl=(x,y,s,pos)=>{const o={r:[x+20,y+5,"start"],l:[x-20,y+5,"end"],t:[x,y-22,"middle"],b:[x,y+31,"middle"]}[pos];return `<text class="lbl" x="${o[0]}" y="${o[1]}" text-anchor="${o[2]}">${esc(s)}</text>`};
+ const seq=CITIES.map(c=>c.pin).concat([FUJI.pin]);
+ let routes="";
+ for(let i=0;i<seq.length-1;i++){const a=seq[i],b=seq[i+1];let d=`M${a[0]},${a[1]}L${b[0]},${b[1]}`;
+  if(i===7)d=`M${a[0]},${a[1]}Q230,690 ${b[0]},${b[1]}`;if(i===8)d=`M${a[0]},${a[1]}Q640,300 ${b[0]},${b[1]}`;if(i===9)d=`M${a[0]},${a[1]}Q330,250 ${b[0]},${b[1]}`;
+  routes+=`<path class="m-route${passed(CITIES[i].id)?" done":""}" d="${d}"/>`}
+ let leaders="",pins="";const ci=curIndex();
+ CITIES.forEach((c,i)=>{const real=c.inset?QX(...c.ll):PX(...c.ll);const [x,y]=c.pin;
+  leaders+=`<line class="m-leader" x1="${real[0].toFixed(1)}" y1="${real[1].toFixed(1)}" x2="${x}" y2="${y}"/><circle class="m-dot" cx="${real[0].toFixed(1)}" cy="${real[1].toFixed(1)}" r="3"/>`;
+  const state=passed(c.id)?"done":unlocked(i)?"cur":"lock";
+  pins+=`<g class="pin ${state}" data-a="city" data-arg="${c.id}" tabindex="0" role="button" aria-label="${esc(tr(c.name))}">${state==="cur"?`<circle class="ring" cx="${x}" cy="${y}" r="16"/>`:""}<circle class="b" cx="${x}" cy="${y}" r="16"/><text class="n" x="${x}" y="${y+1}">${state==="done"?"✓":i+1}</text>${lbl(x,y,tr(c.name),c.lp)}</g>`});
+ const fr=PX(...FUJI.ll),[fx,fy]=FUJI.pin,fs=S.fin.passed?"done":ci===-1?"cur":"lock";
+ leaders+=`<line class="m-leader" x1="${fr[0].toFixed(1)}" y1="${fr[1].toFixed(1)}" x2="${fx}" y2="${fy}"/><circle class="m-dot" cx="${fr[0].toFixed(1)}" cy="${fr[1].toFixed(1)}" r="3"/>`;
+ pins+=`<g class="pin ${fs}" data-a="nav" data-arg="final" tabindex="0" role="button" aria-label="${esc(tr(FUJI.name))}">${fs==="cur"?`<circle class="ring" cx="${fx}" cy="${fy}" r="17"/>`:""}<circle class="b" cx="${fx}" cy="${fy}" r="17"/><path class="fujiic" d="M${fx-10} ${fy+6}L${fx-3} ${fy-6}H${fx+3}L${fx+10} ${fy+6}Z"/>${lbl(fx,fy,"富士山 "+tr(FUJI.name).replace(/^Mount |^Гора |\s?tog‘i$/g,""),"t")}</g>`;
+ const isl=[["北海道",143,43.55],["本州",140.35,39.3],["四国",133.55,33.75],["九州",130.85,32.55]].map(a=>{const p=PX(a[1],a[2]);return `<text class="m-isl" x="${p[0].toFixed(0)}" y="${p[1].toFixed(0)}" text-anchor="middle">${a[0]}</text>`}).join("");
+ return `<svg class="map-svg" viewBox="0 0 600 640" role="img" aria-label="${esc(t("map_title"))}"><defs><pattern id="waves" width="44" height="22" patternUnits="userSpaceOnUse"><path class="m-wave" d="M0 14q11-9 22 0t22 0"/></pattern></defs><rect width="600" height="640" class="m-sea"/><rect width="600" height="640" fill="url(#waves)" opacity=".7"/>
+ <rect class="m-inset" x="445" y="518" width="146" height="114" rx="12"/><text class="m-insetlbl" x="456" y="537">沖縄 · ${esc(tr(CITY.okinawa.name))}</text>
+ <path class="m-land" d="${LAND}"/>${isl}
+ <text class="m-sealbl" x="190" y="250" text-anchor="middle">${esc(tr(["Sea of Japan","Японское море","Yapon dengizi"]))}</text>
+ <text class="m-sealbl" x="520" y="330" text-anchor="middle">${esc(tr(["Pacific","Тихий океан","Tinch okeani"]))}</text>
+ <g class="m-compass" transform="translate(48 330)"><circle r="18" class="m-inset" style="stroke-dasharray:none"/><path d="M0 -14L5 0L0 14L-5 0Z" class="c-red"/><text y="-24" text-anchor="middle">N</text></g>
+ ${routes}${leaders}${pins}</svg>`;
+}
+
+/* ---------- speech & sound ---------- */
+let jaVoice=null;
+function loadVoices(){try{const v=speechSynthesis.getVoices();jaVoice=v.find(x=>/^ja/i.test(x.lang))||null}catch(e){}}
+if("speechSynthesis" in window){loadVoices();try{speechSynthesis.addEventListener("voiceschanged",loadVoices)}catch(e){}}
+const canListen=()=>!!jaVoice;
+function speak(text){if(!("speechSynthesis" in window)){toast(t("no_speech"));return}try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="ja-JP";u.rate=.8;if(jaVoice)u.voice=jaVoice;speechSynthesis.speak(u)}catch(e){toast(t("no_speech"))}}
+let AC=null;
+function tone(ok){if(!S.sound)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const now=AC.currentTime;const notes=ok?[660,880]:[220,180];notes.forEach((f,i)=>{const o=AC.createOscillator(),g=AC.createGain();o.type=ok?"sine":"triangle";o.frequency.value=f;g.gain.setValueAtTime(.0001,now+i*.11);g.gain.exponentialRampToValueAtTime(.18,now+i*.11+.02);g.gain.exponentialRampToValueAtTime(.0001,now+i*.11+.22);o.connect(g).connect(AC.destination);o.start(now+i*.11);o.stop(now+i*.11+.25)})}catch(e){}}
+let toastT=0;function toast(m){const el=document.getElementById("toast");el.textContent=m;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,2400)}
+function petals(){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;const cv=document.getElementById("petals");cv.hidden=false;const W=cv.width=innerWidth,H=cv.height=innerHeight,ctx=cv.getContext("2d");const cs=getComputedStyle(document.documentElement);const cols=[cs.getPropertyValue("--sakura"),cs.getPropertyValue("--red"),cs.getPropertyValue("--gold")];
+ const P=Array.from({length:70},()=>({x:Math.random()*W,y:-20-Math.random()*H*.5,r:5+Math.random()*6,vy:1.5+Math.random()*2.5,vx:-1+Math.random()*2,a:Math.random()*6,va:-.1+Math.random()*.2,c:pick(cols)}));let f=0;
+ (function step(){ctx.clearRect(0,0,W,H);P.forEach(p=>{p.x+=p.vx+Math.sin((f+p.a*20)/20);p.y+=p.vy;p.a+=p.va;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.a);ctx.fillStyle=p.c;ctx.beginPath();ctx.ellipse(0,0,p.r,p.r*.6,0,0,Math.PI*2);ctx.fill();ctx.restore()});f++;if(f<200)requestAnimationFrame(step);else{ctx.clearRect(0,0,W,H);cv.hidden=true}})()}
+
+/* ---------- views ---------- */
+let V={v:"map"},EX=null,G=null,AB={tab:"h",sel:"あ"},GF={q:"",city:"all"},RC=false;
+const NAV=[["map","nav_map",I.map],["abc","nav_abc",I.abc],["gloss","nav_gloss",I.book],["stats","nav_stats",I.chart],["final","nav_final",I.fuji]];
+function navCurrent(){return V.v==="city"?"map":V.v==="cert"?"final":V.v}
+function header(){
+ const dark=effTheme()==="dark";
+ return `<button class="brand" data-a="nav" data-arg="map" aria-label="Study Japanese by Nasirova Samina">${LOGO}<span class="brand-txt"><span class="brand-name">Study Japanese</span><span class="brand-by">by Nasirova Samina</span></span></button>
+ <nav class="nav" aria-label="Main">${NAV.map(n=>`<button data-a="nav" data-arg="${n[0]}" ${navCurrent()===n[0]?'aria-current="page"':""}>${n[2]}<span>${t(n[1])}</span></button>`).join("")}</nav>
+ <div class="tools"><div class="seg" role="group" aria-label="Language">${LANGS.map(l=>`<button data-a="lang" data-arg="${l}" aria-pressed="${S.lang===l}">${l.toUpperCase()}</button>`).join("")}</div>
+ <button class="icon-btn" data-a="theme" aria-label="${esc(t("theme"))}" title="${esc(t("theme"))}">${dark?I.sun:I.moon}</button></div>`}
+function bottomnav(){return NAV.map(n=>`<button data-a="nav" data-arg="${n[0]}" ${navCurrent()===n[0]?'aria-current="page"':""}>${n[2]}<span>${t(n[1])}</span></button>`).join("")}
+
+function vMap(){
+ const np=nPassed(),ci=curIndex();let msg;
+ if(S.fin.passed)msg=t("m_done");else if(ci===-1)msg=t("m_fuji");else if(np===0)msg=t("m_hello");else msg=t("m_next",{n:np,city:tr(CITIES[ci].name)});
+ const totalStars=CITIES.reduce((s,c)=>s+(S.st[c.id]?S.st[c.id].stars:0),0);
+ const nx=ci===-1?null:CITIES[ci];
+ const nextCard=nx?`<div class="card next">${scene(nx.scene,tr(nx.name))}<div class="next-body"><div><div class="eyebrow">${t("next_stop")} · ${t("stage")} ${nx.i+1}</div><div><span class="next-name">${tr(nx.name)}</span><span class="next-jp">${nx.jp}</span></div><div class="rl-topic">${tr(nx.topic)}</div></div><button class="btn" data-a="city" data-arg="${nx.id}">${t("go")}</button></div></div>`
+  :`<div class="card next">${scene("fuji",tr(FUJI.name))}<div class="next-body"><div><div class="eyebrow">${t("next_stop")}</div><div><span class="next-name">${tr(FUJI.name)}</span><span class="next-jp">${FUJI.jp}</span></div></div><button class="btn gold" data-a="nav" data-arg="final">${S.fin.passed?t("open_cert"):t("go")}</button></div></div>`;
+ const list=CITIES.map((c,i)=>{const s=passed(c.id)?"done":unlocked(i)?"cur":"lock";return `<li><button data-a="city" data-arg="${c.id}"><span class="badge ${s}">${s==="done"?"✓":i+1}</span><span style="min-width:0"><span class="rl-name">${tr(c.name)}<small>${c.jp}</small></span><span class="rl-topic" style="display:block">${tr(c.topic)}</span></span>${s==="lock"?I.lock:stars(S.st[c.id]?S.st[c.id].stars:0)}</button></li>`}).join("");
+ return `<section class="home"><div class="card map-card"><h1 class="h1">${t("map_title")}</h1><p class="sub">${t("map_sub")}</p>${mapSVG()}</div>
+ <aside class="journey"><div class="mochi-box">${mochi()}<div class="bubble">${msg}</div></div>
+ <div class="card prog"><div class="prog-top"><span>${t("journey")}</span><b>${np} / 10</b></div><div class="bar"><i style="width:${np*10}%"></i></div><div class="prog-top" style="margin-top:10px;font-size:13px;color:var(--muted)"><span>${np} ${t("stamps")}</span><span>★ ${totalStars} / 30</span></div></div>
+ ${nextCard}<ol class="card route-list">${list}</ol></aside></section>`}
+
+function vCity(){
+ const c=CITY[V.id],s=st(c.id),step=V.step||"explore";
+ const steps=[["explore","s_explore",s.ex],["learn","s_learn",s.le],["game","s_game",s.ga],["exam","s_exam",s.pass]];
+ let body="";
+ if(step==="explore"){if(!s.ex){s.ex=1;save()}
+  body=`<div class="section"><div class="section-head"><h2 class="h2">${t("facts")}</h2></div><div class="facts">${c.facts.map(f=>`<article class="card fact"><div class="fact-tag"><span class="jpt">豆知識</span>${t("fact")}</div><p>${tr(f)}</p></article>`).join("")}</div>
+  <div class="card tipcard mochi-box">${mochi()}<div class="bubble"><b>${t("tip")}:</b> ${tr(c.tip)}</div></div>
+  <div class="row" style="margin-top:18px"><button class="btn" data-a="step" data-arg="learn">${t("to_learn")} →</button></div></div>`}
+ if(step==="learn"){
+  const ch=itemsOf(c).filter(x=>x.t==="c"),wd=itemsOf(c).filter(x=>x.t==="w");
+  body=`<div class="section"><div class="section-head"><h2 class="h2">${t("chars")} · ${ch.length}</h2><span class="hint">${I.sound}${t("tap_hint")}</span></div>
+  <div class="kgrid-learn">${ch.map(x=>`<button class="kcard" data-a="say" data-arg="${x.say}"><span class="k">${x.c}</span><span class="r">${x.r}</span>${x.num?`<span class="m">${x.num}</span>`:""}</button>`).join("")}</div></div>
+  <div class="section"><div class="section-head"><h2 class="h2">${t("words")} · ${wd.length}</h2></div><div class="wgrid">${wd.map(x=>`<button class="wcard" data-a="say" data-arg="${x.say}"><span class="e">${x.e}</span><span class="w">${x.c}</span><span class="wr">${x.r}</span><span class="wm">${esc(tr(x.m))}</span></button>`).join("")}</div></div>
+  <div class="card tipcard mochi-box">${mochi()}<div class="bubble"><b>${t("tip")}:</b> ${tr(c.tip)}</div></div>
+  <div class="row" style="margin-top:18px"><button class="btn" data-a="learned">${t("learned_btn")} →</button></div>`}
+ if(step==="game"){body=`<div class="section" id="ghost">${gamesHTML(c)}</div>`}
+ if(step==="exam"){body=`<div class="section" id="exam-host">${EX&&EX.scope==="city"&&EX.id===c.id?examHTML():`<div class="card intro">${mochi()}<h2 class="h2">${t("s_exam")} · ${tr(c.name)}</h2><p class="sub" style="margin:0">${t("exam_intro")}</p>${s.att?`<p class="hint">${t("best")}: <b>${s.best}%</b> ${stars(s.stars)}</p>`:""}<button class="btn" data-a="examStart">${t("start")}</button></div>`}</div>`}
+ return `<button class="back" data-a="nav" data-arg="map">${I.back}${t("back_map")}</button>
+ <header class="card city-hero">${scene(c.scene,tr(c.name))}<div class="city-id"><span class="eyebrow">${t("stage")} ${c.i+1} / 10</span><div class="city-jp" lang="ja">${c.jp}</div><h1 class="city-name">${tr(c.name)}</h1><p class="topic">${tr(c.topic)}</p><div class="namemean"><b>${t("name_means")}:</b> ${tr(c.nm)}</div></div></header>
+ <nav class="steps" aria-label="Steps">${steps.map(x=>`<button class="step ${x[2]?"done":""}" data-a="step" data-arg="${x[0]}" ${step===x[0]?'aria-current="step"':""}><span class="ck">${x[2]?"✓":""}</span><span class="t">${t(x[1])}</span></button>`).join("")}</nav>${body}`}
+
+function newGame(c){const items=shuffle(itemsOf(c).filter(x=>x.t==="c")).slice(0,6);const cards=[];items.forEach((it,i)=>{cards.push({p:i,txt:it.c,k:1,say:it.say});cards.push({p:i,txt:it.r,k:0,say:it.say})});G={city:c.id,cards:shuffle(cards),open:[],matched:[],moves:0,lock:false,won:false}}
+/* ----- games hub ----- */
+const GAMES=[["mem","g_mem","g_mem_d","🀄"],["catch","g_catch","g_catch_d","🌸"],["build","g_build","g_build_d","🧩"],["ninja","g_ninja","g_ninja_d","🥷"]];
+let CG=null,CRAF=0,BG=null,NG=null,NT=0;
+function markGame(cid,g){const s=st(cid);s.gm=s.gm||{};s.gm[g]=1;s.ga=1;save();petals();tone(true)}
+function winBox(msg,lose){return `<div class="win ${lose?"lose":""}">${msg}</div>`+(lose?"":`<div class="row" style="margin-top:10px;justify-content:center"><button class="btn" data-a="step" data-arg="exam">${t("to_exam")} →</button><button class="btn ghost" data-a="game" data-arg="">${t("g_back")}</button></div>`)}
+function stopGames(){cancelAnimationFrame(CRAF);clearInterval(NT)}
+function gamesHTML(c){
+ const gm=st(c.id).gm||{};
+ if(!V.game)return `<div class="section-head"><div><h2 class="h2">${t("g_title")}</h2><p class="sub">${t("g_sub")}</p></div></div><div class="gpick">${GAMES.map((g,i)=>`<button class="card gcard" data-a="game" data-arg="${g[0]}"><span class="gic gic${i}" aria-hidden="true">${g[3]}</span><span class="gname">${t(g[1])}</span><span class="gdesc">${t(g[2])}</span><span class="gdone ${gm[g[0]]?"on":""}">${gm[g[0]]?"✓ "+t("g_done"):"▶ "+t("start")}</span></button>`).join("")}</div>`;
+ const g=GAMES.find(x=>x[0]===V.game);
+ let inner="";
+ if(V.game==="mem"){if(!G||G.city!==c.id)newGame(c);inner=gameHTML()}
+ if(V.game==="catch"){if(!CG||CG.city!==c.id)newCatch(c);inner=catchHTML()}
+ if(V.game==="build"){if(!BG||BG.city!==c.id)newBuild(c);inner=buildHTML()}
+ if(V.game==="ninja"){if(!NG||NG.city!==c.id)newNinja(c);inner=ninjaHTML()}
+ return `<div class="ghead"><button class="back" style="margin:0" data-a="game" data-arg="">${I.back}${t("g_back")}</button><h2 class="h2">${g[3]} ${t(g[1])}</h2></div>${inner}`}
+function ghost(game){if(V.v!=="city"||V.step!=="game"||(game&&V.game!==game))return;const h=document.getElementById("ghost");if(h)h.innerHTML=gamesHTML(CITY[V.id])}
+
+/* sakura catch */
+function newCatch(c){const pool=itemsOf(c).filter(x=>x.t==="c");CG={city:c.id,pool,target:pick(pool),items:[],score:0,lives:3,over:false,won:false,started:false,next:0,id:0,last:0}}
+function livesHTML(n){return "❤️".repeat(n)+"🤍".repeat(3-n)}
+function catchHTML(){const g=CG;
+ return `<p class="sub" style="margin-bottom:12px">${t("c_goal")}</p><div class="chud card"><span>${t("c_find")} <b class="ctarget" id="ctarget">${g.target.r}</b></span><span>${t("score")}: <b id="cscore">${g.score}</b> / 10</span><span id="clives" aria-label="${esc(t("lives"))}">${livesHTML(g.lives)}</span></div>
+ <div class="carea" id="carea">${!g.started||g.over?`<div class="cover">${g.over?winBox(g.won?t("c_win"):t("c_lose"),!g.won):`<div style="font-size:56px">🌸</div>`}${g.won?"":`<button class="btn" style="margin-top:12px" data-a="cStart">${g.over?t("try_again"):t("start")}</button>`}</div>`:""}</div>`}
+function startCatch(){cancelAnimationFrame(CRAF);CG.items=[];CG.last=performance.now();CG.next=0;CRAF=requestAnimationFrame(catchLoop)}
+function catchLoop(now){const g=CG,area=document.getElementById("carea");if(!g||!area||g.over||!g.started)return;
+ const dt=Math.min(.05,(now-g.last)/1000);g.last=now;const Hh=area.clientHeight;
+ g.next-=dt;
+ if(g.next<=0){g.next=Math.max(.5,1-g.score*.04);const it=(Math.random()<.4||!g.items.some(o=>o.it===g.target))?g.target:pick(g.pool);
+  const el=document.createElement("button");el.className="petal";el.dataset.a="cHit";el.dataset.arg=++g.id;el.innerHTML=`<span lang="ja">${it.c}</span>`;el.style.left=(3+Math.random()*78)+"%";area.appendChild(el);
+  g.items.push({id:g.id,it,y:-72,v:60+g.score*7+Math.random()*30,el,rot:Math.random()*40-20})}
+ g.items=g.items.filter(o=>{o.y+=o.v*dt;if(o.y>Hh){o.el.remove();return false}o.el.style.transform=`translateY(${o.y.toFixed(1)}px) rotate(${o.rot}deg)`;return true});
+ CRAF=requestAnimationFrame(catchLoop)}
+function catchHit(id){const g=CG;if(!g||g.over)return;const o=g.items.find(x=>x.id===+id);if(!o)return;
+ if(o.it===g.target){g.score++;tone(true);o.el.remove();g.items=g.items.filter(x=>x!==o);speak(o.it.say);
+  const others=g.pool.filter(x=>x!==g.target);g.target=pick(others.length?others:g.pool);
+  if(g.score>=10){g.over=g.won=true;stopGames();markGame(g.city,"catch");ghost("catch");return}
+  document.getElementById("ctarget").textContent=g.target.r;document.getElementById("cscore").textContent=g.score}
+ else{g.lives--;tone(false);o.el.classList.add("miss");setTimeout(()=>{o.el.remove()},250);g.items=g.items.filter(x=>x!==o);
+  if(g.lives<=0){g.over=true;stopGames();ghost("catch");return}
+  document.getElementById("clives").textContent=livesHTML(g.lives)}}
+
+/* word builder */
+function newBuild(c){const pool=[...new Set(c.words.flatMap(w=>[...w[0]]))];BG={city:c.id,words:shuffle(c.words).slice(0,5),i:0,pool,won:false};setupBuild()}
+function setupBuild(){const ch=[...BG.words[BG.i][0]];const extra=shuffle(BG.pool.filter(x=>!ch.includes(x))).slice(0,Math.max(2,Math.min(3,7-ch.length)));BG.tiles=shuffle([...ch,...extra]).map(x=>({ch:x,used:false}));BG.slots=ch.map(()=>null);BG.state="play";BG.hint=false}
+function buildHTML(){const g=BG;if(g.won)return `<div class="card build">${mochi()}${winBox(t("b_win"))}</div>`;
+ const w=g.words[g.i];
+ return `<p class="sub" style="margin-bottom:12px">${t("g_build_d")}</p><div class="card build ${g.state}"><div class="qbar" style="width:100%">${g.words.map((_,j)=>`<i class="${j<g.i?"ok":j===g.i?"cur":""}"></i>`).join("")}</div><div class="qcount">${t("b_word")} ${g.i+1} / ${g.words.length}</div><div class="bemoji">${w[5]}</div><div class="qtext">${esc(tr([w[2],w[3],w[4]]))}</div>
+ ${g.hint?`<div class="qrom">${w[1]}</div>`:`<button class="btn ghost small" data-a="bHint">💡 ${t("b_hint")}</button>`}
+ <div class="slots">${g.slots.map((s,i)=>`<button class="slot ${s!==null?"full":""}" data-a="bSlot" data-arg="${i}" lang="ja">${s!==null?g.tiles[s].ch:""}</button>`).join("")}</div>
+ <div class="fbline">${g.state==="ok"?`<span class="fb ok">${t("correct")} ${w[0]} · ${w[1]}</span>`:g.state==="bad"?`<span class="fb bad">${t("b_wrong")}</span>`:""}</div>
+ <div class="tiles">${g.tiles.map((x,i)=>`<button class="tile" data-a="bTile" data-arg="${i}" lang="ja" ${x.used||g.state!=="play"?"disabled":""}>${x.ch}</button>`).join("")}</div></div>`}
+function bTile(i){const g=BG;if(!g||g.state!=="play"||g.tiles[i].used)return;const e=g.slots.indexOf(null);if(e<0)return;g.slots[e]=i;g.tiles[i].used=true;
+ if(!g.slots.includes(null)){const w=g.words[g.i];if(g.slots.map(s=>g.tiles[s].ch).join("")===w[0]){g.state="ok";speak(w[0]);tone(true);
+   setTimeout(()=>{if(BG!==g)return;g.i++;if(g.i>=g.words.length){g.won=true;markGame(g.city,"build")}else setupBuild();ghost("build")},1300)}
+  else{g.state="bad";tone(false);setTimeout(()=>{if(BG!==g)return;g.slots=g.slots.map(()=>null);g.tiles.forEach(x=>x.used=false);g.state="play";ghost("build")},900)}}
+ ghost("build")}
+
+/* ninja speed */
+function newNinja(c){NG={city:c.id,pool:itemsOf(c),time:30,score:0,run:false,over:false,won:false}}
+function ninjaRound(){const g=NG,it=pick(g.pool);let r=it.r;if(Math.random()<.5){const o=shuffle(g.pool.filter(x=>x.t===it.t&&x.r!==it.r));if(o.length)r=o[0].r}g.cur={it,r,ok:r===it.r}}
+function nPairHTML(){const c=NG.cur;return `<span class="nk ${[...c.it.c].length>2?"sm":""}" lang="ja">${c.it.c}</span><span class="neq">=</span><span class="nr">${c.r}</span>`}
+function ninjaHTML(){const g=NG,best=st(g.city).nb||0;
+ if(!g.run)return `<div class="card build"><div style="font-size:64px;line-height:1">🥷</div><p class="sub" style="margin:0 auto">${t("n_goal")}</p>${g.over?winBox(g.won?t("n_win",{n:g.score}):t("n_lose",{n:g.score}),!g.won):""}${best?`<p class="hint">${t("best")}: <b>${best}</b></p>`:""}${g.won?"":`<button class="btn gold" data-a="nStart">${g.over?t("try_again"):t("start")}</button>`}</div>`;
+ return `<div class="card ninja"><div class="nhud"><span>${t("score")}: <b id="nscore">${g.score}</b> / 10</span><span>${t("n_time")}: <b id="ntime">${Math.ceil(g.time)}</b></span></div><div class="bar"><i id="nbar" style="width:${g.time/30*100}%"></i></div><div class="npair" id="npair">${nPairHTML()}</div><div class="nbtns"><button class="btn nyes" data-a="nAns" data-arg="1">✓ ${t("n_yes")}</button><button class="btn nno" data-a="nAns" data-arg="0">✗ ${t("n_no")}</button></div><p class="hint" style="justify-content:center">⌨ ← ✓ · ✗ →</p></div>`}
+function startNinja(){clearInterval(NT);let last=performance.now();NT=setInterval(()=>{const g=NG,tm=document.getElementById("ntime");if(!g||!g.run||!tm){clearInterval(NT);return}const now=performance.now();g.time-=(now-last)/1000;last=now;if(g.time<=0){g.time=0;endNinja();return}tm.textContent=Math.ceil(g.time);document.getElementById("nbar").style.width=(g.time/30*100)+"%"},100)}
+function endNinja(){const g=NG;clearInterval(NT);g.run=false;g.over=true;g.won=g.score>=10;const s=st(g.city);s.nb=Math.max(s.nb||0,g.score);save();if(g.won)markGame(g.city,"ninja");else tone(false);ghost("ninja")}
+function nAns(yes){const g=NG;if(!g||!g.run)return;const right=yes===g.cur.ok;const box=document.getElementById("npair");
+ if(right){g.score++;tone(true)}else{g.time=Math.max(0,g.time-3);tone(false)}
+ ninjaRound();if(box){box.innerHTML=nPairHTML();box.classList.remove("ok","bad");void box.offsetWidth;box.classList.add(right?"ok":"bad")}
+ const sc=document.getElementById("nscore");if(sc)sc.textContent=g.score}
+
+/* memory */
+function gameHTML(){return `<div class="game"><div><p class="sub" style="margin-bottom:14px">${t("game_sub")}</p><div class="mgrid" id="mgrid">${G.cards.map((cd,i)=>`<button class="mc ${G.matched.includes(i)?"match":G.open.includes(i)?"open":""}" data-a="flip" data-arg="${i}" aria-label="card ${i+1}"><span class="in"><span class="bk"></span><span class="fc ${cd.k?"k":""}">${cd.txt}</span></span></button>`).join("")}</div></div>
+ <div class="card gside"><div class="gstat"><span>${t("moves")}</span><b id="gmoves">${G.moves}</b></div><div class="gstat"><span>${t("pairs")}</span><b id="gpairs">${G.matched.length/2} / 6</b></div><div id="gwin">${G.won?winHTML():""}</div><button class="btn ghost" data-a="gameReset">${t("play_again")}</button></div></div>`}
+function winHTML(){return winBox(t("game_win"))}
+function updGame(){document.querySelectorAll("#mgrid .mc").forEach((el,i)=>{el.classList.toggle("open",G.open.includes(i));el.classList.toggle("match",G.matched.includes(i))});const m=document.getElementById("gmoves");if(m)m.textContent=G.moves;const p=document.getElementById("gpairs");if(p)p.textContent=G.matched.length/2+" / 6";const w=document.getElementById("gwin");if(w)w.innerHTML=G.won?winHTML():""}
+
+/* exam */
+function makeQ(it,pool){
+ const same=()=>{let p=pool.filter(x=>x.t===it.t&&x!==it);if(p.length<3)p=ALL.filter(x=>x.t===it.t&&x!==it);return p};
+ const kinds=it.t==="c"?["read","find"]:["mean","word"];if(canListen())kinds.push("listen");
+ const k=pick(kinds);
+ const keyOf={read:x=>x.r,find:x=>x.c,mean:x=>tr(x.m),word:x=>x.c,listen:x=>x.c}[k];
+ const seen=new Set([keyOf(it)]),d=[];for(const x of shuffle(same())){const kk=keyOf(x);if(!seen.has(kk)){seen.add(kk);d.push(x)}if(d.length===3)break}
+ const opts=shuffle([it,...d]).map(x=>({txt:esc(keyOf(x)),kana:k!=="read"&&k!=="mean",ok:x===it}));
+ return {k,it,opts,ask:t({read:"q_read",find:"q_find",mean:"q_mean",word:"q_word",listen:"q_listen"}[k])};
+}
+function makeQs(pool,n){const ch=pool.filter(x=>x.t==="c"),wd=pool.filter(x=>x.t==="w");const nc=Math.min(ch.length,Math.ceil(n/2)),nw=Math.min(wd.length,n-nc);let p=[...shuffle(ch).slice(0,nc),...shuffle(wd).slice(0,nw)];if(p.length<n)p=p.concat(shuffle(pool).slice(0,n-p.length));return shuffle(p).map(it=>makeQ(it,pool))}
+function startExam(scope,id){const pool=scope==="final"?ALL:itemsOf(CITY[id]);EX={scope,id,qs:makeQs(pool,scope==="final"?20:10),i:0,correct:0,picked:null,res:[],done:false};autoListen()}
+function autoListen(){const q=EX&&EX.qs[EX.i];if(q&&q.k==="listen")setTimeout(()=>speak(q.it.say),250)}
+function examHTML(){const E=EX;if(E.done)return resultHTML();const q=E.qs[E.i],n=E.qs.length;
+ const bar=`<div class="qbar" aria-hidden="true">${E.qs.map((_,j)=>`<i class="${j<E.res.length?(E.res[j]?"ok":"bad"):j===E.i?"cur":""}"></i>`).join("")}</div>`;
+ let pr="";
+ if(q.k==="read")pr=`<div class="qbig kana" lang="ja">${q.it.c}</div>`;
+ if(q.k==="find")pr=`<div class="qbig latin">${q.it.r}</div>`;
+ if(q.k==="mean")pr=`<div><div class="qbig kana ${[...q.it.c].length>3?"sm":""}" lang="ja">${q.it.c}</div><div class="qrom">${q.it.r}</div></div>`;
+ if(q.k==="word")pr=`<div><div class="qemoji">${q.it.e}</div><div class="qtext">${esc(tr(q.it.m))}</div></div>`;
+ if(q.k==="listen")pr=`<button class="listen-big" data-a="say" data-arg="${q.it.say}">${I.sound}<span>${t("listen")}</span></button>`;
+ const ans=E.picked!==null;
+ const opts=q.opts.map((o,j)=>{let cl="opt"+(o.kana?" k":"");if(ans){if(o.ok)cl+=" ok";else if(j===E.picked)cl+=" bad";else cl+=" dim"}return `<button class="${cl}" data-a="ans" data-arg="${j}" ${ans?"disabled":""}>${o.txt}</button>`}).join("");
+ const right=q.opts.find(o=>o.ok);
+ const fb=ans?`<div class="fb ${q.opts[E.picked].ok?"ok":"bad"}">${q.opts[E.picked].ok?t("correct"):t("wrong")+" <b>"+right.txt+"</b>"}${q.k!=="find"&&q.k!=="read"?` <span style="color:var(--muted)">· ${q.it.r}</span>`:""}</div><button class="btn" data-a="next">${E.i===n-1?t("finish"):t("next")} →</button>`:"";
+ return `<div class="card exam">${bar}<div class="qcount">${E.i+1} / ${n}</div><p class="qask">${q.ask}</p><div class="qprompt">${pr}</div><div class="opts">${opts}</div><div class="qfoot">${fb}</div></div>`}
+function resultHTML(){const E=EX,pct=Math.round(E.correct/E.qs.length*100),pass=pct>=70,sn=pct===100?3:pct>=85?2:pct>=70?1:0,fin=E.scope==="final";
+ const c=fin?null:CITY[E.id],nxt=c&&CITIES[c.i+1];
+ const msg=pass?(fin?t("final_pass"):t("pass_msg",{city:tr(c.name)})):t("fail_msg");
+ const btns=pass?(fin?`<button class="btn gold" data-a="nav" data-arg="cert">${t("open_cert")}</button>`:(nxt?`<button class="btn" data-a="city" data-arg="${nxt.id}">${t("next_city")}: ${tr(nxt.name)} →</button>`:`<button class="btn gold" data-a="nav" data-arg="final">${tr(FUJI.name)} →</button>`)+`<button class="btn ghost" data-a="nav" data-arg="map">${t("back_map")}</button>`)
+  :`<button class="btn" data-a="${fin?"finalStart":"examStart"}">${t("try_again")}</button>${fin?"":`<button class="btn ghost" data-a="step" data-arg="learn">${t("s_learn")}</button>`}`;
+ return `<div class="card exam result">${pass?`<div class="hanko anim" lang="ja">${fin?"合格":c.jp}</div>`:mochi()}<div class="pct">${pct}%</div>${stars(sn)}<p class="qask" style="max-width:40ch">${msg}</p><p class="hint">${E.correct} / ${E.qs.length}</p><div class="row" style="justify-content:center">${btns}</div></div>`}
+function finishExam(){const E=EX;E.done=true;const pct=Math.round(E.correct/E.qs.length*100),sn=pct===100?3:pct>=85?2:pct>=70?1:0;
+ if(E.scope==="city"){const s=st(E.id);s.att++;s.best=Math.max(s.best,pct);s.stars=Math.max(s.stars,sn);if(pct>=70){s.pass=1}}
+ else{S.fin.att++;S.fin.best=Math.max(S.fin.best,pct);if(pct>=70)S.fin.passed=1}
+ save();if(pct>=70){petals();tone(true)}}
+
+function vFinal(){
+ const np=nPassed(),open=np===10;
+ let inner;
+ if(!open)inner=`<div class="card intro">${mochi()}<p class="qask">${t("final_locked",{n:np})}</p><div class="bar" style="width:100%"><i style="width:${np*10}%"></i></div><button class="btn ghost" data-a="nav" data-arg="map">${t("back_map")}</button></div>`;
+ else if(EX&&EX.scope==="final")inner=examHTML();
+ else inner=`<div class="card intro"><p class="sub" style="margin:0">${t("final_sub")}</p>${S.fin.att?`<p class="hint">${t("best")}: <b>${S.fin.best}%</b></p>`:""}<div class="row"><button class="btn gold" data-a="finalStart">${t("start")}</button>${S.fin.passed?`<button class="btn ghost" data-a="nav" data-arg="cert">${t("open_cert")}</button>`:""}</div></div>`;
+ return `<header class="card city-hero">${scene("fuji",tr(FUJI.name))}<div class="city-id"><span class="eyebrow">${t("nav_final")}</span><div class="city-jp" lang="ja">${FUJI.jp}</div><h1 class="city-name">${t("final_title")}</h1><div class="namemean"><b>${t("name_means")}:</b> ${tr(FUJI.nm)}</div></div></header>
+ <div class="section facts">${FUJI.facts.map(f=>`<article class="card fact"><div class="fact-tag"><span class="jpt">豆知識</span>${t("fact")}</div><p>${tr(f)}</p></article>`).join("")}</div>
+ <div class="section" id="exam-host">${inner}</div>`}
+
+function vCert(){
+ if(!S.fin.passed)return vFinal();
+ const d=new Date().toLocaleDateString(S.lang==="uz"?"uz-Latn":S.lang);
+ return `<button class="back" data-a="nav" data-arg="final">${I.back}${tr(FUJI.name)}</button>
+ <div class="cert">${LOGO.replace('class="logo"','class="logo" style="width:64px;height:64px"')}<div class="ttl">${t("cert")}</div><div class="ttl-jp" lang="ja">修了証書</div>
+ ${S.name?`<div class="who">${esc(S.name)}</div>`:`<div class="namefield"><input id="nm" type="text" maxlength="40" placeholder="${esc(t("your_name"))}" aria-label="${esc(t("your_name"))}"><button class="btn" data-a="setName">${t("save")}</button></div>`}
+ <p class="sub" style="margin:0 auto">${t("cert_text")}</p><div class="course">Study Japanese by Nasirova Samina</div>
+ <div class="meta"><span>${t("score")}: ${S.fin.best}%</span><span>${t("date")}: ${d}</span><span>${tr(U.lv)[4]}</span></div>
+ <div class="hanko" lang="ja">合格</div>${S.name?`<button class="btn ghost" data-a="editName">${t("your_name")} ✎</button>`:""}</div>`}
+
+function vAbc(){
+ const H=AB.tab==="h",rows=H?HR:KR,vrows=H?HV:KV;
+ const cell=(ch,r)=>{if(ch==="_")return `<span class="kcell kblank"></span>`;const cid=CHAR_CITY[ch],lr=cid&&passed(cid);return `<button class="kcell ${lr?"learned":""} ${AB.sel===ch?"sel":""}" data-a="abc" data-arg="${ch}"><span class="k">${ch}</span><span class="r">${r}</span></button>`};
+ const grid=(rs,rm)=>`<div class="kgrid"><span></span>${["a","i","u","e","o"].map(v=>`<span class="hd">${v}</span>`).join("")}${rs.map((row,i)=>{const r=rm[i].split(" ");const cons=r[0]==="a"?"·":r[0]==="n"?"n":r.find(x=>x!=="_").replace(/[aiueo]$/,"");return `<span class="hd">${cons}</span>`+[...row].map((ch,j)=>cell(ch,r[j])).join("")}).join("")}</div>`;
+ const sel=AB.sel,cid=CHAR_CITY[sel];
+ return `<h1 class="h1">${t("abc_title")}</h1><p class="sub">${t("abc_sub")}</p>
+ <div class="tabs" role="tablist"><button role="tab" aria-selected="${H}" data-a="abcTab" data-arg="h">${t("hira")}<span class="jp">ひらがな</span></button><button role="tab" aria-selected="${!H}" data-a="abcTab" data-arg="k">${t("kata")}<span class="jp">カタカナ</span></button></div>
+ <div class="abc"><div class="card ktable"><h2 class="h2" style="margin-bottom:12px">${t("basic")}</h2>${grid(rows,RR)}<h2 class="h2" style="margin:22px 0 12px">${t("voiced")}</h2>${grid(vrows,RV)}<div class="legend"><span><i></i>${t("legend_learned")}</span></div></div>
+ <aside class="card detail"><div class="big" lang="ja">${sel}</div><div class="rom">${R[sel]}</div><button class="btn gold" data-a="say" data-arg="${sel}">${I.sound.replace("<svg",'<svg width="20" height="20"')}${t("listen")}</button><div class="pair">${t("pair_of")}<span lang="ja">${PAIR[sel]||""}</span></div><p class="hint" style="justify-content:center">${cid?`${t("learned_in")}: <b>${tr(CITY[cid].name)}</b>`:t("not_in_course")}</p></aside></div>`}
+
+function glossRows(){
+ const q=GF.q.trim().toLowerCase();
+ const rows=CITIES.flatMap(c=>c.words.map(w=>({c,w}))).filter(({c,w})=>(GF.city==="all"||c.id===GF.city)&&(!q||[w[0],w[1],w[2],w[3],w[4]].some(s=>s.toLowerCase().includes(q))));
+ if(!rows.length)return `<div class="empty">${t("no_res")}</div>`;
+ return rows.map(({c,w})=>`<div class="grow"><span class="e">${w[5]}</span><span class="w" lang="ja">${w[0]}<small>${w[1]}</small></span><span class="m">${esc(tr([w[2],w[3],w[4]]))}</span><span class="c">${tr(c.name)}</span><button class="icon-btn say" data-a="say" data-arg="${w[0]}" aria-label="${esc(t("listen"))}">${I.sound}</button></div>`).join("")}
+function vGloss(){const total=CITIES.reduce((s,c)=>s+c.words.length,0);
+ return `<h1 class="h1">${t("nav_gloss")}</h1><p class="sub">${t("gloss_sub")} ${t("words_count",{n:total})}.</p>
+ <div class="gtools"><input class="search" id="gq" type="search" value="${esc(GF.q)}" placeholder="${esc(t("search"))}" aria-label="${esc(t("search"))}"><div class="chips">${[["all",t("all")],...CITIES.map(c=>[c.id,tr(c.name)])].map(x=>`<button class="chip" data-a="gcity" data-arg="${x[0]}" aria-pressed="${GF.city===x[0]}">${x[1]}</button>`).join("")}</div></div>
+ <div class="card glist" id="glist">${glossRows()}</div>`}
+
+function vStats(){
+ const np=nPassed(),pc=CITIES.filter(c=>passed(c.id));
+ const signs=pc.reduce((s,c)=>s+c.chars.length,0),words=pc.reduce((s,c)=>s+c.words.length,0),totS=CITIES.reduce((s,c)=>s+c.chars.length,0),totW=CITIES.reduce((s,c)=>s+c.words.length,0);
+ const starsN=CITIES.reduce((s,c)=>s+(S.st[c.id]?S.st[c.id].stars:0),0);
+ const acc=S.ans.t?Math.round(S.ans.c/S.ans.t*100)+"%":"—";
+ const lvl=S.fin.passed?4:np>=8?3:np>=5?2:np>=2?1:0,names=tr(U.lv);
+ const prog=Math.round((np+(S.fin.passed?1:0))/11*100),C=2*Math.PI*50;
+ const bars=CITIES.map(c=>{const b=S.st[c.id]?S.st[c.id].best:0;return `<div class="brow"><span class="nm">${tr(c.name)}</span><span class="track"><i class="${b<70?"low":""}" style="width:${b}%"></i><span class="pass"></span></span><span class="val">${S.st[c.id]&&S.st[c.id].att?b+"%":"—"}</span></div>`}).join("");
+ const pass=CITIES.concat([FUJI]).map(c=>{const on=c.id==="fuji"?S.fin.passed:passed(c.id);return `<div class="pstamp"><div class="hanko ${on?"":"off"}" lang="ja">${on?c.jp:"?"}</div>${tr(c.name)}</div>`}).join("");
+ return `<h1 class="h1">${t("nav_stats")}</h1><div class="stats">
+ <div class="card lvl"><svg class="ring" viewBox="0 0 120 120"><circle class="tr" cx="60" cy="60" r="50"/><circle class="pr" cx="60" cy="60" r="50" stroke-dasharray="${(C*prog/100).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 60 60)"/><text x="60" y="60">${prog}%</text></svg><div><div class="eyebrow">${t("level")}</div><div class="lvl-name">${names[lvl]}</div><div class="lvl-steps">${names.map((n,i)=>`<span class="${i<=lvl?"on":""}">${n}</span>`).join("")}</div></div></div>
+ <div class="tiles"><div class="card tile"><div class="v">${np}<small> / 10</small></div><div class="l">${t("st_cities")}</div></div><div class="card tile"><div class="v">${signs}<small> / ${totS}</small></div><div class="l">${t("st_signs")}</div></div><div class="card tile"><div class="v">${words}<small> / ${totW}</small></div><div class="l">${t("st_words")}</div></div><div class="card tile"><div class="v">${acc}</div><div class="l">${t("st_acc")} · ${S.ans.t} ${t("answers")}</div></div></div>
+ <div class="two"><div class="card panel"><div class="section-head" style="margin:0"><h2 class="h2">${t("chart")}</h2><span class="hint">${t("chart_note")}</span></div><div class="bars">${bars}</div><p class="hint" style="margin-top:12px">★ ${starsN} / 30 ${t("stars")}</p></div>
+ <div class="card panel"><h2 class="h2">${t("passport")}</h2><p class="hint">${t("passport_sub")}</p><div class="passport">${pass}</div></div></div>
+ <div class="card settings"><span style="font-weight:800">${t("sound")}</span><div class="seg"><button data-a="sound" data-arg="1" aria-pressed="${!!S.sound}">${t("on")}</button><button data-a="sound" data-arg="0" aria-pressed="${!S.sound}">${t("off")}</button></div></div>
+ <div class="card settings">${RC?`<div class="confirm"><span>${t("reset_q")}</span><button class="btn" data-a="resetYes">${t("yes_reset")}</button><button class="btn ghost" data-a="resetNo">${t("cancel")}</button></div>`:`<span class="hint">${t("reset")}</span><button class="btn ghost" data-a="reset">${t("reset")}</button>`}</div></div>`}
+
+/* ---------- render ---------- */
+function effTheme(){return S.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}
+function applyTheme(){if(S.theme)document.documentElement.setAttribute("data-theme",S.theme);else document.documentElement.removeAttribute("data-theme")}
+function render(){document.documentElement.lang=S.lang;applyTheme();
+ document.getElementById("top").innerHTML=header();document.getElementById("bnav").innerHTML=bottomnav();
+ const m=document.getElementById("main");m.innerHTML=({map:vMap,city:vCity,abc:vAbc,gloss:vGloss,stats:vStats,final:vFinal,cert:vCert}[V.v]||vMap)();
+ if(V.v==="city"&&V.step==="game"){if(V.game==="catch"&&CG&&CG.started&&!CG.over)startCatch();if(V.game==="ninja"&&NG&&NG.run)startNinja()}}
+function go(v,x){stopGames();V=Object.assign({v},x||{});RC=false;render();try{window.scrollTo({top:0})}catch(e){}}
+function rerenderExam(){const h=document.getElementById("exam-host");if(!h)return render();if(V.v==="final")render();else h.innerHTML=examHTML()}
+
+const H={
+ nav:a=>{if(a!=="final"&&a!=="cert"&&EX&&EX.scope==="final"&&!EX.done)EX=null;go(a)},
+ city:a=>{const c=CITY[a];if(!unlocked(c.i)){toast(t("locked_msg"));return}if(EX&&!(EX.scope==="city"&&EX.id===a))EX=null;go("city",{id:a,step:"explore"})},
+ game:a=>{stopGames();V.game=a||null;if(a==="mem")G=null;if(a==="catch")CG=null;if(a==="build")BG=null;if(a==="ninja")NG=null;render();try{document.querySelector(".steps").scrollIntoView({block:"start",behavior:"smooth"})}catch(e){}},
+ cStart:()=>{newCatch(CITY[V.id]);CG.started=true;ghost("catch");startCatch()},
+ cHit:a=>catchHit(a),
+ bTile:a=>bTile(+a),
+ bSlot:a=>{const g=BG,i=+a;if(!g||g.state!=="play"||g.slots[i]===null)return;g.tiles[g.slots[i]].used=false;g.slots[i]=null;ghost("build")},
+ bHint:()=>{BG.hint=true;ghost("build")},
+ nStart:()=>{newNinja(CITY[V.id]);NG.run=true;ninjaRound();ghost("ninja");startNinja()},
+ nAns:a=>nAns(a==="1"),
+ step:a=>{stopGames();if(a==="game")V.game=null;if(a!=="exam"&&EX&&EX.done)EX=null;V.step=a;render();try{document.querySelector(".steps").scrollIntoView({block:"start",behavior:"smooth"})}catch(e){}},
+ lang:a=>{S.lang=a;save();if(EX&&!EX.done){EX.qs.forEach(q=>{q.ask=t({read:"q_read",find:"q_find",mean:"q_mean",word:"q_word",listen:"q_listen"}[q.k])})}render()},
+ theme:()=>{S.theme=effTheme()==="dark"?"light":"dark";save();render()},
+ sound:a=>{S.sound=a==="1";save();render()},
+ say:(a,el)=>{speak(a);if(el){el.classList.remove("pop");void el.offsetWidth;el.classList.add("pop")}},
+ learned:()=>{st(V.id).le=1;save();V.step="game";render()},
+ flip:a=>{const i=+a;if(G.lock||G.won||G.matched.includes(i)||G.open.includes(i))return;G.open.push(i);if(G.cards[i].k)speak(G.cards[i].say);
+  if(G.open.length===2){G.moves++;const[x,y]=G.open;if(G.cards[x].p===G.cards[y].p){G.matched.push(x,y);G.open=[];tone(true);if(G.matched.length===12){G.won=true;markGame(G.city,"mem");setTimeout(()=>ghost("mem"),700)}}else{G.lock=true;setTimeout(()=>{G.open=[];G.lock=false;updGame()},850)}}updGame()},
+ gameReset:()=>{newGame(CITY[G.city]);render()},
+ examStart:()=>{startExam("city",V.id);rerenderExam()},
+ finalStart:()=>{startExam("final");render()},
+ ans:a=>{const E=EX;if(E.picked!==null)return;E.picked=+a;const ok=E.qs[E.i].opts[E.picked].ok;E.res.push(ok);if(ok)E.correct++;S.ans.t++;if(ok)S.ans.c++;save();tone(ok);rerenderExam()},
+ next:()=>{const E=EX;if(E.i===E.qs.length-1){finishExam();render()}else{E.i++;E.picked=null;rerenderExam();autoListen()}},
+ abcTab:a=>{AB.tab=a;AB.sel=PAIR[AB.sel]&&((a==="k")!==/[ァ-ヶ]/.test(AB.sel))?PAIR[AB.sel]:AB.sel;render()},
+ abc:a=>{AB.sel=a;speak(a);render()},
+ gcity:a=>{GF.city=a;render()},
+ reset:()=>{RC=true;render()},resetNo:()=>{RC=false;render()},
+ resetYes:()=>{const keep={lang:S.lang,theme:S.theme,sound:S.sound};S=Object.assign(fresh(),keep);EX=null;G=null;RC=false;save();toast(t("reset_done"));render()},
+ setName:()=>{const v=(document.getElementById("nm").value||"").trim();if(!v)return;S.name=v;save();render()},
+ editName:()=>{S.name="";save();render()}
+};
+document.addEventListener("click",e=>{const el=e.target.closest("[data-a]");if(!el)return;const f=H[el.dataset.a];if(f){e.preventDefault();f(el.dataset.arg,el)}});
+document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches("g[data-a]")){e.preventDefault();e.target.dispatchEvent(new MouseEvent("click",{bubbles:true}))}
+ if(e.key==="Enter"&&e.target.id==="nm")H.setName();
+ if(V.game==="ninja"&&NG&&NG.run&&(e.key==="ArrowLeft"||e.key==="ArrowRight")){e.preventDefault();nAns(e.key==="ArrowLeft")}});
+document.addEventListener("input",e=>{if(e.target.id==="gq"){GF.q=e.target.value;const l=document.getElementById("glist");if(l)l.innerHTML=glossRows()}});
+try{matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{if(!S.theme)render()})}catch(e){}
+render();
+})();
+</script>
+
+</body></html>
