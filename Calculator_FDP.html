@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calculator FDP — штуцер и газопровод</title>
+<meta name="author" content="Равшан Гуламов, Анвар Муратов, Сирожиддин Маллаев">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20640%20640%22%3E%20%3Cdefs%3E%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%230A2540%22/%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%230B6E80%22/%3E%20%3C/linearGradient%3E%20%3ClinearGradient%20id%3D%22flow%22%20gradientUnits%3D%22userSpaceOnUse%22%20x1%3D%22140%22%20y1%3D%220%22%20x2%3D%22520%22%20y2%3D%220%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23FFB347%22/%3E%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23FF6B3D%22/%3E%20%3C/linearGradient%3E%20%3C/defs%3E%20%3Crect%20width%3D%22640%22%20height%3D%22640%22%20fill%3D%22url%28%23bg%29%22/%3E%20%3Cg%20transform%3D%22translate%28-34%2030%29%20scale%281.1%29%22%3E%3Cpath%20d%3D%22M118%20182%20C240%20182%20262%20262%20320%20262%20C378%20262%20400%20182%20522%20182%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%2230%22%20stroke-linecap%3D%22round%22/%3E%20%3Cpath%20d%3D%22M118%20398%20C240%20398%20262%20318%20320%20318%20C378%20318%20400%20398%20522%20398%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%2230%22%20stroke-linecap%3D%22round%22/%3E%20%3Cpath%20d%3D%22M150%20238%20C250%20238%20262%20282%20320%20282%20C378%20282%20390%20238%20490%20238%22%20fill%3D%22none%22%20stroke%3D%22url%28%23flow%29%22%20stroke-width%3D%2212%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.75%22/%3E%20%3Cpath%20d%3D%22M150%20342%20C250%20342%20262%20298%20320%20298%20C378%20298%20390%20342%20490%20342%22%20fill%3D%22none%22%20stroke%3D%22url%28%23flow%29%22%20stroke-width%3D%2212%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.75%22/%3E%20%3Cpath%20d%3D%22M140%20290%20H478%22%20fill%3D%22none%22%20stroke%3D%22url%28%23flow%29%22%20stroke-width%3D%2216%22%20stroke-linecap%3D%22round%22/%3E%20%3Cpath%20d%3D%22M470%20262%20L512%20290%20L470%20318%20Z%22%20fill%3D%22%23FF6B3D%22%20stroke%3D%22%23FF6B3D%22%20stroke-width%3D%228%22%20stroke-linejoin%3D%22round%22/%3E%20%3C/g%3E%3C/svg%3E%20">
+<script src="https://telegram.org/js/telegram-web-app.js" async onerror="void 0"></script>
+<style>
+:root{--bg:#eef3f6;--card:#fff;--ink:#0f2133;--ink2:#51657a;--line:#dbe4eb;--acc:#0b6e80;--hot:#ff6b3d;--err:#c0352b;--warn:#9a5b00;--warnbg:#fff4e0;--field:#f5f8fa}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1620;--card:#13212e;--ink:#e6eef4;--ink2:#97aabb;--line:#22384a;--acc:#3fb6c9;--field:#0f1c27;--warnbg:#2b220f;--warn:#f0b351;--err:#ff7a6e}}
+*{box-sizing:border-box}html,body{margin:0}
+body{font:15px/1.4 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.wrap{max-width:980px;margin:0 auto;padding:14px}
+header{display:flex;align-items:center;gap:12px;margin:4px 0 14px}
+header .logo{width:46px;height:46px;border-radius:12px;flex:0 0 auto;overflow:hidden}
+header .logo svg{width:100%;height:100%;display:block}
+header h1{font-size:20px;margin:0;line-height:1.1}header small{color:var(--ink2);font-size:13px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.card h2{font-size:14px;margin:0 0 10px;color:var(--ink2);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.f{display:grid;grid-template-columns:1fr 128px;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
+.f:last-of-type{border-bottom:0}
+.f label{font-size:14.5px}.f label i{font-style:normal;color:var(--ink2);font-size:12.5px;display:block}
+.in{display:flex;align-items:center;background:var(--field);border:1.5px solid var(--line);border-radius:10px;padding:0 8px}
+.in:focus-within{border-color:var(--acc)}
+.in input{width:100%;border:0;background:transparent;color:var(--ink);font:600 17px/1 inherit;padding:9px 0;text-align:right;outline:0;min-width:0}
+.in span{color:var(--ink2);font-size:12.5px;margin-left:5px;white-space:nowrap}
+.f.bad .in{border-color:var(--err)}.msg{grid-column:1/-1;color:var(--err);font-size:12.5px;margin-top:-2px}
+.modes{display:flex;gap:6px;margin:0 0 12px}.modes button{flex:1;border:0;border-radius:12px;padding:11px;font:600 15px inherit;cursor:pointer;background:var(--card);color:var(--ink2);border:1.5px solid var(--line)}.modes button.on{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.units{display:flex;gap:6px;margin-bottom:6px}
+.units button{flex:1;border:1.5px solid var(--line);background:var(--field);color:var(--ink);border-radius:9px;padding:6px;font:inherit;font-size:13px;cursor:pointer}
+.units button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.res{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.big{border-radius:14px;padding:12px 14px;background:linear-gradient(135deg,#0a2540,#0b6e80);color:#fff;position:relative;overflow:hidden}
+.big.alt{background:linear-gradient(135deg,#3a2414,#b4542a)}
+.big .t{font-size:13px;opacity:.85}.big .v{font-size:34px;font-weight:800;line-height:1.1;margin:4px 0 2px;font-variant-numeric:tabular-nums}
+.big .u{font-size:12.5px;opacity:.85}.big .x{font-size:12px;opacity:.8;margin-top:6px}
+.big.off .v{font-size:18px;font-weight:600;opacity:.9}
+.chart{margin-top:12px}.chart svg{width:100%;height:auto;display:block}
+.chart text{fill:var(--ink2);font-size:11px}.chart .g{stroke:var(--line)}
+.note{background:var(--warnbg);color:var(--warn);border-radius:10px;padding:8px 11px;font-size:13px;margin-top:10px}
+details{margin-top:12px;border-top:1px solid var(--line);padding-top:8px}summary{cursor:pointer;color:var(--acc);font-weight:600;font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}td{padding:4px 6px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}td:last-child{text-align:right}
+.chk{display:flex;gap:8px;align-items:center;font-size:13.5px;margin:8px 0}
+.acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.btn{flex:1;border:0;border-radius:11px;padding:11px 12px;font:600 14.5px inherit;cursor:pointer;background:var(--acc);color:#fff}
+.btn.add{background:var(--hot)}.btn.sm{flex:0 0 auto;padding:6px 10px;font-size:13px}
+.ptab td,.ptab th{padding:6px 7px;border-bottom:1px solid var(--line);font-size:13px;text-align:left}.ptab th{color:var(--ink2);font-weight:600}.ptab td.n{text-align:right;font-variant-numeric:tabular-nums}
+.del{border:0;background:transparent;color:var(--ink2);cursor:pointer;font-size:15px}.del:hover{color:var(--err)}
+.lnk{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--ink2);margin:2px 0 8px}
+.leg{display:flex;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--ink2);margin-top:4px}.leg i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.btn.ghost{background:transparent;color:var(--acc);border:1.5px solid var(--acc)}
+.disc{margin-top:14px;font-size:12.5px;line-height:1.5;color:var(--ink2);border-top:1px solid var(--line);padding:12px 4px 0}.disc ul{margin:6px 0;padding-left:20px}.disc li{margin:2px 0}
+.disc summary{list-style:none;cursor:pointer}.disc summary::-webkit-details-marker{display:none}
+.dmain{color:#d0312d;font-weight:600;font-size:13px}@media (prefers-color-scheme:dark){.dmain{color:#ff6b62}}
+.dmore{color:var(--acc);font-weight:600;white-space:nowrap;margin-left:4px}.dmore::after{content:" ▾"}.disc[open] .dmore{font-size:0}.disc[open] .dmore::after{content:"Свернуть ▴";font-size:12.5px}
+.dbody{margin-top:8px}
+footer{color:var(--ink2);font-size:12px;text-align:center;margin:16px 0 8px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--card);padding:9px 14px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.on{opacity:1}
+@media (max-width:760px){.grid{grid-template-columns:1fr}.wrap{padding:10px}.big .v{font-size:28px}.f{grid-template-columns:1fr 118px}}
+body.tg header{margin-top:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><div class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+  <defs>
+    <linearGradient id="lbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0A2540"/>
+      <stop offset="1" stop-color="#0B6E80"/>
+    </linearGradient>
+    <linearGradient id="lflow" gradientUnits="userSpaceOnUse" x1="140" y1="0" x2="520" y2="0">
+      <stop offset="0" stop-color="#FFB347"/>
+      <stop offset="1" stop-color="#FF6B3D"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="640" fill="url(#lbg)"/>
+  
+  
+  <g transform="translate(-34 30) scale(1.1)"><path d="M118 182 C240 182 262 262 320 262 C378 262 400 182 522 182" fill="none" stroke="#FFFFFF" stroke-width="30" stroke-linecap="round"/>
+  <path d="M118 398 C240 398 262 318 320 318 C378 318 400 398 522 398" fill="none" stroke="#FFFFFF" stroke-width="30" stroke-linecap="round"/>
+  
+  <path d="M150 238 C250 238 262 282 320 282 C378 282 390 238 490 238" fill="none" stroke="url(#lflow)" stroke-width="12" stroke-linecap="round" opacity="0.75"/>
+  <path d="M150 342 C250 342 262 298 320 298 C378 298 390 342 490 342" fill="none" stroke="url(#lflow)" stroke-width="12" stroke-linecap="round" opacity="0.75"/>
+  <path d="M140 290 H478" fill="none" stroke="url(#lflow)" stroke-width="16" stroke-linecap="round"/>
+  <path d="M470 262 L512 290 L470 318 Z" fill="#FF6B3D" stroke="#FF6B3D" stroke-width="8" stroke-linejoin="round"/>
+  
+</g></svg>
+</div><div><h1>Calculator FDP</h1><small>Штуцер и газопровод · расчёт мгновенный</small></div></header>
+  <nav class="modes" id="modes"><button data-m="choke" class="on">⊘ Штуцер</button><button data-m="pipe">═ Газопровод</button></nav>
+  <div class="grid">
+    <section class="card">
+      <h2>Исходные данные</h2>
+      <div class="units" id="pu"><button data-u="bar" class="on">бар</button><button data-u="MPa">МПа</button><button data-u="kgf">кгс/см²</button></div>
+      <div id="form"></div>
+    </section>
+    <section class="card">
+      <h2>Результат</h2>
+      <div class="res">
+        <div class="big" id="r1"><div class="t"></div><div class="v">—</div><div class="u">тыс. м³/сут</div><div class="x"></div></div>
+        <div class="big alt" id="r2"><div class="t"></div><div class="v">—</div><div class="u"></div><div class="x"></div></div>
+      </div>
+      <div class="chart" id="chart"></div>
+      <div id="notes"></div>
+      <div class="acts"><button class="btn add" id="add">＋ Добавить расчёт</button><button class="btn ghost" id="share">Поделиться</button><button class="btn ghost" id="reset">Сбросить</button></div>
+      <details id="det"><summary>Подробности расчёта</summary>
+        <label class="chk" id="fixbox"><input type="checkbox" id="fix"> Показать вариант с исправлениями (T из ввода, a2/Ts²)</label>
+        <div id="steps"></div>
+        <p id="fxnote" style="font-size:12.5px;color:var(--ink2)"></p>
+      </details>
+    </section>
+  </div>
+  <section class="card" id="calcs" style="margin-top:14px"></section>
+  <details class="disc"><summary><span class="dmain">⚠ В расчётах возможны погрешности, которые зависят от точности исходных данных, режима течения, свойств газа, состояния оборудования и допущений методик. Результаты носят оценочный характер.</span> <span class="dmore">Далее</span></summary>
+    <div class="dbody">Расчёты выполняются по эмпирическим и полуэмпирическим зависимостям. Погрешности зависят:
+    <ul>
+      <li>от точности исходных данных: замеров давления и температуры, фактического диаметра штуцера с учётом износа, внутреннего диаметра и длины трубы, плотности газа;</li>
+      <li>от режима течения (критического или докритического) и его соответствия области применимости формул;</li>
+      <li>от состава и свойств газа: наличия конденсата, воды, механических примесей, неуглеводородных компонентов;</li>
+      <li>от состояния оборудования: шероховатости и загрязнения труб, гидратообразования, местных сопротивлений, рельефа трассы;</li>
+      <li>от допущений самих методик: корреляций для коэффициента сверхсжимаемости Z, коэффициентов расхода и гидравлического сопротивления.</li>
+    </ul>
+    Результаты предназначены для оперативных инженерных оценок. Они не заменяют фактические замеры дебита и газогидродинамические исследования скважин. Принимать технологические решения следует на основе комплексного анализа данных и с учётом действующих нормативных документов. Разработчики не несут ответственности за последствия решений, принятых только на основании этих расчётов.</div></details>
+  <footer>Calculator FDP · Разработчики: Равшан Гуламов, Анвар Муратов, Сирожиддин Маллаев</footer>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+'use strict';
+/* ===== Расчётное ядро: точный перенос VBA (Qsht, Дебит_газа_103m3_d, Qras) ===== */
+const Num = { isNum: (v) => typeof v === 'number' && isFinite(v) };
+const ChokeCalculator = (() => {
+  const W = { w1: 0.595980832189795, w2: -0.39418617160974, w3: -0.616291318952856, w4: -0.214565266968889, alfa2: 0.6 };
+  const Y = { y1: -1.11461320325892, y2: 0.958063316336254, y3: -0.236508611841779, y4: 0.651614675980666 };
+  /**
+   * Qsht(Давление_устье_bar, Давление_шлейфе_bar, диаметр_штуцера_мм, диаметр_шлейф_мм, Температура_С, Относительный_плотность_газа)
+   * opts.useInputTemp — false (исходный VBA): в строке T1 = Температура_в_начале_С + 273.15 используется
+   *   НЕОБЪЯВЛЕННАЯ переменная; без Option Explicit она равна Empty = 0 ⇒ T1 = 273,15 K всегда.
+   * opts.a2Squared — false (исходный VBA): a2 = 0.0423 − 0.1812/Ts + 0.2124/Ts (без ^2).
+   */
+  function qsht(P1in, P2in, dshtMM, dtrMM, tC, gamma, opts) {
+    opts = opts || {};
+    const r = { variant: (opts.useInputTemp ? 'T' : '') + (opts.a2Squared ? 'Z' : '') };
+    r.dsht = dshtMM / 10;                                  // dsht = диаметр_штуцера_мм / 10
+    r.dtruba = dtrMM / 10;                                 // dtruba = диаметр_шлейф_мм / 10
+    r.P1 = P1in;                                           // P1 = Давление_устье_bar '* 760
+    r.P2 = P2in;                                           // P2 = Давление_шлейфе_bar '* 760
+    const tUsed = opts.useInputTemp ? tC : 0;              // Температура_в_начале_С (не объявлена) = 0
+    r.T1 = tUsed + 273.15;                                 // T1 = Температура_в_начале_С + 273.15
+    r.H = r.P1 - r.P2;                                     // H = P1 - P2
+    // «Инструкция по иссл. газовых скважин», Москва 1961, стр. 47, рис. 13
+    r.myu = r.dsht / r.dtruba;                             // myu = dsht / dtruba
+    r.alfa1 = (W.w1 + W.w2 * r.myu) / (1 + W.w3 * r.myu + W.w4 * Math.pow(r.myu, 2));
+    r.alfa2 = W.alfa2;                                     // alfa2 = 0.6
+    r.alfa = r.myu > 0.3 ? r.alfa1 : r.alfa2;              // If myu > 0.3 Then alfa = alfa1 Else alfa = alfa2
+    // там же, стр. 48, рис. 15
+    r.myu_1 = Math.pow(r.dsht, 2) / Math.pow(r.dtruba, 2); // myu_1 = dsht ^ 2 / dtruba ^ 2
+    r.coef = Y.y1 * Math.cos(r.myu_1 + Y.y4) + Y.y2 * Math.cos(2 * r.myu_1 + Y.y4) + Y.y3 * Math.cos(3 * r.myu_1 + Y.y4);
+    r.epsi1 = 1 - r.coef * r.H / r.P1;                     // epsi1 = 1 - coef * H / P1
+    r.epsi = r.epsi1 > 1 ? 1 : r.epsi1;                    // If epsi1 > 1 Then epsi = 1 Else epsi = epsi1
+    r.Pa = 2 / 3 * (r.P1 + Math.pow(r.P2, 2) / (r.P2 + r.P1)); // Pa = 2 / 3 * (P1 + P2 ^ 2 / (P2 + P1))
+    r.Ta = (r.T1 + r.T1) / 2;                              // Ta = (T1 + T1) / 2
+    r.m = 26.992 * gamma;
+    r.PC = (4.903 - 0.01693 * r.m) * 10;
+    r.TC = 125 + 4.3163 * r.m;
+    r.Ps = r.Pa / r.PC;
+    r.Ts = r.Ta / r.TC;
+    r.a1 = -0.39 + 2.03 / r.Ts - 3.16 / Math.pow(r.Ts, 2) + 1.09 / Math.pow(r.Ts, 3);
+    r.a2 = opts.a2Squared
+      ? 0.0423 - 0.1812 / r.Ts + 0.2124 / Math.pow(r.Ts, 2)   // предполагаемое исправление
+      : 0.0423 - 0.1812 / r.Ts + 0.2124 / r.Ts;               // исходный VBA: a2 = 0.0423 - 0.1812 / Ts + 0.2124 / Ts
+    r.Z = 1 + r.a1 * r.Ps + r.a2 * Math.pow(r.Ps, 2);
+    const base = gamma * r.Z * r.T1;
+    const under = r.P1 * r.H * 760;
+    // Qsht = 1700 * alfa * epsi * dsht ^ 2 * (Отн * Z * T1) ^ -0.5 * (P1 * H * 760) ^ 0.5 / 1000
+    r.Q = (base <= 0 || under < 0) ? NaN
+      : 1700 * r.alfa * r.epsi * Math.pow(r.dsht, 2) * Math.pow(base, -0.5) * Math.pow(under, 0.5) / 1000;
+    return r;
+  }
+  /** Дебит_газа_103m3_d(Давление_перед_элементом_bar, Температура_K, Диаметр_штуцера_mm, Относительный_плотность_газа)
+   *  'Method of Shclumberger — Gulomov Ravshan 30.08.2007 */
+  function schl(P, TK, dmm, gamma) {
+    const r = {};
+    r.Pabs = 1.0135293 + P;
+    r.Q = 0.16888193 * Math.pow(dmm, 2.0852155) * (1.0135293 + P) / Math.pow(gamma * TK, 0.5);
+    if (!(gamma * TK > 0)) r.Q = NaN;
+    return r;
+  }
+  function validateQsht(P1, P2, ds, dt, t, g) {
+    const err = {}, warn = [];
+    const chk = (k, v, cond, msg) => { if (!Num.isNum(v)) err[k] = 'Введите число'; else if (cond(v)) err[k] = msg; };
+    chk('P1', P1, (v) => v <= 0, 'Давление должно быть > 0');
+    chk('P2', P2, (v) => v < 0, 'Давление не может быть отрицательным');
+    chk('ds', ds, (v) => v <= 0, 'Диаметр штуцера должен быть > 0');
+    chk('dt', dt, (v) => v <= 0, 'Диаметр шлейфа должен быть > 0');
+    chk('t', t, (v) => v <= -273.15, 'Температура ниже абсолютного нуля');
+    chk('g', g, (v) => v <= 0 || v > 3, 'Отн. плотность должна быть в (0; 3]');
+    if (!Object.keys(err).length) {
+      if (P2 >= P1) err.P2 = 'Давление в шлейфе должно быть меньше устьевого (H = P1 − P2 > 0)';
+      if (ds >= dt) err.ds = 'Диаметр штуцера должен быть меньше диаметра шлейфа (μ < 1)';
+      if (!err.P2 && P2 / P1 < 0.55) warn.push('P2/P1 < 0,55: вероятен критический режим истечения через штуцер; формула Qsht (докритическое истечение по перепаду H) может быть неприменима.');
+      if (!err.ds && ds / dt > 0.8) warn.push('μ = dшт/dшл > 0,8 — за пределами типичного диапазона аппроксимации рисунков 13 и 15 Инструкции 1961 г.');
+    }
+    return { err, warn };
+  }
+  function validateSchl(P, TK, d, g) {
+    const err = {}, warn = [];
+    const chk = (k, v, cond, msg) => { if (!Num.isNum(v)) err[k] = 'Введите число'; else if (cond(v)) err[k] = msg; };
+    chk('P', P, (v) => v < -1.0135293, 'Абсолютное давление (P + 1,0135) не может быть отрицательным');
+    chk('T', TK, (v) => v <= 0, 'Температура в K должна быть > 0');
+    chk('d', d, (v) => v <= 0, 'Диаметр штуцера должен быть > 0');
+    chk('g', g, (v) => v <= 0 || v > 3, 'Отн. плотность должна быть в (0; 3]');
+    if (!Object.keys(err).length && TK < 200) warn.push('Температура < 200 K — проверьте, что введены кельвины, а не °C.');
+    return { err, warn };
+  }
+  return { qsht, schl, validateQsht, validateSchl, W, Y };
+})();
+const QrasCalculator = (() => {
+  /**
+   * @param P1 Давление_в_начале_bar   @param P2 Давление_в_конце_bar
+   * @param t1 Температура_в_начале_С  @param t2 Температура_в_конце_С
+   * @param gamma Относительный_плотность_газа
+   * @param dmm диаметр_трубы_мм       @param Lm длина_трубы_м
+   */
+  function vba(P1, P2, t1, t2, gamma, dmm, Lm) {
+    const r = {};
+    r.P1 = P1; r.P2 = P2;                                   // P1 = Давление_в_начале_bar ...
+    r.T1 = t1 + 273.15;                                     // T1 = Температура_в_начале_С + 273.15
+    r.T2 = t2 + 273.15;                                     // T2 = Температура_в_конце_С + 273.15
+    r.d = dmm;                                              // d = диаметр_трубы_мм
+    r.L = Lm;                                               // L = длина_трубы_м
+    r.Pa = 2 / 3 * (P1 + Math.pow(P2, 2) / (P2 + P1));      // Pa = 2 / 3 * (P1 + P2 ^ 2 / (P2 + P1))
+    r.Ta = (r.T1 + r.T2) / 2;                               // Ta = (T1 + T2) / 2
+    r.m = 26.992 * gamma;                                   // m = 26.992 * Относительный_плотность_газа
+    r.PC = (4.903 - 0.01693 * r.m) * 10;                    // PC = (4.903 - 0.01693 * m) * 10
+    r.TC = 125 + 4.3163 * r.m;                              // TC = 125 + 4.3163 * m
+    r.Ps = r.Pa / r.PC;                                     // Ps = Pa / PC
+    r.Ts = r.Ta / r.TC;                                     // Ts = Ta / TC
+    r.a1 = -0.39 + 2.03 / r.Ts - 3.16 / Math.pow(r.Ts, 2) + 1.09 / Math.pow(r.Ts, 3);
+    r.a2 = 0.0423 - 0.1812 / r.Ts + 0.2124 / Math.pow(r.Ts, 2);  // a2 = ... + 0.2124 / Ts^2
+    r.Z = 1 + r.a1 * r.Ps + r.a2 * Math.pow(r.Ps, 2);       // Z = 1 + a1 * Ps + a2 * Ps ^ 2
+    r.gid = 0.009407 * Math.pow(dmm / 1000, -1 / 3);        // gid = 0.009407 * (d / 1000) ^ (-1 / 3)
+    r.under = Math.pow(3.14159265358979, 2) * Math.pow(dmm / 1000, 5) / 16 * 293.15 *
+      (Math.pow(P1 / 10, 2) - Math.pow(P2 / 10, 2)) /
+      (r.gid * gamma * L_(Lm) * r.Ta * r.Z * 0.10132);
+    // Qras = ( ... ) ^ 0.5 * 86400   — в VBA при отрицательном подкоренном выражении: ошибка 5
+    r.Q = r.under < 0 ? NaN : Math.pow(r.under, 0.5) * 86400;
+    r.dP2 = Math.pow(P1 / 10, 2) - Math.pow(P2 / 10, 2);
+    return r;
+  }
+  function L_(x) { return x; }
+  /** Справочная классическая формула (ОНТП 51-1-85 / СП 36.13330), НЕ подменяет Qras:
+   * q[млн м³/сут] = 105,087·D^2,5·√((P1²−P2²)/(λ·Δ·Z·T·L)), P — МПа, D — м, L — км.
+   * λ и Z берутся из расчёта Qras — сравнивается только структура формулы. */
+  function reference(r, gamma) {
+    const D = r.d / 1000, Lkm = r.L / 1000;
+    const val = r.dP2 / (r.gid * gamma * r.Z * r.Ta * Lkm);
+    if (val < 0) return NaN;
+    return 105.087 * Math.pow(D, 2.5) * Math.sqrt(val) * 1e6; // м³/сут
+  }
+  function validate(P1, P2, t1, t2, gamma, dmm, Lm) {
+    const err = {}, warn = [];
+    const chk = (k, v, cond, msg) => { if (!Num.isNum(v)) err[k] = 'Введите число'; else if (cond(v)) err[k] = msg; };
+    chk('P1', P1, (v) => v <= 0, 'Давление должно быть > 0');
+    chk('P2', P2, (v) => v <= 0, 'Давление должно быть > 0');
+    chk('t1', t1, (v) => v <= -273.15, 'Температура ниже абсолютного нуля');
+    chk('t2', t2, (v) => v <= -273.15, 'Температура ниже абсолютного нуля');
+    chk('gamma', gamma, (v) => v <= 0 || v > 3, 'Отн. плотность должна быть в (0; 3]');
+    chk('d', dmm, (v) => v <= 0, 'Диаметр должен быть > 0');
+    chk('L', Lm, (v) => v <= 0, 'Длина должна быть > 0');
+    if (!Object.keys(err).length) {
+      if (P2 > P1) err.P2 = 'Давление в конце больше давления в начале: (P1²−P2²) < 0, корень не определён (в VBA — ошибка №5)';
+      if (P2 === P1) warn.push('P1 = P2: перепад квадратов давлений равен нулю, дебит = 0.');
+      if (Math.abs(t1 - t2) > 40) warn.push('Большая разница входной и выходной температур (> 40 °C): средняя арифметическая температура может быть неточна.');
+      if (gamma < 0.55 || gamma > 1.0) warn.push('Отн. плотность вне типичного диапазона природного газа (0,55–1,0): применимость корреляций PC, TC и Z не подтверждена.');
+    }
+    return { err, warn };
+  }
+  return { vba, reference, validate };
+})();
+/* ===== Интерфейс ===== */
+const PK = { bar: 1, MPa: 10, kgf: 0.980665 }, PL = { bar: 'бар', MPa: 'МПа', kgf: 'кгс/см²' };
+const DEF = {
+  choke: { P1: '85', P2: '62', ds: '12', dt: '100', t: '35', g: '0.62' },
+  pipe: { P1: '58', P2: '46', t1: '35', t2: '18', g: '0.62', d: '309', L: '12.5' },
+};
+const FIELDS = {
+  choke: [['P1', 'Давление на устье', 'перед штуцером', 'p'], ['P2', 'Давление в шлейфе', 'после штуцера', 'p'],
+    ['ds', 'Диаметр штуцера', '', 'мм'], ['dt', 'Диаметр шлейфа', 'внутренний', 'мм'],
+    ['t', 'Температура газа', '', '°C'], ['g', 'Отн. плотность газа', 'по воздуху', '']],
+  pipe: [['P1', 'Давление в начале', 'на входе газопровода', 'p'], ['P2', 'Давление в конце', 'на выходе', 'p'],
+    ['t1', 'Температура в начале', '', '°C'], ['t2', 'Температура в конце', '', '°C'],
+    ['g', 'Отн. плотность газа', 'по воздуху', ''], ['d', 'Внутренний диаметр', '', 'мм'], ['L', 'Длина газопровода', '', 'км']],
+};
+const TITLES = { r1: { choke: 'Дебит на шлейф', pipe: 'Пропускная способность' }, r2: { choke: 'Дебит на воздух', pipe: 'Коэффициент сверхсжимаемости Z' } };
+let S = { mode: 'choke', pu: 'bar', link: true, points: [], choke: { ...DEF.choke }, pipe: { ...DEF.pipe } };
+try { const s = JSON.parse(localStorage.getItem('fdp.v2') || 'null'); if (s) S = { ...S, ...s, points: Array.isArray(s.points) ? s.points : [], choke: { ...DEF.choke, ...s.choke }, pipe: { ...DEF.pipe, ...s.pipe } }; } catch (e) {}
+const $ = (id) => document.getElementById(id);
+const num = (v) => { const s = String(v ?? '').trim().replace(/\s/g, '').replace(',', '.'); if (s === '') return null; return /^[-+]?(\d+\.?\d*|\.\d+)([eE][-+]?\d+)?$/.test(s) ? +s : NaN; };
+const fmt = (v, d) => (Number.isFinite(v) ? v.toLocaleString('ru-RU', { minimumFractionDigits: d, maximumFractionDigits: d }) : '—');
+const tg = () => (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData !== undefined ? Telegram.WebApp : null);
+const cur = () => S[S.mode];
+
+function renderForm() {
+  const M = S.mode;
+  $('form').innerHTML = FIELDS[M].map(([k, l, sub, u]) => `<div class="f" id="f_${k}"><label>${l}${sub ? `<i>${sub}</i>` : ''}</label>
+    <div class="in"><input id="i_${k}" inputmode="decimal" autocomplete="off" value="${cur()[k] ?? ''}"><span>${u === 'p' ? PL[S.pu] : u}</span></div></div>`).join('');
+  if (M === 'pipe') $('form').insertAdjacentHTML('afterbegin', `<label class="lnk"><input type="checkbox" id="link" ${S.link ? 'checked' : ''}> Давление в начале = давление в шлейфе (связано со вкладкой «Штуцер»)</label>`);
+  if ($('link')) $('link').addEventListener('change', (e) => { S.link = e.target.checked; if (S.link) S.pipe.P1 = S.choke.P2; renderForm(); calc(); });
+  if (M === 'pipe' && S.link && S.choke.P2 !== S.pipe.P1) { S.pipe.P1 = S.choke.P2; $('i_P1').value = S.pipe.P1; }
+  for (const [k] of FIELDS[M]) $('i_' + k).addEventListener('input', (e) => {
+    cur()[k] = e.target.value;
+    if (S.link && M === 'pipe' && k === 'P1') S.choke.P2 = e.target.value;
+    if (S.link && M === 'choke' && k === 'P2') S.pipe.P1 = e.target.value;
+    calc();
+  });
+  document.querySelectorAll('#pu button').forEach((b) => b.classList.toggle('on', b.dataset.u === S.pu));
+  document.querySelectorAll('#modes button').forEach((b) => b.classList.toggle('on', b.dataset.m === M));
+  for (const id of ['r1', 'r2']) $(id).querySelector('.t').textContent = TITLES[id][M];
+  $('fixbox').style.display = M === 'choke' ? '' : 'none';
+  $('fxnote').textContent = M === 'choke'
+    ? 'Формулы перенесены из VBA (Гуломов Р.) без изменений. Дебит на шлейф (функция Qsht): Q = 1700·α·ε·dшт²·(γ·Z·T₁)^−0,5·(P₁·H·760)^0,5/1000. Дебит на воздух (функция Дебит_газа_103m3_d): Q = 0,16888193·d^2,0852155·(1,0135293 + P)/√(γ·T). Совпадение с исходным VBA проверено на 13 контрольных точках.'
+    : 'Формула перенесена из VBA-функции Qras без изменений: Q = (π²·d⁵/16·293,15·((P1/10)² − (P2/10)²)/(λ·γ·L·Tср·Z·0,10132))^0,5·86400; λ = 0,009407·d^(−1/3) (Веймут); Pср = 2/3·(P1 + P2²/(P1 + P2)). Совпадение с исходным VBA проверено на 6 контрольных точках.';
+}
+document.querySelectorAll('#modes button').forEach((b) => b.addEventListener('click', () => { S.mode = b.dataset.m; renderForm(); calc(); }));
+document.querySelectorAll('#pu button').forEach((b) => b.addEventListener('click', () => {
+  const old = S.pu, nu = b.dataset.u; if (old === nu) return;
+  for (const m of ['choke', 'pipe']) for (const k of ['P1', 'P2']) { const v = num(S[m][k]); if (Number.isFinite(v)) S[m][k] = String(+(v * PK[old] / PK[nu]).toPrecision(8)); }
+  S.pu = nu; renderForm(); calc(); renderPoints();
+}));
+
+function markErrors(errs) {
+  document.querySelectorAll('.f').forEach((e) => { e.classList.remove('bad'); const m = e.querySelector('.msg'); if (m) m.remove(); });
+  for (const [k, m] of Object.entries(errs)) { const f = $('f_' + k); if (f) { f.classList.add('bad'); f.insertAdjacentHTML('beforeend', `<div class="msg">${m.replace('Введите число', 'Введите значение')}</div>`); } }
+}
+let last = null;
+function calc() {
+  try { localStorage.setItem('fdp.v2', JSON.stringify(S)); } catch (e) {}
+  if (S.mode === 'pipe') return calcPipe();
+  const c = S.choke, v = {}; for (const [k] of FIELDS.choke) v[k] = num(c[k]);
+  const P1 = v.P1 === null ? null : v.P1 * PK[S.pu], P2 = v.P2 === null ? null : v.P2 * PK[S.pu];
+  const vq = ChokeCalculator.validateQsht(P1, P2, v.ds, v.dt, v.t, v.g);
+  const vs = ChokeCalculator.validateSchl(P1, Number.isFinite(v.t) ? v.t + 273.15 : v.t, v.ds, v.g);
+  const map = { P1: 'P1', P2: 'P2', ds: 'ds', dt: 'dt', t: 't', g: 'g', P: 'P1', T: 't', d: 'ds' };
+  const errs = {}; for (const [k, m] of [...Object.entries(vq.err), ...Object.entries(vs.err)]) if (!errs[map[k]]) errs[map[k]] = m;
+  markErrors(errs);
+  const q = Object.keys(vq.err).length ? null : ChokeCalculator.qsht(P1, P2, v.ds, v.dt, v.t, v.g, {});
+  const qf = q ? ChokeCalculator.qsht(P1, P2, v.ds, v.dt, v.t, v.g, { useInputTemp: true, a2Squared: true }) : null;
+  const s = Object.keys(vs.err).length ? null : ChokeCalculator.schl(P1, v.t + 273.15, v.ds, v.g);
+  showBig('r1', q ? fmtQ(q.Q) : null, 'тыс. м³/сут', q ? `ε = ${fmt(q.epsi, 3)} · α = ${fmt(q.alfa, 3)} · Z = ${fmt(q.Z, 3)}` : 'проверьте данные');
+  showBig('r2', s ? fmtQ(s.Q) : null, 'тыс. м³/сут', s ? `P = ${fmt(P1, 2)} бар (изб.) · T = ${fmt(v.t + 273.15, 1)} K` : 'проверьте данные');
+  const notes = [];
+  if (q && P2 / P1 < 0.55) notes.push('P2/P1 < 0,55 — вероятен критический режим истечения: ближе к реальности «Дебит на воздух».');
+  if (q && P2 / P1 >= 0.55) notes.push('P2/P1 ≥ 0,55 — докритический режим: основной результат — «Дебит на шлейф».');
+  if (q && v.ds / v.dt > 0.8) notes.push('Диаметр штуцера близок к диаметру шлейфа (μ > 0,8) — вне типичного диапазона формулы.');
+  $('notes').innerHTML = notes.map((n) => `<div class="note">${n}</div>`).join('');
+  const rows = q ? [['H = P1 − P2, бар', q.H], ['μ = dшт/dшл', q.myu], ['α', q.alfa], ['coef', q.coef], ['ε₁ → ε', `${fmt(q.epsi1, 4)} → ${fmt(q.epsi, 4)}`], ['Pср, бар', q.Pa], ['Pпк, бар / Tпк, K', `${fmt(q.PC, 2)} / ${fmt(q.TC, 2)}`], ['Z', q.Z], ['T₁ в формуле, K', q.T1], ['Дебит на шлейф, тыс. м³/сут', q.Q]] : [];
+  if ($('fix').checked && qf) rows.push(['— с исправлениями: Z', qf.Z], ['— T₁, K', qf.T1], ['— дебит на шлейф, тыс. м³/сут', qf.Q]);
+  if (s) rows.push(['Дебит на воздух: Pабс = P + 1,0135, бар', s.Pabs], ['Дебит на воздух, тыс. м³/сут', s.Q]);
+  $('steps').innerHTML = stepsTable(rows, 'Особенности исходного VBA: в Qsht температура фактически не используется (T₁ = 273,15 K), a2 записан как …/Ts, поправка ε всегда равна 1. Единица результата (тыс. м³/сут) и тип давления — по умолчанию автора, требуют подтверждения.');
+  last = { mode: 'choke', q, s, v, P1, P2 };
+  const pts1 = [], pts2 = [], dl = Math.min(Math.max(Math.ceil((v.ds || 10) * 2 / 2) * 2, 20), (v.dt || 1e9) * 0.8);
+  if (q || s) for (let i = 1; i <= 40; i++) { const d = dl * i / 40;
+    if (q) pts1.push([d, ChokeCalculator.qsht(P1, P2, d, v.dt, v.t, v.g, {}).Q]);
+    if (s) pts2.push([d, ChokeCalculator.schl(P1, v.t + 273.15, d, v.g).Q]); }
+  chart(pts1, pts2, dl, [q ? [v.ds, q.Q] : null, s ? [v.ds, s.Q] : null], 'Диаметр штуцера, мм  ·  ─ на шлейф   ┄ на воздух  (тыс. м³/сут)');
+}
+function calcPipe() {
+  const c = S.pipe, v = {}; for (const [k] of FIELDS.pipe) v[k] = num(c[k]);
+  const P1 = v.P1 === null ? null : v.P1 * PK[S.pu], P2 = v.P2 === null ? null : v.P2 * PK[S.pu];
+  const Lm = v.L === null ? null : v.L * 1000;
+  const val = QrasCalculator.validate(P1, P2, v.t1, v.t2, v.g, v.d, Lm);
+  const errs = {}; for (const [k, m] of Object.entries(val.err)) errs[k === 'gamma' ? 'g' : k] = m;
+  markErrors(errs);
+  const ok = !Object.keys(errs).length;
+  const r = ok ? QrasCalculator.vba(P1, P2, v.t1, v.t2, v.g, v.d, Lm) : null;
+  showBig('r1', r && Number.isFinite(r.Q) ? fmtQ(r.Q) : null, 'тыс. м³/сут', r ? `ΔP = ${fmt(P1 - P2, 2)} бар · Pср = ${fmt(r.Pa, 2)} бар` : 'проверьте данные');
+  showBig('r2', r ? fmt(r.Z, 4) : null, `λ = ${r ? fmt(r.gid, 5) : '—'}`, r ? `Tср = ${fmt(r.Ta, 1)} K · Pпк = ${fmt(r.PC, 1)} бар` : 'проверьте данные');
+  const notes = []; for (const w of val.warn) notes.push(w);
+  $('notes').innerHTML = notes.map((n) => `<div class="note">${n}</div>`).join('');
+  let ref = r ? QrasCalculator.reference(r, v.g) : NaN;
+  const rows = r ? [['Tср = (T1 + T2)/2, K', r.Ta], ['Pср = 2/3·(P1 + P2²/(P1 + P2)), бар', r.Pa], ['m = 26,992·γ', r.m], ['Pпк, бар', r.PC], ['Tпк, K', r.TC], ['Ps / Ts', `${fmt(r.Ps, 4)} / ${fmt(r.Ts, 4)}`], ['a1 / a2', `${fmt(r.a1, 4)} / ${fmt(r.a2, 4)}`], ['Z', r.Z], ['λ (gid)', r.gid], ['(P1/10)² − (P2/10)², МПа²', r.dP2], ['Пропускная способность, тыс. м³/сут', r.Q], ['Справочно: ОНТП 51-1-85 (те же λ, Z), тыс. м³/сут', ref / 1000]] : [];
+  $('steps').innerHTML = stepsTable(rows, 'Единица результата в исходном коде не указана; по сравнению с классической формулой ОНТП 51-1-85 значение соответствует тыс. м³/сут (примерно на 9,8 % выше классического). Требует подтверждения автора. Давления для формулы с P² следует вводить абсолютные.');
+  last = { mode: 'pipe', r, v, P1, P2 };
+  const pts = [], dl = Math.max(Math.ceil((v.d || 300) * 2 / 50) * 50, 100);
+  if (r) for (let i = 1; i <= 40; i++) { const d = dl * i / 40; pts.push([d, QrasCalculator.vba(P1, P2, v.t1, v.t2, v.g, d, Lm).Q]); }
+  chart(pts, [], dl, [r ? [v.d, r.Q] : null, null], 'Внутренний диаметр, мм  ·  пропускная способность, тыс. м³/сут');
+}
+function fmtQ(Q) { return Q; }
+function stepsTable(rows, note) {
+  return rows.length ? `<table>${rows.map(([a, b]) => `<tr><td>${a}</td><td>${typeof b === 'number' ? fmt(b, Math.abs(b) >= 100 ? 2 : 4) : b}</td></tr>`).join('')}</table><div class="note">${note}</div>` : '';
+}
+function showBig(id, Q, unit, extra) {
+  const el = $(id); const ok = Q !== null && (typeof Q === 'string' || Number.isFinite(Q));
+  el.classList.toggle('off', !ok);
+  el.querySelector('.v').textContent = !ok ? 'нет результата' : typeof Q === 'string' ? Q : fmt(Q, Q >= 100 ? 1 : 2);
+  el.querySelector('.u').textContent = unit;
+  el.querySelector('.x').textContent = extra;
+}
+function chart(pts1, pts2, dl, marks, caption) {
+  const el = $('chart');
+  if (!pts1.length && !pts2.length) { el.innerHTML = ''; return; }
+  const W = 520, H = 210, m = { l: 50, r: 12, t: 14, b: 36 };
+  const all = [...pts1, ...pts2].map((p) => p[1]).filter(Number.isFinite);
+  const ymax = Math.max(...all, 1) * 1.05;
+  const X = (d) => m.l + d / dl * (W - m.l - m.r), Y = (q) => H - m.b - q / ymax * (H - m.t - m.b);
+  const step = Math.pow(10, Math.floor(Math.log10(ymax / 4))); const ys = [1, 2, 5, 10].map((k) => k * step).find((s) => ymax / s <= 5) || step * 10;
+  let g = ''; for (let y = 0; y <= ymax; y += ys) g += `<line class="g" x1="${m.l}" x2="${W - m.r}" y1="${Y(y)}" y2="${Y(y)}"/><text x="${m.l - 6}" y="${Y(y) + 4}" text-anchor="end">${fmt(y, 0)}</text>`;
+  const xs = [1, 2, 5, 10, 20, 50, 100, 200].find((s) => dl / s <= 8) || 500; for (let x = 0; x <= dl; x += xs) g += `<text x="${X(x)}" y="${H - m.b + 15}" text-anchor="middle">${x}</text>`;
+  const path = (p) => p.filter((a) => Number.isFinite(a[1])).map((a, i) => (i ? 'L' : 'M') + X(a[0]).toFixed(1) + ' ' + Y(a[1]).toFixed(1)).join('');
+  const dot = (p, c) => (p && Number.isFinite(p[1]) && p[0] <= dl ? `<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="4.5" fill="${c}"/>` : '');
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}">${g}
+    <path d="${path(pts1)}" fill="none" stroke="#0b6e80" stroke-width="2.5"/><path d="${path(pts2)}" fill="none" stroke="#ff6b3d" stroke-width="2.5" stroke-dasharray="6 4"/>
+    ${dot(marks[0], '#0b6e80')}${dot(marks[1], '#ff6b3d')}
+    <text x="${(W + m.l) / 2}" y="${H - 4}" text-anchor="middle">${caption}</text></svg>`;
+}
+/* ===== Сохранённые расчёты и IPR ===== */
+function addPoint() {
+  if (!last) return;
+  const c = { ...cur() }, k = S.points.length ? Math.max(...S.points.map((p) => p.n)) + 1 : 1;
+  if (last.mode === 'choke') {
+    if (!last.q && !last.s) { toast('Нет результата — проверьте данные'); return; }
+    S.points.push({ n: k, type: 'choke', P1: last.P1, P2: last.P2, Q: last.q ? last.q.Q : null, Qair: last.s ? last.s.Q : null, ds: last.v.ds, dt: last.v.dt, t: last.v.t, g: last.v.g });
+  } else {
+    if (!last.r || !Number.isFinite(last.r.Q)) { toast('Нет результата — проверьте данные'); return; }
+    S.points.push({ n: k, type: 'pipe', P1: last.P1, P2: last.P2, Q: last.r.Q, d: last.v.d, L: last.v.L, t1: last.v.t1, t2: last.v.t2, g: last.v.g });
+  }
+  void c; save(); renderPoints(); toast('Расчёт № ' + k + ' добавлен');
+  const T = tg(); if (T && T.HapticFeedback) T.HapticFeedback.notificationOccurred('success');
+}
+function save() { try { localStorage.setItem('fdp.v2', JSON.stringify(S)); } catch (e) {} }
+const pv = (bar) => (Number.isFinite(bar) ? bar / PK[S.pu] : NaN);
+function renderPoints() {
+  const box = $('calcs'), P = S.points, u = PL[S.pu];
+  if (!P.length) { box.innerHTML = `<h2>Расчёты и IPR</h2><p style="color:var(--ink2);font-size:13.5px;margin:0">Нажмите <b>«＋ Добавить расчёт»</b>, чтобы сохранить текущий результат. Добавьте несколько расчётов штуцера (разные давления на устье / диаметры) и газопровода — по ним построится график: дебит (X) — давление (Y).</p>`; return; }
+  const rows = P.map((p) => p.type === 'choke'
+    ? `<tr><td>${p.n}</td><td>Штуцер</td><td>dшт ${fmt(p.ds, 1)} мм</td><td class="n">${fmt(pv(p.P1), 2)}</td><td class="n">${fmt(pv(p.P2), 2)}</td><td class="n"><b>${fmt(p.Q, 1)}</b></td><td class="n">${fmt(p.Qair, 1)}</td><td><button class="del" data-n="${p.n}" title="Удалить">✕</button></td></tr>`
+    : `<tr><td>${p.n}</td><td>Газопровод</td><td>d ${fmt(p.d, 0)} мм · ${fmt(p.L, 1)} км</td><td class="n">—</td><td class="n">${fmt(pv(p.P1), 2)}</td><td class="n"><b>${fmt(p.Q, 1)}</b></td><td class="n">—</td><td><button class="del" data-n="${p.n}" title="Удалить">✕</button></td></tr>`).join('');
+  box.innerHTML = `<h2>Расчёты и IPR</h2><div style="overflow:auto"><table class="ptab"><tr><th>№</th><th>Тип</th><th>Параметры</th><th>Pустье, ${u}</th><th>Pшлейф = Pначало, ${u}</th><th>Дебит, тыс. м³/сут</th><th>Дебит на воздух</th><th></th></tr>${rows}</table></div>
+    <div class="chart" id="ipr"></div><div class="leg"><span><i style="background:#0b6e80"></i>Штуцер: дебит на шлейф — Pустье</span><span><i style="background:#ff6b3d"></i>Штуцер: дебит на воздух — Pустье</span><span><i style="background:#7c3aed"></i>Газопровод: пропускная способность — Pначало (= Pшлейф)</span></div>
+    <div class="acts"><button class="btn ghost sm" id="csv">⇩ CSV</button><button class="btn ghost sm" id="clr">Очистить все расчёты</button></div>`;
+  box.querySelectorAll('.del').forEach((b) => b.addEventListener('click', () => { S.points = S.points.filter((p) => p.n !== +b.dataset.n); save(); renderPoints(); }));
+  $('clr').addEventListener('click', () => { if (confirm('Удалить все сохранённые расчёты?')) { S.points = []; save(); renderPoints(); } });
+  $('csv').addEventListener('click', exportCSV);
+  drawIPR();
+}
+function drawIPR() {
+  const sets = [
+    { c: '#0b6e80', pts: S.points.filter((p) => p.type === 'choke' && Number.isFinite(p.Q)).map((p) => [p.Q, pv(p.P1), p.n]) },
+    { c: '#ff6b3d', dash: true, pts: S.points.filter((p) => p.type === 'choke' && Number.isFinite(p.Qair)).map((p) => [p.Qair, pv(p.P1), p.n]) },
+    { c: '#7c3aed', pts: S.points.filter((p) => p.type === 'pipe').map((p) => [p.Q, pv(p.P1), p.n]) },
+  ];
+  const all = sets.flatMap((s) => s.pts);
+  if (!all.length) { $('ipr').innerHTML = ''; return; }
+  const W = 640, H = 300, m = { l: 56, r: 30, t: 14, b: 42 };
+  const nice = (mx) => { const st = Math.pow(10, Math.floor(Math.log10(mx / 4 || 1))); const s = [1, 2, 5, 10].map((k) => k * st).find((v) => mx / v <= 6) || st * 10; return { s, max: Math.ceil(mx * 1.08 / s) * s }; };
+  const xs = nice(Math.max(...all.map((p) => p[0]), 1)), ys = nice(Math.max(...all.map((p) => p[1]), 1));
+  const X = (q) => m.l + q / xs.max * (W - m.l - m.r), Y = (p) => H - m.b - p / ys.max * (H - m.t - m.b);
+  let g = '';
+  for (let y = 0; y <= ys.max + 1e-9; y += ys.s) g += `<line class="g" x1="${m.l}" x2="${W - m.r}" y1="${Y(y)}" y2="${Y(y)}"/><text x="${m.l - 6}" y="${Y(y) + 4}" text-anchor="end">${fmt(y, ys.s < 1 ? 1 : 0)}</text>`;
+  for (let x = 0; x <= xs.max + 1e-9; x += xs.s) g += `<line class="g" y1="${m.t}" y2="${H - m.b}" x1="${X(x)}" x2="${X(x)}" opacity=".5"/><text x="${X(x)}" y="${H - m.b + 15}" text-anchor="middle">${fmt(x, 0)}</text>`;
+  let d = '';
+  for (const s of sets) {
+    const p = [...s.pts].sort((a, b) => a[1] - b[1]);
+    if (p.length > 1) d += `<path d="${p.map((a, i) => (i ? 'L' : 'M') + X(a[0]).toFixed(1) + ' ' + Y(a[1]).toFixed(1)).join('')}" fill="none" stroke="${s.c}" stroke-width="2.2" ${s.dash ? 'stroke-dasharray="6 4"' : ''}/>`;
+    for (const a of p) d += `<circle cx="${X(a[0])}" cy="${Y(a[1])}" r="5" fill="${s.dash ? 'var(--card)' : s.c}" stroke="${s.c}" stroke-width="2"><title>№${a[2]}: Q = ${fmt(a[0], 1)} тыс. м³/сут; P = ${fmt(a[1], 2)} ${PL[S.pu]}</title></circle>${s.dash ? '' : `<text x="${X(a[0]) + 7}" y="${Y(a[1]) - 7}" style="font-size:10px">${a[2]}</text>`}`;
+  }
+  $('ipr').innerHTML = `<svg viewBox="0 0 ${W} ${H}">${g}<line x1="${m.l}" x2="${m.l}" y1="${m.t}" y2="${H - m.b}" stroke="var(--ink2)"/><line x1="${m.l}" x2="${W - m.r}" y1="${H - m.b}" y2="${H - m.b}" stroke="var(--ink2)"/>${d}
+    <text x="${(W + m.l) / 2}" y="${H - 6}" text-anchor="middle" style="font-size:12px">Дебит газа, тыс. м³/сут</text>
+    <text transform="translate(14 ${(H - m.b + m.t) / 2}) rotate(-90)" text-anchor="middle" style="font-size:12px">Давление, ${PL[S.pu]}</text></svg>`;
+}
+function exportCSV() {
+  const u = PL[S.pu], f = (v) => (Number.isFinite(v) ? String(+v.toPrecision(10)).replace('.', ',') : '');
+  const lines = [['№', 'Тип', 'dшт, мм', 'dшл, мм', 'd трубы, мм', 'L, км', 't (t1), °C', 't2, °C', 'γ', `Pустье, ${u}`, `Pшлейф/Pначало, ${u}`, 'Дебит (на шлейф / газопровод), тыс. м³/сут', 'Дебит на воздух, тыс. м³/сут'].join(';')];
+  for (const p of S.points) lines.push(p.type === 'choke'
+    ? [p.n, 'Штуцер', f(p.ds), f(p.dt), '', '', f(p.t), '', f(p.g), f(pv(p.P1)), f(pv(p.P2)), f(p.Q), f(p.Qair)].join(';')
+    : [p.n, 'Газопровод', '', '', f(p.d), f(p.L), f(p.t1), f(p.t2), f(p.g), '', f(pv(p.P1)), f(p.Q), ''].join(';'));
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' }));
+  a.download = 'Calculator_FDP_расчёты.csv'; document.body.appendChild(a); a.click(); setTimeout(() => a.remove(), 500);
+}
+$('add').addEventListener('click', addPoint);
+function resultText() {
+  if (!last) return '';
+  const c = cur(), P = PL[S.pu];
+  if (last.mode === 'pipe') return `Calculator FDP — пропускная способность газопровода\nP1 = ${c.P1} ${P}, P2 = ${c.P2} ${P}, t = ${c.t1}/${c.t2} °C, γ = ${c.g}, d = ${c.d} мм, L = ${c.L} км\nПропускная способность: ${last.r && Number.isFinite(last.r.Q) ? fmt(last.r.Q, 1) + ' тыс. м³/сут' : '—'}`;
+  return `Calculator FDP — дебит газа через штуцер\nP1 = ${c.P1} ${P}, P2 = ${c.P2} ${P}, dшт = ${c.ds} мм, dшл = ${c.dt} мм, t = ${c.t} °C, γ = ${c.g}\n`
+    + `Дебит на шлейф: ${last.q ? fmt(last.q.Q, 1) + ' тыс. м³/сут' : '—'}\nДебит на воздух: ${last.s ? fmt(last.s.Q, 1) + ' тыс. м³/сут' : '—'}`;
+}
+function toast(t) { const e = $('toast'); e.textContent = t; e.classList.add('on'); setTimeout(() => e.classList.remove('on'), 2200); }
+$('share').addEventListener('click', async () => {
+  const txt = resultText(); const T = tg();
+  if (T && T.initData) { T.HapticFeedback && T.HapticFeedback.impactOccurred('light'); T.openTelegramLink('https://t.me/share/url?url=' + encodeURIComponent(' ') + '&text=' + encodeURIComponent(txt)); return; }
+  if (navigator.share) { try { await navigator.share({ title: 'Calculator FDP', text: txt }); return; } catch (e) { /* отменено */ } }
+  try { await navigator.clipboard.writeText(txt); toast('Результат скопирован'); } catch (e) { prompt('Скопируйте результат:', txt); }
+});
+$('reset').addEventListener('click', () => {
+  const d = { ...DEF[S.mode] };
+  if (S.pu !== 'bar') for (const k of ['P1', 'P2']) d[k] = String(+(num(d[k]) / PK[S.pu]).toPrecision(8));
+  S[S.mode] = d; renderForm(); calc(); toast('Значения сброшены');
+});
+$('fix').addEventListener('change', calc);
+/* ===== Telegram Mini App ===== */
+function initTelegram() {
+  const T = tg(); if (!T || !T.initData) return;
+  document.body.classList.add('tg');
+  T.ready(); T.expand();
+  const p = T.themeParams || {}, r = document.documentElement.style;
+  if (p.bg_color) { r.setProperty('--bg', p.secondary_bg_color || p.bg_color); r.setProperty('--card', p.bg_color); }
+  if (p.text_color) r.setProperty('--ink', p.text_color);
+  if (p.hint_color) r.setProperty('--ink2', p.hint_color);
+  if (p.secondary_bg_color) r.setProperty('--field', p.secondary_bg_color);
+  if (p.button_color) r.setProperty('--acc', p.button_color);
+  try { T.setHeaderColor('secondary_bg_color'); } catch (e) {}
+}
+window.addEventListener('load', initTelegram);
+renderForm(); calc(); renderPoints();
+</script>
+</body>
+</html>
