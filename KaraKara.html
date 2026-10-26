@@ -1,0 +1,2394 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="KaraKara — interactive multiplication table adventure game. by Anvar Muratov">
+<meta name="author" content="Anvar Muratov">
+<meta name="color-scheme" content="light dark">
+<title>KaraKara — by Anvar Muratov</title>
+<style>
+/* =========================================================
+   KaraKara — styles
+   ========================================================= */
+:root{
+  --font:"Nunito","Varela Round","Arial Rounded MT Bold","Trebuchet MS","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --r:22px;
+}
+:root,[data-theme="light"]{
+  --bg:#dcf0ff; --bg2:#bfe1ff; --card:#ffffff; --card2:#f2f8ff; --text:#132d55; --muted:#4b6286;
+  --line:#d2e3f6; --pri:#2a72ee; --pri2:#1a55c2; --on-pri:#ffffff; --acc:#ffc23a; --acc2:#ff8a1f; --on-acc:#3b2200;
+  --ok:#137a43; --okbg:#dcf7e8; --bad:#b83434; --badbg:#ffe6e6; --vio:#7b5cff;
+  --sh:0 10px 24px rgba(24,72,150,.14); --sh2:0 4px 0 rgba(20,60,130,.18); --glow:0 0 0 transparent;
+  --field:#eaf5ff; --deco1:rgba(255,255,255,.7); --deco2:rgba(255,214,102,.18);
+}
+[data-theme="dark"]{
+  --bg:#0c1530; --bg2:#1b1444; --card:#17244a; --card2:#1f2d59; --text:#eef3ff; --muted:#b0bde0;
+  --line:#2e3e6c; --pri:#5aaeff; --pri2:#8b78ff; --on-pri:#07142e; --acc:#ffd45e; --acc2:#ff9d45; --on-acc:#2b1700;
+  --ok:#52da92; --okbg:#143d31; --bad:#ff8c8c; --badbg:#47202a; --vio:#a993ff;
+  --sh:0 10px 26px rgba(0,0,0,.45); --sh2:0 4px 0 rgba(0,0,0,.4); --glow:0 0 18px rgba(110,170,255,.45);
+  --field:#121e3d; --deco1:rgba(255,255,255,.55); --deco2:rgba(164,140,255,.14);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--font); color:var(--text); min-height:100vh; line-height:1.4;
+  background:linear-gradient(165deg,var(--bg),var(--bg2)); background-attachment:fixed;
+  transition:background-color .45s,color .45s; -webkit-tap-highlight-color:transparent; overflow-x:hidden;
+}
+body::before{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:
+    radial-gradient(circle at 8% 12%, var(--deco1) 0 2px, transparent 3px),
+    radial-gradient(circle at 22% 78%, var(--deco1) 0 2px, transparent 3px),
+    radial-gradient(circle at 78% 18%, var(--deco1) 0 3px, transparent 4px),
+    radial-gradient(circle at 92% 64%, var(--deco1) 0 2px, transparent 3px),
+    radial-gradient(circle at 55% 40%, var(--deco1) 0 1.5px, transparent 2.5px),
+    radial-gradient(ellipse at 85% 95%, var(--deco2) 0 120px, transparent 121px),
+    radial-gradient(ellipse at 5% 100%, var(--deco2) 0 90px, transparent 91px);
+}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--acc2);outline-offset:3px;border-radius:12px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#app{min-height:100vh}
+.screen{animation:screenIn .35s ease both}
+@keyframes screenIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.wrap{max-width:980px;margin:0 auto;padding:12px 16px 40px}
+h1,h2,h3{margin:.2em 0 .4em;line-height:1.15}
+h2{font-size:1.35rem}
+h3{font-size:1.1rem}
+p{margin:.3em 0 .6em}
+.muted{color:var(--muted)}
+.center{text-align:center}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row.sb{justify-content:space-between}
+.row.c{justify-content:center}
+.grow{flex:1}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 16px;
+  background:color-mix(in srgb,var(--card) 82%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line)}
+@supports not (background:color-mix(in srgb,red 50%,blue)){.topbar{background:var(--card)}}
+.topbar h1{font-size:1.15rem;margin:0;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.iconbtn{border:0;background:var(--card2);color:var(--text);width:44px;height:44px;border-radius:14px;font-size:1.25rem;
+  cursor:pointer;box-shadow:var(--sh2);display:inline-flex;align-items:center;justify-content:center;flex:none;transition:transform .12s}
+.iconbtn:active{transform:translateY(2px)}
+.pills{display:flex;gap:6px;flex:none}
+.pill{background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:4px 9px;font-size:.85rem;white-space:nowrap}
+.pill b{font-weight:900}
+
+/* ---------- buttons & cards ---------- */
+.btn{border:0;border-radius:16px;padding:12px 20px;min-height:48px;background:var(--pri);color:var(--on-pri);font-weight:800;
+  font-size:1rem;cursor:pointer;box-shadow:var(--sh2);transition:transform .12s,filter .2s,box-shadow .2s;display:inline-flex;
+  align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn:hover{filter:brightness(1.06)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+.btn.acc{background:linear-gradient(180deg,var(--acc),var(--acc2));color:var(--on-acc)}
+.btn.ghost{background:var(--card2);color:var(--text);border:1px solid var(--line)}
+.btn.ok{background:var(--ok);color:#fff}
+[data-theme="dark"] .btn.ok{color:#06251a}
+.btn.danger{background:var(--bad);color:#fff}
+[data-theme="dark"] .btn.danger{color:#2a0a0a}
+.btn.big{font-size:1.15rem;padding:14px 26px;min-height:56px}
+.btn.sm{padding:6px 12px;min-height:38px;font-size:.9rem;border-radius:12px}
+.btn[disabled]{opacity:.5;cursor:not-allowed;filter:grayscale(.4)}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);padding:16px;border:1px solid var(--line);
+  transition:background-color .45s,border-color .45s}
+.card+.card{margin-top:14px}
+.help{border:0;width:26px;height:26px;border-radius:50%;background:var(--pri);color:var(--on-pri);font-weight:900;cursor:pointer;
+  font-size:.9rem;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;margin-left:6px;flex:none}
+.seg{display:inline-flex;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:3px;gap:3px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;padding:8px 12px;border-radius:11px;font-weight:800;cursor:pointer;min-height:40px;color:var(--text)}
+.seg button[aria-pressed="true"]{background:var(--pri);color:var(--on-pri);box-shadow:var(--glow)}
+.bar{height:12px;background:var(--card2);border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pri),var(--vio));border-radius:999px;transition:width .4s}
+.bar.gold>i{background:linear-gradient(90deg,var(--acc),var(--acc2))}
+.bar.green>i{background:linear-gradient(90deg,#46c47f,#1f9d55)}
+.chip{display:inline-flex;align-items:center;gap:5px;background:var(--card2);border:1px solid var(--line);border-radius:999px;
+  padding:5px 11px;font-size:.9rem;white-space:nowrap}
+.tag{display:inline-block;background:var(--acc);color:var(--on-acc);font-weight:800;font-size:.8rem;border-radius:999px;padding:3px 10px}
+.tag.v{background:var(--vio);color:#fff}
+.stars{display:inline-flex;gap:2px;letter-spacing:0}
+.stars .s{filter:grayscale(1);opacity:.35}
+.stars .s.on{filter:none;opacity:1}
+
+/* ---------- logo & characters ---------- */
+.logo{display:block;width:min(420px,88vw);height:auto;margin:0 auto}
+.logo.sm{width:min(260px,60vw)}
+.logo .lg-glow{animation:glow 3s ease-in-out infinite}
+@keyframes glow{50%{opacity:.55}}
+.char{display:inline-block}
+.floaty{animation:floaty 3.2s ease-in-out infinite}
+@keyframes floaty{50%{transform:translateY(-6px)}}
+.cheer{animation:cheer .6s ease}
+@keyframes cheer{30%{transform:translateY(-14px) rotate(-6deg)}60%{transform:translateY(0) rotate(4deg)}}
+.sad{animation:sad .6s ease}
+@keyframes sad{40%{transform:translateX(-4px) rotate(-3deg)}70%{transform:translateX(3px)}}
+
+/* ---------- splash ---------- */
+.splash{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:14px}
+.splash .slogan{font-size:1.25rem;font-weight:800;color:var(--pri2)}
+[data-theme="dark"] .splash .slogan{color:var(--acc)}
+.splash .chars{display:flex;align-items:flex-end;gap:10px}
+.loader{width:min(260px,70vw)}
+
+/* ---------- main ---------- */
+.mainhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-top:6px}
+.scene{display:grid;grid-template-columns:auto 1fr auto;align-items:end;gap:8px;background:linear-gradient(180deg,color-mix(in srgb,var(--pri) 14%,var(--card)),var(--card));overflow:hidden;position:relative}
+.bubble{background:var(--card2);border:2px solid var(--line);border-radius:18px;padding:10px 14px;font-weight:700;position:relative;align-self:center}
+.bubble::after{content:"";position:absolute;bottom:-10px;right:26px;border:10px solid transparent;border-top-color:var(--line);border-bottom:0}
+.playercard .lv{font-size:1.6rem;font-weight:900}
+.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.menu-btn{border:0;cursor:pointer;border-radius:20px;padding:16px 10px;min-height:112px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;text-align:center;background:var(--card);border:1px solid var(--line);box-shadow:var(--sh);color:var(--text);transition:transform .15s,box-shadow .2s}
+.menu-btn:hover{transform:translateY(-3px);box-shadow:var(--sh),var(--glow)}
+.menu-btn:active{transform:translateY(1px)}
+.menu-btn .ic{font-size:2.1rem;line-height:1}
+.menu-btn .nm{font-weight:900;font-size:1.02rem}
+.menu-btn .ds{font-size:.78rem;color:var(--muted)}
+.menu-btn.hero{background:linear-gradient(160deg,var(--acc),var(--acc2));color:var(--on-acc);grid-column:span 3;min-height:96px;flex-direction:row;gap:14px}
+.menu-btn.hero .ds{color:var(--on-acc);opacity:.85}
+.menu-btn.hero .ic{font-size:2.6rem}
+@media (max-width:560px){.menu-grid{grid-template-columns:repeat(2,1fr)}.menu-btn.hero{grid-column:span 2}.scene{grid-template-columns:auto 1fr}.scene .dr{display:none}}
+.daily li{list-style:none;display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.daily li:last-child{border-bottom:0}
+.daily ul{margin:0;padding:0}
+.credit{text-align:center;margin:26px auto 10px;color:var(--muted);font-size:.85rem;line-height:1.45}
+.credit .cn{font-weight:900;font-size:1rem;color:var(--text)}
+
+/* ---------- map ---------- */
+.regions{display:grid;gap:14px}
+.region-card{border:0;cursor:pointer;text-align:left;border-radius:24px;padding:16px;display:flex;gap:14px;align-items:center;color:#fff;
+  box-shadow:var(--sh);position:relative;overflow:hidden;min-height:110px;transition:transform .15s}
+.region-card:hover{transform:translateY(-2px)}
+.region-card .ric{font-size:3rem;flex:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25))}
+.region-card h3{margin:0;font-size:1.2rem;text-shadow:0 2px 3px rgba(0,0,0,.25)}
+.region-card p{margin:2px 0;font-size:.9rem;opacity:.95}
+.region-card.locked{filter:grayscale(.85) brightness(.85);cursor:pointer}
+.region-card .lockbadge{position:absolute;top:10px;right:12px;background:rgba(0,0,0,.35);padding:4px 10px;border-radius:999px;font-size:.8rem}
+.region-card .bar{background:rgba(255,255,255,.3);border-color:transparent}
+.region-card .bar>i{background:#fff}
+.route{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--muted);font-weight:800;font-size:.9rem}
+.route .ln{flex:1;border-top:3px dashed var(--line)}
+.path{display:flex;flex-direction:column;gap:18px;padding:10px 0;position:relative}
+.node{display:flex;align-items:center;gap:12px;width:min(340px,92%);border:0;cursor:pointer;background:var(--card);border:1px solid var(--line);
+  border-radius:20px;padding:12px 14px;box-shadow:var(--sh);text-align:left;color:var(--text);position:relative;transition:transform .15s}
+.node:hover{transform:scale(1.02)}
+.node:nth-child(odd){align-self:flex-start}
+.node:nth-child(even){align-self:flex-end}
+.node .nb{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;
+  background:linear-gradient(180deg,var(--pri),var(--pri2));color:#fff;flex:none;box-shadow:inset 0 -4px 0 rgba(0,0,0,.2)}
+.node.boss .nb{background:linear-gradient(180deg,#ff7a59,#d6336c)}
+.node.secret .nb{background:linear-gradient(180deg,var(--acc),var(--acc2))}
+.node.locked{opacity:.55}
+.node.locked .nb{background:#8a96b3}
+.node.done .nb{box-shadow:0 0 0 4px var(--acc),inset 0 -4px 0 rgba(0,0,0,.2)}
+
+/* ---------- table grid ---------- */
+.tgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media (max-width:520px){.tgrid{grid-template-columns:repeat(3,1fr)}}
+.tbtn{border:2px solid var(--line);background:var(--card);border-radius:18px;padding:10px 6px;cursor:pointer;color:var(--text);display:flex;flex-direction:column;
+  align-items:center;gap:4px;box-shadow:var(--sh2);transition:transform .12s}
+.tbtn b{font-size:1.6rem}
+.tbtn small{font-size:.72rem;color:var(--muted)}
+.tbtn[aria-pressed="true"]{border-color:var(--pri);box-shadow:0 0 0 3px color-mix(in srgb,var(--pri) 35%,transparent),var(--glow)}
+.tbtn .bar{width:80%;height:7px}
+
+/* ---------- quiz ---------- */
+.hud{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.hud .prog,.hud .timer{flex:1 1 200px;display:flex;align-items:center;gap:8px;font-weight:800;font-size:.9rem}
+.hud .prog .bar,.hud .timer .bar{flex:1}
+.timer .bar>i{background:linear-gradient(90deg,#46c47f,var(--acc),var(--acc2));transition:width .12s linear}
+.qwrap{display:grid;grid-template-columns:1fr 170px;gap:14px;align-items:start}
+@media (max-width:720px){.qwrap{grid-template-columns:1fr}.buddy{position:static;flex-direction:row;justify-content:center}.buddy svg{width:76px;height:auto}.buddy .bubble::after{display:none}}
+.qcard{background:var(--card);border-radius:28px;box-shadow:var(--sh);border:1px solid var(--line);padding:18px;text-align:center;position:relative}
+.expr{font-size:clamp(46px,12vw,80px);font-weight:900;letter-spacing:.02em;display:flex;justify-content:center;align-items:center;gap:.22em;margin:6px 0 10px;line-height:1.1}
+.expr .op{color:var(--acc2)}
+.expr .slot{min-width:1.4em;padding:0 .15em;border-radius:18px;background:var(--card2);border:3px dashed var(--line);color:var(--pri)}
+.expr .slot.ok{border-style:solid;border-color:var(--ok);background:var(--okbg);color:var(--ok);animation:pop .4s}
+.expr .slot.no{border-style:solid;border-color:var(--bad);background:var(--badbg);color:var(--bad)}
+@keyframes pop{40%{transform:scale(1.18)}}
+.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px}
+.choice{position:relative;border:3px solid var(--line);background:var(--card2);color:var(--text);border-radius:20px;min-height:76px;font-size:clamp(28px,7vw,40px);
+  font-weight:900;cursor:pointer;box-shadow:var(--sh2);transition:transform .1s,background .2s,border-color .2s}
+.choice:hover:not([disabled]){border-color:var(--pri);transform:translateY(-2px)}
+.choice:active:not([disabled]){transform:translateY(2px)}
+.choice .k{position:absolute;top:6px;left:10px;font-size:.8rem;color:var(--muted);font-weight:700}
+.choice .mk{position:absolute;top:4px;right:10px;font-size:1.3rem}
+.choice.right{background:var(--okbg);border-color:var(--ok);color:var(--ok);animation:pop .4s}
+.choice.wrong{background:var(--badbg);border-color:var(--bad);color:var(--bad);animation:softshake .45s}
+.choice.gone{visibility:hidden}
+.choice[disabled]{cursor:default}
+@keyframes softshake{20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+.typebox{font-size:2.4rem;font-weight:900;min-height:64px;border:3px solid var(--line);border-radius:18px;background:var(--card2);display:flex;align-items:center;justify-content:center;margin:8px auto;max-width:220px;color:var(--pri)}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:330px;margin:8px auto 0}
+.keypad button{min-height:56px;border-radius:16px;border:2px solid var(--line);background:var(--card2);font-size:1.5rem;font-weight:900;cursor:pointer;box-shadow:var(--sh2);color:var(--text)}
+.keypad button.kok{background:var(--ok);color:#fff;border-color:transparent}
+[data-theme="dark"] .keypad button.kok{color:#06251a}
+.keypad button:active{transform:translateY(2px)}
+.feedback{min-height:28px;margin-top:12px;font-weight:800;font-size:1.05rem}
+.feedback.ok{color:var(--ok)}
+.feedback.no{color:var(--bad)}
+.explain{background:var(--card2);border-radius:16px;padding:10px 12px;margin-top:10px;border:1px solid var(--line);font-weight:700}
+.tools{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.buddy{display:flex;flex-direction:column;align-items:center;gap:8px;position:sticky;top:80px}
+.buddy .bubble{font-size:.92rem;text-align:center}
+.buddy .bubble::after{left:50%;right:auto;transform:translateX(-50%)}
+.viz{margin:8px auto 4px;max-width:640px}
+.grps{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.grp{display:inline-flex;flex-wrap:wrap;max-width:118px;gap:2px;padding:6px 8px;border-radius:14px;background:color-mix(in srgb,var(--acc) 22%,var(--card));border:2px dashed var(--acc2);justify-content:center;animation:pop .35s both}
+.dot{font-size:18px;line-height:1}
+.vizcap{font-size:.9rem;color:var(--muted);margin-top:6px;font-weight:700}
+.bossbar{display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,#3a1d5c,#7a2450);color:#fff;border-radius:20px;padding:10px 14px;margin-bottom:12px;box-shadow:var(--sh)}
+.bossbar .bic{font-size:2.6rem;filter:drop-shadow(0 3px 4px rgba(0,0,0,.4))}
+.bossbar .bar{background:rgba(255,255,255,.2);border-color:transparent}
+.bossbar .bar>i{background:linear-gradient(90deg,#ff7a59,#ffd166)}
+.bossbar.hit .bic{animation:softshake .4s}
+
+/* ---------- results ---------- */
+.res-stars{font-size:3.4rem;display:flex;justify-content:center;gap:10px;margin:6px 0}
+.res-stars span{display:inline-block;filter:grayscale(1);opacity:.3}
+.res-stars span.on{filter:none;opacity:1;animation:starIn .6s both}
+.res-stars span.on:nth-child(2){animation-delay:.2s}
+.res-stars span.on:nth-child(3){animation-delay:.4s}
+@keyframes starIn{0%{transform:scale(0) rotate(-90deg)}70%{transform:scale(1.25) rotate(10deg)}100%{transform:none}}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:12px 0}
+.stat{background:var(--card2);border-radius:16px;padding:10px;text-align:center;border:1px solid var(--line)}
+.stat b{display:block;font-size:1.5rem}
+.stat small{color:var(--muted);font-weight:700}
+
+/* ---------- mini-games ---------- */
+.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.gcard{border:0;cursor:pointer;text-align:left;border-radius:24px;padding:16px;color:#fff;box-shadow:var(--sh);display:flex;gap:12px;align-items:center;min-height:120px;transition:transform .15s}
+.gcard:hover{transform:translateY(-3px)}
+.gcard .gic{font-size:3rem}
+.gcard h3{margin:0;text-shadow:0 2px 3px rgba(0,0,0,.25)}
+.gcard p{margin:3px 0;font-size:.88rem;opacity:.95}
+.gcard small{display:inline-block;background:rgba(0,0,0,.25);border-radius:999px;padding:2px 9px;margin-top:4px}
+.tmap{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px;border-radius:26px;
+  background:radial-gradient(circle at 30% 30%,#f9e3a3,#e8c06d 60%,#c99a45);box-shadow:inset 0 0 0 6px rgba(120,70,20,.25),var(--sh)}
+[data-theme="dark"] .tmap{background:radial-gradient(circle at 30% 30%,#5c4a2a,#3e3020 60%,#2a2016)}
+.chest{border:0;background:rgba(255,255,255,.35);border-radius:18px;min-height:96px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-weight:800;color:#3b2200;transition:transform .15s}
+[data-theme="dark"] .chest{background:rgba(255,255,255,.08);color:#ffe3a6}
+.chest:hover:not([disabled]){transform:scale(1.05)}
+.chest.active{box-shadow:0 0 0 4px var(--pri),0 0 20px rgba(90,170,255,.6)}
+.chest svg{width:64px;height:56px}
+.chest.opened{animation:pop .5s}
+.overlayq{margin-top:14px}
+.field{position:relative;height:230px;border-radius:24px;overflow:hidden;background:linear-gradient(180deg,#9fd8ff 0,#c9ecff 55%,#7ccf7a 55%,#5cb85c 100%);box-shadow:var(--sh)}
+[data-theme="dark"] .field{background:linear-gradient(180deg,#1b2a5a 0,#2c3d7a 55%,#2f6a3c 55%,#24532f 100%)}
+.field .castle{position:absolute;left:0;bottom:12px;width:92px}
+.field .road{position:absolute;left:0;right:0;bottom:38px;height:26px;background:rgba(150,110,60,.45)}
+.enemy{position:absolute;bottom:46px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;transition:opacity .3s}
+.enemy .eic{font-size:2.3rem;line-height:1;animation:walk .6s ease-in-out infinite alternate}
+.enemy.boss .eic{font-size:3.6rem}
+.enemy .ehp{width:44px;height:6px;border-radius:4px;background:rgba(0,0,0,.25);overflow:hidden;margin-top:2px}
+.enemy .ehp i{display:block;height:100%;background:#ff5d5d}
+.enemy.dead{opacity:0}
+@keyframes walk{to{transform:translateY(-4px)}}
+.shot{position:absolute;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,#fff6b0,#ffb020);box-shadow:0 0 10px #ffc23a;left:84px;bottom:150px;transition:left .25s linear,bottom .25s linear;pointer-events:none}
+.space{position:relative;height:330px;border-radius:24px;overflow:hidden;background:radial-gradient(ellipse at 50% 120%,#3b2a8a,#120a35 60%,#05040f);box-shadow:var(--sh)}
+.space::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 10% 20%,#fff 0 1px,transparent 2px),radial-gradient(circle at 30% 70%,#fff 0 1px,transparent 2px),radial-gradient(circle at 70% 30%,#fff 0 1.5px,transparent 2.5px),radial-gradient(circle at 85% 80%,#fff 0 1px,transparent 2px),radial-gradient(circle at 50% 50%,#fff 0 1px,transparent 2px),radial-gradient(circle at 60% 10%,#fff 0 1px,transparent 2px)}
+.lanes{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr)}
+.lane{border-right:2px dashed rgba(255,255,255,.12);position:relative}
+.lane:last-child{border-right:0}
+.gate{position:absolute;left:8%;right:8%;top:0;border:0;cursor:pointer;height:64px;border-radius:18px;background:linear-gradient(180deg,rgba(130,200,255,.35),rgba(150,110,255,.35));
+  border:3px solid rgba(180,220,255,.8);color:#fff;font-size:1.9rem;font-weight:900;text-shadow:0 2px 4px rgba(0,0,0,.6);box-shadow:0 0 16px rgba(120,180,255,.5)}
+.gate.ok{border-color:#52da92;background:rgba(82,218,146,.35)}
+.gate.no{border-color:#ff8c8c;background:rgba(255,120,120,.3)}
+.ship{position:absolute;bottom:14px;width:33.33%;display:flex;justify-content:center;transition:left .18s ease}
+.ship svg{width:54px;height:80px;filter:drop-shadow(0 0 10px rgba(255,180,80,.6))}
+.ship.bump svg{animation:softshake .4s}
+.spaceq{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(10,8,40,.7);color:#fff;border-radius:16px;padding:6px 16px;font-size:1.8rem;font-weight:900;z-index:3;white-space:nowrap;border:2px solid rgba(255,255,255,.25)}
+.planetmsg{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);background:rgba(255,255,255,.92);color:#2a1a6e;padding:10px 16px;border-radius:16px;font-weight:900;z-index:4;text-align:center;animation:pop .5s}
+.track{display:flex;flex-direction:column;gap:6px;background:#5b6377;border-radius:22px;padding:10px;box-shadow:var(--sh);position:relative}
+[data-theme="dark"] .track{background:#2b3145}
+.tlane{position:relative;height:52px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.08) 0 30px,transparent 30px 60px);border-radius:12px;border-bottom:2px dashed rgba(255,255,255,.35)}
+.tlane:last-child{border-bottom:0}
+.tlane .finish{position:absolute;right:8px;top:0;bottom:0;width:14px;background:repeating-conic-gradient(#fff 0 25%,#222 0 50%) 0 0/14px 14px;border-radius:3px}
+.car{position:absolute;top:4px;left:0;display:flex;align-items:center;gap:4px;transition:none}
+.car svg{width:66px;height:36px}
+.car .cn{font-size:.72rem;font-weight:900;color:#fff;background:rgba(0,0,0,.4);padding:1px 6px;border-radius:8px}
+.car.wobble svg{animation:softshake .4s}
+.car.boost svg{filter:drop-shadow(-8px 0 6px rgba(255,190,60,.9))}
+.pairs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:480px){.pairs{grid-template-columns:repeat(3,1fr)}}
+.pcard{perspective:600px;border:0;background:transparent;padding:0;min-height:84px;cursor:pointer}
+.pcard .in{position:relative;width:100%;height:84px;transition:transform .4s;transform-style:preserve-3d}
+.pcard.up .in,.pcard.got .in{transform:rotateY(180deg)}
+.pcard .fa,.pcard .ba{position:absolute;inset:0;border-radius:18px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;font-weight:900;box-shadow:var(--sh2)}
+.pcard .ba{background:linear-gradient(160deg,var(--pri),var(--vio));color:#fff;font-size:2rem}
+.pcard .fa{background:var(--card);border:3px solid var(--line);transform:rotateY(180deg);font-size:1.5rem;color:var(--text)}
+.pcard.got .fa{border-color:var(--ok);background:var(--okbg);color:var(--ok)}
+.noanim .pcard .fa{transform:none}
+.noanim .pcard .ba{display:flex}
+.noanim .pcard.up .ba,.noanim .pcard.got .ba{display:none}
+.noanim .pcard .in{transform:none!important}
+
+/* ---------- inventory / achievements ---------- */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tabs button{border:1px solid var(--line);background:var(--card);padding:9px 14px;border-radius:14px;font-weight:800;cursor:pointer;color:var(--text);min-height:44px}
+.tabs button[aria-selected="true"]{background:var(--pri);color:var(--on-pri);border-color:transparent}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.item{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:10px;text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center}
+.item .iic{font-size:2.2rem;line-height:1.1}
+.item.lock{opacity:.55}
+.item.on{border-color:var(--ok)}
+.item svg{width:70px;height:70px}
+.ach{display:flex;gap:12px;align-items:center;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:12px}
+.ach .aic{font-size:2.2rem;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--acc),var(--acc2));flex:none;box-shadow:0 0 0 4px color-mix(in srgb,var(--acc) 35%,transparent)}
+.ach.lock .aic{background:var(--card2);filter:grayscale(1);box-shadow:none;opacity:.6}
+.ach.lock{border-style:dashed}
+.achs{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.tbl-row{display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;padding:6px 0}
+.tbl-row b{font-size:1.1rem}
+.factchips{display:flex;flex-wrap:wrap;gap:6px}
+.hist li{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:.92rem}
+.hist{margin:0;padding:0;list-style:none}
+
+/* ---------- learn ---------- */
+.steps{display:flex;gap:5px;justify-content:center;margin:6px 0 12px;flex-wrap:wrap}
+.steps i{width:22px;height:8px;border-radius:6px;background:var(--line)}
+.steps i.on{background:var(--pri)}
+.steps i.cur{background:var(--acc2)}
+.tip{background:color-mix(in srgb,var(--acc) 20%,var(--card));border-left:6px solid var(--acc2);border-radius:14px;padding:10px 14px;font-weight:700}
+
+/* ---------- tour ---------- */
+.tour{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.tour .card{max-width:560px;width:100%;text-align:center}
+.demo-stars{font-size:3rem;display:flex;justify-content:center;gap:10px}
+.demo-stars span{animation:starIn .6s both}
+.demo-stars span:nth-child(2){animation-delay:.3s}
+.demo-stars span:nth-child(3){animation-delay:.6s}
+
+/* ---------- modal & toast ---------- */
+.modal-bg{position:fixed;inset:0;background:rgba(5,12,30,.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;animation:fade .2s}
+@keyframes fade{from{opacity:0}}
+.modal{background:var(--card);color:var(--text);border-radius:24px;max-width:460px;width:100%;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.4);border:1px solid var(--line);animation:screenIn .25s;max-height:90vh;overflow:auto}
+.modal h2{margin-top:0}
+#toasts{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;width:min(420px,92vw)}
+.toast{background:var(--card);border:2px solid var(--acc);color:var(--text);padding:10px 16px;border-radius:16px;box-shadow:var(--sh),var(--glow);font-weight:800;animation:toastIn .35s both;text-align:center}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px)}}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:150;overflow:hidden}
+.cf{position:absolute;top:-20px;width:10px;height:14px;border-radius:3px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+
+/* ---------- reduced motion ---------- */
+.noanim *,.noanim *::before,.noanim *::after{animation:none!important;transition:none!important}
+@media print{.topbar{position:static}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="modal-root"></div>
+<div id="toasts" role="status" aria-live="polite"></div>
+<div id="fx" aria-hidden="true"></div>
+<noscript><div style="padding:24px;font-family:sans-serif;text-align:center">KaraKara: JavaScript kerak / Нужен JavaScript / JavaScript is required.</div></noscript>
+<script>
+(function () {
+'use strict';
+
+/* =========================================================
+   1. CONSTANTS & GAME SETTINGS
+   ========================================================= */
+const APP_VERSION = '1.0.0';
+const SAVE_KEY = 'karakara.save';
+const SAVE_VERSION = 1;
+const LANGS = ['uz', 'ru', 'en'];
+const LANG_IDX = { uz: 0, ru: 1, en: 2 };
+const LANG_LABEL = { uz: 'O‘zbekcha', ru: 'Русский', en: 'English' };
+const RANGE10 = [1,2,3,4,5,6,7,8,9,10];
+const BOSS_HP = 8, BOSS_HEARTS = 4;
+const TDIFF = {1:0, 2:0, 10:0, 5:1, 3:1, 4:2, 6:3, 9:3, 7:4, 8:4};
+const PLANETS = ['Lumina','Aqualis','Pyrona','Zefira','Orbitron','Nebulix','Kristalla','Solaria'];
+const RIVALS = ['Robo','Zuzu','Turbo'];
+const DAILY_POOL = { correct20:20, mini1:1, level1:1, learn1:1, streak5:5, timed1:1, practice1:1 };
+const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+/* =========================================================
+   2. LOCALIZATION DICTIONARIES  [uz, ru, en]
+   ========================================================= */
+const DICT = {
+ slogan:['O‘yna, o‘rgan, g‘alaba qozon!','Играй, учись, побеждай!','Play, Learn, Win!'],
+ tapStart:['Boshlash','Начать','Start'],
+ play:['O‘ynash','Играть','Play'],
+ playD:['Sarguzashtlar xaritasi','Карта приключений','Adventure map'],
+ learn:['O‘rganish','Учиться','Learn'],
+ learnD:['Jadval bosqichma-bosqich','Таблица шаг за шагом','Tables step by step'],
+ practice:['Mashq','Практика','Practice'],
+ practiceD:['Mashq, vaqtga, aralash','Практика, на время, смешанная','Practice, timed, mixed'],
+ minigames:['Mini-o‘yinlar','Мини-игры','Mini-games'],
+ minigamesD:['5 ta qiziqarli o‘yin','5 весёлых игр','5 fun games'],
+ achievements:['Yutuqlarim','Мои достижения','My achievements'],
+ achievementsD:['Nishonlar va kuboklar','Значки и трофеи','Badges and trophies'],
+ stats:['Statistika','Статистика','Statistics'],
+ statsD:['Mening o‘sishim','Мой прогресс','My progress'],
+ settings:['Sozlamalar','Настройки','Settings'],
+ settingsD:['Til, mavzu, ovoz','Язык, тема, звук','Language, theme, sound'],
+ inventory:['Inventar va mukofotlar','Инвентарь и награды','Inventory & rewards'],
+ inventoryD:['Do‘kon va kolleksiya','Магазин и коллекция','Shop and collection'],
+ about:['O‘yin haqida','Об игре','About'],
+ aboutD:['Muallif haqida','Об авторе','About the author'],
+ back:['Orqaga','Назад','Back'],
+ next:['Keyingi','Дальше','Next'],
+ prev:['Oldingi','Предыдущий','Previous'],
+ start:['Boshlash','Начать','Start'],
+ retry:['Yana o‘ynash','Сыграть ещё','Play again'],
+ close:['Yopish','Закрыть','Close'],
+ ok:['Yaxshi','Хорошо','OK'],
+ cancel:['Bekor qilish','Отмена','Cancel'],
+ cont:['Davom etish','Продолжить','Continue'],
+ mainMenu:['Bosh menyu','Главное меню','Main menu'],
+ claim:['Olish','Забрать','Claim'],
+ claimed:['Olindi','Получено','Claimed'],
+ coins:['Tangalar','Монеты','Coins'],
+ stars:['Yulduzlar','Звёзды','Stars'],
+ xp:['Tajriba','Опыт','XP'],
+ level:['Daraja','Уровень','Level'],
+ hello:['Salom, qahramon! Bugun Raqamlar qirolligini qutqaramizmi?','Привет, герой! Спасём сегодня Королевство Чисел?','Hi, hero! Shall we save the Kingdom of Numbers today?'],
+ langLbl:['Til','Язык','Language'],
+ themeLbl:['Mavzu','Тема','Theme'],
+ light:['Yorug‘','Светлая','Light'],
+ dark:['Qorong‘i','Тёмная','Dark'],
+ toggleTheme:['Mavzuni almashtirish','Сменить тему','Toggle theme'],
+ dailyTitle:['Kunlik o‘quv missiyalari','Ежедневные учебные миссии','Daily learning missions'],
+ dailyReward:['Mukofot: {c} tanga, {x} tajriba','Награда: {c} монет, {x} опыта','Reward: {c} coins, {x} XP'],
+ m_correct20:['{n} ta to‘g‘ri javob ber','Дай {n} правильных ответов','Give {n} correct answers'],
+ m_mini1:['Bitta mini-o‘yinni tugat','Заверши одну мини-игру','Finish one mini-game'],
+ m_level1:['Sarguzashtda bitta bosqichni o‘t','Пройди один уровень приключения','Clear one adventure level'],
+ m_learn1:['Bitta darsni tugat','Пройди один урок','Finish one lesson'],
+ m_streak5:['Ketma-ket {n} ta to‘g‘ri javob ber','Дай {n} правильных ответов подряд','Give {n} correct answers in a row'],
+ m_timed1:['Vaqtga sinovni o‘yna','Сыграй испытание на время','Play a timed challenge'],
+ m_practice1:['Bitta jadval mashqini tugat','Заверши одну практику по таблице','Finish one table practice'],
+ r_forest:['Raqamlar o‘rmoni','Лес чисел','Number Forest'],
+ r_forestD:['Sehrli o‘rmon: 1, 2 va 10 jadvallari','Волшебный лес: таблицы 1, 2 и 10','Magic forest: tables 1, 2 and 10'],
+ r_city:['Qahramonlar shahri','Город героев','Hero City'],
+ r_cityD:['Shahar qahramonlari bilan 3 va 5','Таблицы 3 и 5 с героями города','Tables 3 and 5 with the city heroes'],
+ r_space:['Koinot missiyasi','Космическая миссия','Space Mission'],
+ r_spaceD:['Yulduzlar orasida 4 va 6','Таблицы 4 и 6 среди звёзд','Tables 4 and 6 among the stars'],
+ r_water:['Suv osti dunyosi','Подводный мир','Underwater World'],
+ r_waterD:['Dengiz tubida 7, 8 va 9','Таблицы 7, 8 и 9 на дне моря','Tables 7, 8 and 9 on the sea floor'],
+ r_olymp:['Olimpiya o‘yinlari','Олимпийские игры','Olympic Games'],
+ r_olympD:['Barcha jadvallar bo‘yicha final','Финал по всем таблицам','The grand final with all tables'],
+ mapTitle:['Sarguzashtlar xaritasi','Карта приключений','Adventure map'],
+ mapHint:['Hududni tanla va bosqichlarni o‘t. Har bir hudud oxirida boss kutmoqda!','Выбери регион и проходи уровни. В конце каждого региона ждёт босс!','Pick a region and clear its levels. A boss waits at the end of each region!'],
+ routeChoice:['Yo‘lni o‘zing tanla: Qahramonlar shahri yoki Koinot missiyasi!','Выбери путь сам: Город героев или Космическая миссия!','Choose your path: Hero City or Space Mission!'],
+ locked:['Yopiq','Закрыто','Locked'],
+ need_forest:['Raqamlar o‘rmoni bossini yeng','Победи босса Леса чисел','Defeat the Number Forest boss'],
+ need_water:['Shahar va Koinot bosslarini yeng','Победи боссов Города героев и Космоса','Defeat the Hero City and Space bosses'],
+ need_olymp:['Suv osti dunyosi bossini yeng','Победи босса Подводного мира','Defeat the Underwater World boss'],
+ needPrev:['Avval oldingi bosqichni o‘t','Сначала пройди предыдущий уровень','Clear the previous level first'],
+ levelN:['{n}-bosqich','Уровень {n}','Level {n}'],
+ boss:['Boss','Босс','Boss'],
+ secret:['Maxfiy sandiq','Секретный сундук','Secret chest'],
+ secretNeed:['Bu hududda {n} ta yulduz to‘pla','Собери {n} звёзд в этом регионе','Collect {n} stars in this region'],
+ island:['Maxfiy orol','Секретный остров','Secret Island'],
+ islandD:['Haqiqiy chempionlar uchun maxsus bosqich','Особый уровень для настоящих чемпионов','A special level for true champions'],
+ islandNeed:['«G‘alabalar seriyasi» yutug‘ini ol','Получи достижение «Серия побед»','Earn the “Winning streak” achievement'],
+ tablesList:['Jadvallar: {list}','Таблицы: {list}','Tables: {list}'],
+ best:['Eng yaxshi natija','Лучший результат','Best result'],
+ regionStars:['{n}/{m} yulduz','{n}/{m} звёзд','{n}/{m} stars'],
+ questions:['{n} ta misol','{n} примеров','{n} examples'],
+ boss_forest:['Qari Daraxt-Gigant','Старый Древень','Old Tree Giant'],
+ boss_city:['Robo-Shovqin','Робо-Громыхало','Robo-Rumble'],
+ boss_space:['Kometa Qiroli','Король Комет','Comet King'],
+ boss_water:['Ulkan Sakkizoyoq','Гигантский Осьминог','Giant Octopus'],
+ boss_olymp:['Titan Chempion','Титан-Чемпион','Champion Titan'],
+ bossIntro:['{name} yo‘lni to‘sdi! Misollarni yech va uni yeng!','{name} преградил путь! Решай примеры, чтобы победить!','{name} blocks the way! Solve examples to win!'],
+ bossHit:['Zarba! Boss kuchsizlanmoqda','Удар! Босс слабеет','Hit! The boss is weakening'],
+ bossMiss:['Boss hujum qildi — lekin sen bardoshlisan!','Босс атаковал — но ты держишься!','The boss attacked — but you hold on!'],
+ hearts:['Yuraklar','Сердца','Hearts'],
+ bossWin:['Boss yengildi! Yangi yo‘l ochildi!','Босс побеждён! Открылся новый путь!','Boss defeated! A new path is open!'],
+ bossLose:['Bugun boss kuchli edi. Biroz dam ol va yana urinib ko‘r — albatta uddalaysan!','Сегодня босс оказался сильным. Отдохни и попробуй ещё — у тебя получится!','The boss was strong today. Rest a little and try again — you can do it!'],
+ qOf:['{i}/{n}-savol','Вопрос {i} из {n}','Question {i} of {n}'],
+ streak:['Seriya','Серия','Streak'],
+ score:['Ochko','Очки','Points'],
+ sec:['s','с','s'],
+ typeHere:['Javobni yoz','Введи ответ','Type the answer'],
+ check:['Tekshirish','Проверить','Check'],
+ erase:['O‘chirish','Стереть','Erase'],
+ tagReview:['Takrorlash','Повторение','Review'],
+ tagEasier:['Osonroq misol','Пример попроще','Easier example'],
+ easierNote:['Avval osonrog‘ini yechamiz. Keyin yodda tut: {a} × {c} = {a} × {b} + {a}','Сначала решим попроще. Запомни: {a} × {c} = {a} × {b} + {a}','First an easier one. Remember: {a} × {c} = {a} × {b} + {a}'],
+ hintBtn:['Ajdar maslahati','Подсказка дракона','Dragon hint'],
+ fiftyBtn:['50/50 ({n})','50/50 ({n})','50/50 ({n})'],
+ timeBtn:['+10 soniya','+10 секунд','+10 seconds'],
+ shieldActive:['Seriya qalqoni faol','Щит серии активен','Streak shield is on'],
+ shieldUsed:['Qalqon seriyangni saqlab qoldi!','Щит сохранил твою серию!','The shield saved your streak!'],
+ vizCap:['{a} ta guruh, har birida {b} tadan','{a} групп(ы) по {b}','{a} groups of {b}'],
+ sumHint:['Qo‘shib chiq: {sum}','Сложи: {sum}','Add up: {sum}'],
+ explain:['{a} × {b} — bu {a} marta {b}: {sum} = {ans}','{a} × {b} — это {a} раз по {b}: {sum} = {ans}','{a} × {b} means {a} times {b}: {sum} = {ans}'],
+ praise1:['Barakalla!','Молодец!','Well done!'],
+ praise2:['Zo‘r!','Отлично!','Great!'],
+ praise3:['Ajoyib!','Супер!','Awesome!'],
+ praise4:['To‘g‘ri!','Верно!','Correct!'],
+ praise5:['Sen buni bilasan!','Ты это знаешь!','You know it!'],
+ wrongFb:['Deyarli! To‘g‘ri javob: {ans}','Почти! Правильный ответ: {ans}','Almost! The right answer is {ans}'],
+ cheer1:['Xato — o‘rganishning bir qismi. Birga ko‘ramiz!','Ошибка — это часть учёбы. Давай разберём!','Mistakes help us learn. Let’s look together!'],
+ cheer2:['Hechqisi yo‘q, bu misolni keyinroq yana beraman','Ничего, я повторю этот пример чуть позже','No worries, I’ll bring this one back a bit later'],
+ cheer3:['Sen uddalaysan!','У тебя получится!','You can do it!'],
+ think:['O‘ylab ko‘r… Men shu yerdaman!','Подумай… Я рядом!','Take your time… I’m right here!'],
+ streakMsg:['{n} ta ketma-ket! Olovli seriya!','{n} подряд! Огненная серия!','{n} in a row! You’re on fire!'],
+ leaveQ:['O‘yindan chiqasanmi? Bu raunddagi natija saqlanmaydi.','Выйти из игры? Результат этого раунда не сохранится.','Leave the game? This round’s result won’t be saved.'],
+ leave:['Chiqish','Выйти','Leave'],
+ stay:['Qolish','Остаться','Stay'],
+ results:['Natijalar','Результаты','Results'],
+ resCorrect:['To‘g‘ri','Правильно','Correct'],
+ resWrong:['Xatolar','Ошибки','Mistakes'],
+ resAcc:['Aniqlik','Точность','Accuracy'],
+ resScore:['Ochko','Очки','Points'],
+ resXp:['Tajriba','Опыт','XP'],
+ resCoins:['Tangalar','Монеты','Coins'],
+ resStars:['Yulduzlar','Звёзды','Stars'],
+ resNewAch:['Yangi yutuqlar','Новые достижения','New achievements'],
+ resRec:['Keyin nimani takrorlash kerak','Что повторить дальше','What to practice next'],
+ recGood:['Ajoyib natija! Keyingi bosqichni yoki yangi jadvalni sinab ko‘r.','Отличный результат! Попробуй следующий уровень или новую таблицу.','Excellent! Try the next level or a new table.'],
+ recFacts:['Shu misollarni takrorla: {list}','Повтори эти примеры: {list}','Practice these: {list}'],
+ recTable:['{n} jadvalini «O‘rganish» bo‘limida qayta ko‘r','Повтори таблицу на {n} в разделе «Учиться»','Review the table of {n} in “Learn”'],
+ practiceThese:['Shularni mashq qilish','Потренировать их','Practice them'],
+ levelDone:['Bosqich o‘tildi!','Уровень пройден!','Level complete!'],
+ levelFail:['Deyarli! Bosqichni o‘tish uchun kamida yarmini to‘g‘ri yech.','Почти! Чтобы пройти, реши правильно хотя бы половину.','Almost! Solve at least half correctly to pass.'],
+ wellPlayed:['Yaxshi o‘ynading!','Хорошая игра!','Well played!'],
+ newRecord:['Yangi rekord!','Новый рекорд!','New record!'],
+ firstReward:['Birinchi o‘tish bonusi: +{n} tanga','Бонус за первое прохождение: +{n} монет','First clear bonus: +{n} coins'],
+ improveReward:['Natija yaxshilandi: +{n} tanga','Результат улучшен: +{n} монет','Result improved: +{n} coins'],
+ gotItem:['Yangi buyum: {name}','Новый предмет: {name}','New item: {name}'],
+ gotTrophy:['Yangi kubok: {name}','Новый трофей: {name}','New trophy: {name}'],
+ unlockedRegion:['Yangi hudud ochildi: {name}','Открыт новый регион: {name}','New region unlocked: {name}'],
+ learnTitle:['Ko‘paytirishni o‘rganamiz','Учимся умножать','Let’s learn to multiply'],
+ chooseTable:['Jadvalni tanla','Выбери таблицу','Choose a table'],
+ tableOf:['{n} jadvali','Таблица на {n}','Table of {n}'],
+ learnStep:['Misol {i}/10','Пример {i}/10','Example {i}/10'],
+ showAns:['Javobni ko‘rsat','Показать ответ','Show answer'],
+ repeatEx:['Qaytarish','Повторить','Repeat'],
+ yourTurn:['Endi sen! To‘g‘ri javobni tanla','Теперь ты! Выбери правильный ответ','Your turn! Pick the right answer'],
+ watch:['Diqqat bilan qara va sana','Смотри внимательно и считай','Look carefully and count'],
+ toQuiz:['Kichik tekshiruv','Мини-проверка','Mini-check'],
+ learnIntro:['Ko‘paytirish — bir xil sonlarni tez qo‘shish usuli.','Умножение — это быстрый способ сложить одинаковые числа.','Multiplication is a quick way to add equal numbers.'],
+ mastered:['o‘zlashtirildi','освоено','mastered'],
+ tip1:['Istalgan son × 1 = o‘sha sonning o‘zi.','Любое число × 1 = само число.','Any number × 1 is the same number.'],
+ tip2:['× 2 — bu sonni ikki baravar qilish: 7 + 7 = 14.','× 2 — это удвоение: 7 + 7 = 14.','× 2 means doubling: 7 + 7 = 14.'],
+ tip3:['× 3: sonni ikki baravar qil va yana bir marta qo‘sh: 4 + 4 + 4 = 12.','× 3: удвой число и прибавь его ещё раз: 4 + 4 + 4 = 12.','× 3: double the number and add it once more: 4 + 4 + 4 = 12.'],
+ tip4:['× 4 — ikki marta ikki baravar: 6 → 12 → 24.','× 4 — это удвоить дважды: 6 → 12 → 24.','× 4 is doubling twice: 6 → 12 → 24.'],
+ tip5:['× 5 javoblari doim 0 yoki 5 bilan tugaydi.','Ответы на × 5 всегда оканчиваются на 0 или 5.','Answers for × 5 always end in 0 or 5.'],
+ tip6:['× 6 = × 5 va yana bitta son: 7 × 6 = 35 + 7 = 42.','× 6 = × 5 и ещё одно число: 7 × 6 = 35 + 7 = 42.','× 6 = × 5 plus one more: 7 × 6 = 35 + 7 = 42.'],
+ tip7:['× 7: 7, 14, 21, 28, 35… — bu ritmni yodla.','× 7: 7, 14, 21, 28, 35… — запомни этот ритм.','× 7: 7, 14, 21, 28, 35… — learn the rhythm.'],
+ tip8:['× 8 — uch marta ikki baravar: 3 → 6 → 12 → 24.','× 8 — удвой три раза: 3 → 6 → 12 → 24.','× 8 is doubling three times: 3 → 6 → 12 → 24.'],
+ tip9:['× 9 = × 10 minus son: 9 × 6 = 60 − 6 = 54.','× 9 = × 10 минус число: 9 × 6 = 60 − 6 = 54.','× 9 = × 10 minus the number: 9 × 6 = 60 − 6 = 54.'],
+ tip10:['× 10: son oxiriga 0 qo‘shiladi: 10 × 7 = 70.','× 10: просто припиши 0: 10 × 7 = 70.','× 10: just add a 0: 10 × 7 = 70.'],
+ pr_table:['Jadval bo‘yicha mashq','Практика по таблице','Table practice'],
+ pr_tableD:['Tanlangan jadvaldan 10 ta misol, vaqt cheklovisiz','10 примеров из выбранной таблицы, без таймера','10 examples from one table, no timer'],
+ pr_timed:['Vaqtga sinov','Испытание на время','Timed challenge'],
+ pr_timedD:['Vaqt tugaguncha imkon qadar ko‘p yech','Реши как можно больше, пока идёт время','Solve as many as you can before time runs out'],
+ pr_mixed:['Aralash jadval','Смешанная таблица','Mixed table'],
+ pr_mixedD:['1–10 jadvallardan 15 ta moslashuvchan misol','15 адаптивных примеров из таблиц 1–10','15 adaptive examples from tables 1–10'],
+ pr_review:['Qiyin misollarni takrorlash','Повторить трудные примеры','Review tricky examples'],
+ pr_reviewD:['O‘yin eslab qolgan misollar: {n} ta','Примеры, которые игра запомнила: {n}','Examples the game remembered: {n}'],
+ answerMode:['Javob usuli','Способ ответа','Answer mode'],
+ modeChoice:['4 tadan tanlash','Выбор из 4','Choose from 4'],
+ modeType:['Klaviaturada yozish','Ввод с клавиатуры','Type it in'],
+ difficulty:['Qiyinlik','Сложность','Difficulty'],
+ easy:['Oson','Легко','Easy'],
+ medium:['O‘rta','Средне','Medium'],
+ hard:['Qiyin','Сложно','Hard'],
+ d_easy:['1–5 jadvallar · 60 soniya','Таблицы 1–5 · 60 секунд','Tables 1–5 · 60 seconds'],
+ d_medium:['1–10 jadvallar · 60 soniya','Таблицы 1–10 · 60 секунд','Tables 1–10 · 60 seconds'],
+ d_hard:['2–10 jadvallar · 45 soniya','Таблицы 2–10 · 45 секунд','Tables 2–10 · 45 seconds'],
+ record:['Rekord: {n}','Рекорд: {n}','Record: {n}'],
+ noRecord:['Hali rekord yo‘q','Рекорда пока нет','No record yet'],
+ timeUp:['Vaqt tugadi!','Время вышло!','Time’s up!'],
+ helpTitle:['Yordam','Подсказка','Help'],
+ help_mode:['«4 tadan tanlash» — tayyor javoblardan birini bosasan. «Klaviaturada yozish» — javobni o‘zing kiritasan, bu yodlashga yanada yaxshi yordam beradi.','«Выбор из 4» — нажимаешь один из готовых ответов. «Ввод с клавиатуры» — вводишь ответ сам, это ещё лучше помогает запомнить.','“Choose from 4” — tap one of the ready answers. “Type it in” — enter the answer yourself, which helps you remember even better.'],
+ help_diff:['Oson — kichik jadvallar va ko‘proq vaqt. Qiyin — katta jadvallar va kamroq vaqt. Har bir qiyinlik uchun alohida rekord saqlanadi.','Легко — маленькие таблицы и больше времени. Сложно — большие таблицы и меньше времени. Для каждой сложности хранится свой рекорд.','Easy — small tables and more time. Hard — big tables and less time. Each difficulty keeps its own record.'],
+ help_mixed:['O‘yin qaysi misollar senga qiyinroq ekanini eslab qoladi va ularni tez-tez beradi. Avval osonroq, keyin qiyinroq misollar keladi.','Игра запоминает, какие примеры тебе труднее, и даёт их чаще. Сначала идут примеры попроще, потом посложнее.','The game remembers which examples are harder for you and gives them more often. Easier ones come first, then harder ones.'],
+ help_anim:['Agar harakatlar chalg‘itsa, animatsiyani o‘chir. O‘yin baribir to‘liq ishlaydi.','Если движения отвлекают, выключи анимации. Игра всё равно полностью работает.','If motion is distracting, turn animations off. The game still works fully.'],
+ help_music:['Musiqa va ovozlar brauzerning o‘zida yaratiladi, internet kerak emas.','Музыка и звуки создаются прямо в браузере, интернет не нужен.','Music and sounds are generated right in the browser, no internet needed.'],
+ help_reset:['Til, mavzu va ovoz sozlamalari saqlanadi, qolgan hamma narsa o‘chiriladi.','Язык, тема и настройки звука сохранятся, всё остальное будет удалено.','Language, theme and sound settings are kept; everything else is deleted.'],
+ help_tower:['Minora darajasi har bir to‘g‘ri javobdagi zarba kuchini oshiradi. Tez javob (3 soniyadan kam) yana +1 zarba beradi.','Уровень башен увеличивает силу удара за каждый правильный ответ. Быстрый ответ (меньше 3 секунд) даёт ещё +1 урона.','Tower level raises the damage of every right answer. A fast answer (under 3 seconds) adds +1 damage.'],
+ help_hint:['Ajdar Kiki misolni guruhlar ko‘rinishida chizib beradi. Maslahat bilan berilgan javob ham hisoblanadi, lekin «o‘zlashtirish» seriyasini oshirmaydi.','Дракон Кики нарисует пример в виде групп предметов. Ответ с подсказкой засчитывается, но не увеличивает серию «освоения».','Kiki the dragon draws the example as groups of objects. An answer with a hint counts, but does not grow the “mastery” streak.'],
+ help_stars:['3 yulduz — 90% va undan ko‘p, 2 yulduz — 70%+, 1 yulduz — 50%+ to‘g‘ri javob.','3 звезды — от 90%, 2 звезды — от 70%, 1 звезда — от 50% правильных ответов.','3 stars — 90%+, 2 stars — 70%+, 1 star — 50%+ correct answers.'],
+ help_mastery:['Misol «o‘zlashtirilgan» hisoblanadi, agar uni ketma-ket 3 marta maslahatsiz to‘g‘ri yechsang.','Пример считается «освоенным», если ты решил его правильно 3 раза подряд без подсказки.','An example is “mastered” when you solve it correctly 3 times in a row without a hint.'],
+ g_treasure:['Ajdar xazinalari','Сокровища дракона','Dragon Treasures'],
+ g_treasureD:['Misol yechib sandiqlarni och va xazina top','Открывай сундуки, решая примеры, и собирай сокровища','Open chests by solving examples and collect treasure'],
+ g_castle:['Qal’ani himoya qilish','Защита замка','Castle Defense'],
+ g_castleD:['To‘g‘ri javoblar minoralarni ishga tushiradi','Правильные ответы включают защитные башни','Right answers power the defense towers'],
+ g_pilot:['Koinot uchuvchisi','Космический пилот','Space Pilot'],
+ g_pilotD:['To‘g‘ri javobli darvozadan uchib o‘t','Пролетай через ворота с правильным ответом','Fly through the gate with the right answer'],
+ g_race:['Matematik poyga','Математическая гонка','Math Race'],
+ g_raceD:['To‘g‘ri javob — tezlanish! Raqiblardan o‘zib ket','Правильный ответ — ускорение! Обгони соперников','Right answer = boost! Beat the rivals'],
+ g_pairs:['Juftini top','Найди пару','Find the Pair'],
+ g_pairsD:['Misol va javobni juftlab top','Находи пары: пример и ответ','Match each example with its answer'],
+ tr_intro:['Sandiqni bos va misolni yech','Нажми на сундук и реши пример','Tap a chest and solve the example'],
+ tr_left:['Qolgan sandiqlar: {n}','Осталось сундуков: {n}','Chests left: {n}'],
+ tr_open:['Sandiq ochildi!','Сундук открыт!','Chest opened!'],
+ tr_stuck:['Sandiq hali yopiq. Boshqa misolni sinab ko‘r!','Сундук ещё закрыт. Попробуй другой пример!','Still locked. Try another example!'],
+ tr_coins:['+{n} tanga','+{n} монет','+{n} coins'],
+ tr_star:['+1 yulduz','+1 звезда','+1 star'],
+ tr_choose:['Boshqa sandiqni tanlash','Выбрать другой сундук','Choose another chest'],
+ tr_chest:['Sandiq {n}','Сундук {n}','Chest {n}'],
+ ca_tower:['Minora darajasi: {n}/5','Уровень башен: {n}/5','Tower level: {n}/5'],
+ ca_upgrade:['Kuchaytirish — {n} tanga','Улучшить — {n} монет','Upgrade — {n} coins'],
+ ca_max:['Eng yuqori daraja','Максимальный уровень','Max level'],
+ ca_dmg:['Zarba kuchi: {n}','Сила удара: {n}','Damage: {n}'],
+ ca_wave:['To‘lqin {n}/{m}','Волна {n}/{m}','Wave {n}/{m}'],
+ ca_bossWave:['Boss to‘lqini!','Волна босса!','Boss wave!'],
+ ca_castle:['Qal’a','Замок','Castle'],
+ ca_go:['Himoyani boshlash','Начать защиту','Start defense'],
+ ca_fast:['Tez! +1 zarba','Быстро! +1 урон','Fast! +1 damage'],
+ ca_charge:['Minora zaryadlandi!','Башня заряжена!','Tower charged!'],
+ ca_win:['Qal’a xavfsiz! Sen haqiqiy himoyachisan!','Замок в безопасности! Ты настоящий защитник!','The castle is safe! You are a true defender!'],
+ ca_lose:['Bu safar yirtqichlar o‘tib ketdi. Minorani kuchaytir va yana urin!','В этот раз монстры прорвались. Улучши башни и попробуй снова!','The monsters got through this time. Upgrade the towers and try again!'],
+ ca_intro:['Yirtqichlar qal’aga kelyapti! Har bir to‘g‘ri javob — minoradan o‘q.','Монстры идут к замку! Каждый правильный ответ — выстрел башни.','Monsters are coming! Every right answer fires a tower shot.'],
+ ca_reached:['Erishilgan to‘lqin: {n}','Достигнута волна: {n}','Wave reached: {n}'],
+ notEnough:['Tangalar yetarli emas','Не хватает монет','Not enough coins'],
+ upgraded:['Minora kuchaytirildi!','Башни улучшены!','Towers upgraded!'],
+ pi_intro:['To‘g‘ri javobli darvozani bos yoki ← → bilan boshqar, so‘ng «Uchish»','Нажми на ворота с правильным ответом или веди корабль ← → и жми «Лететь»','Tap the right gate, or steer with ← → and press “Fly”'],
+ pi_shield:['Qalqonlar','Щиты','Shields'],
+ pi_gate:['Darvoza {i}/{n}','Ворота {i}/{n}','Gate {i}/{n}'],
+ pi_planet:['Yangi sayyora topildi: {name}!','Открыта новая планета: {name}!','New planet discovered: {name}!'],
+ pi_planets:['Topilgan sayyoralar: {n}','Открыто планет: {n}','Planets found: {n}'],
+ pi_bump:['Asteroid! Qalqon −1. To‘g‘ri javob: {ans}','Астероид! Щит −1. Правильно: {ans}','Asteroid bump! Shield −1. Right answer: {ans}'],
+ pi_pass:['Zo‘r parvoz!','Отличный пролёт!','Great flight!'],
+ laneL:['Chapga','Влево','Left'],
+ laneR:['O‘ngga','Вправо','Right'],
+ fly:['Uchish','Лететь','Fly'],
+ ra_intro:['Har bir to‘g‘ri javob mashinangni tezlashtiradi!','Каждый правильный ответ ускоряет твою машину!','Every right answer speeds up your car!'],
+ ra_you:['Sen','Ты','You'],
+ ra_place:['{n}-o‘rin','{n}-е место','Place {n}'],
+ ra_boost:['Tezlanish!','Ускорение!','Boost!'],
+ ra_go:['Poygani boshlash','Старт гонки','Start the race'],
+ ra_win:['G‘alaba! Sen birinchisan!','Победа! Ты первый!','Victory! You’re first!'],
+ ra_finish:['Marra! Sening o‘rning: {n}','Финиш! Твоё место: {n}','Finish! Your place: {n}'],
+ ra_easyD:['Sekinroq raqiblar, 1–5 va 10 jadvallari','Соперники помедленнее, таблицы 1–5 и 10','Slower rivals, tables 1–5 and 10'],
+ ra_medD:['Tez raqiblar, barcha jadvallar','Быстрые соперники, все таблицы','Fast rivals, all tables'],
+ pa_moves:['Yurishlar: {n}','Ходы: {n}','Moves: {n}'],
+ pa_time:['Vaqt: {n} s','Время: {n} с','Time: {n} s'],
+ pa_best:['Eng yaxshi: {m} yurish, {t} s','Лучшее: {m} ходов, {t} с','Best: {m} moves, {t} s'],
+ pa_intro:['Misol va uning javobini juftla','Найди пару: пример и его ответ','Match each example with its answer'],
+ pa_card:['Karta {n}','Карточка {n}','Card {n}'],
+ pa_done:['Barcha juftlar topildi!','Все пары найдены!','All pairs found!'],
+ inv_shop:['Do‘kon','Магазин','Shop'],
+ inv_col:['Kolleksiya','Коллекция','Collection'],
+ inv_tro:['Kuboklar','Трофеи','Trophies'],
+ inv_ab:['Qobiliyatlar','Способности','Abilities'],
+ shopNote:['Hammasi faqat o‘yin tangalariga. Haqiqiy pul yo‘q!','Всё только за игровые монеты. Никаких настоящих денег!','Everything is for game coins only. No real money!'],
+ hats:['Qahramon bosh kiyimi','Головной убор героя','Hero’s hat'],
+ dcolors:['Ajdar rangi','Цвет дракона','Dragon color'],
+ buy:['Sotib olish','Купить','Buy'],
+ wear:['Tanlash','Выбрать','Use'],
+ worn:['Tanlangan','Выбрано','In use'],
+ bought:['Xarid qilindi!','Куплено!','Purchased!'],
+ free:['Bepul','Бесплатно','Free'],
+ colCount:['{n}/{m} ta topildi','Найдено {n} из {m}','{n} of {m} found'],
+ notFound:['Hali topilmagan','Ещё не найдено','Not found yet'],
+ colHow:['Buyumlar xazina sandiqlarida va maxfiy bosqichlarda yashiringan','Предметы спрятаны в сундуках и секретных уровнях','Items hide in treasure chests and secret levels'],
+ unlockAt:['{n}-darajada ochiladi','Откроется на уровне {n}','Unlocks at level {n}'],
+ unlockedLbl:['Ochilgan','Открыто','Unlocked'],
+ abNew:['Yangi qobiliyat: {name}','Новая способность: {name}','New ability: {name}'],
+ ab_hint:['Ajdar maslahati','Подсказка дракона','Dragon hint'],
+ ab_hintD:['Misolni guruhlar ko‘rinishida ko‘rsatadi','Показывает пример в виде групп предметов','Shows the example as groups of objects'],
+ ab_fifty:['50/50','50/50','50/50'],
+ ab_fiftyD:['Ikkita noto‘g‘ri javobni olib tashlaydi (har o‘yinda 2 marta)','Убирает два неверных ответа (2 раза за игру)','Removes two wrong answers (twice per game)'],
+ ab_shield:['Seriya qalqoni','Щит серии','Streak shield'],
+ ab_shieldD:['Bitta xato seriyani buzmaydi (har o‘yinda 1 marta)','Одна ошибка не сбросит серию (1 раз за игру)','One mistake won’t break your streak (once per game)'],
+ ab_time:['Vaqt sehri','Магия времени','Time magic'],
+ ab_timeD:['Vaqtga sinovda +10 soniya (1 marta)','+10 секунд в испытании на время (1 раз)','+10 seconds in a timed challenge (once)'],
+ noTrophies:['Kuboklar bosslar va maxsus sinovlar uchun beriladi','Трофеи выдаются за боссов и особые испытания','Trophies come from bosses and special challenges'],
+ hat_explorer:['Sayyoh shlyapasi','Шляпа исследователя','Explorer hat'],
+ hat_cap:['Sport kepkasi','Кепка','Sports cap'],
+ hat_flower:['Gul gulchambari','Венок из цветов','Flower crown'],
+ hat_helmet:['Kosmik dubulg‘a','Космический шлем','Space helmet'],
+ hat_wizard:['Sehrgar qalpog‘i','Колпак волшебника','Wizard hat'],
+ hat_crown:['Oltin toj','Золотая корона','Golden crown'],
+ dc_green:['Yashil','Зелёный','Green'],
+ dc_blue:['Moviy','Голубой','Blue'],
+ dc_pink:['Pushti','Розовый','Pink'],
+ dc_purple:['Binafsha','Фиолетовый','Purple'],
+ dc_gold:['Oltin','Золотой','Gold'],
+ col_crystal:['Billur','Кристалл','Crystal'],
+ col_coin:['Qadimiy tanga','Древняя монета','Ancient coin'],
+ col_key:['Oltin kalit','Золотой ключ','Golden key'],
+ col_shell:['Sehrli chig‘anoq','Волшебная ракушка','Magic shell'],
+ col_starstone:['Yulduz tosh','Звёздный камень','Star stone'],
+ col_clover:['Omad bargi','Клевер удачи','Lucky clover'],
+ col_orb:['Sehrli shar','Магический шар','Magic orb'],
+ col_feather:['Ajdar pati','Перо дракона','Dragon feather'],
+ col_compass:['Kompas','Компас','Compass'],
+ col_map:['Eski xarita','Старая карта','Old map'],
+ col_vase:['Qadimiy ko‘za','Древняя ваза','Ancient vase'],
+ col_crown:['Kichik toj','Мини-корона','Mini crown'],
+ troBoss:['Kubok: {name}','Трофей: {name}','Trophy: {name}'],
+ tro_castle:['Qal’a himoyachisi kubogi','Кубок защитника замка','Castle defender cup'],
+ tro_race:['Poyga chempioni kubogi','Кубок чемпиона гонки','Race champion cup'],
+ tro_timed:['Tezlik ustasi kubogi','Кубок мастера скорости','Speed master cup'],
+ tro_island:['Maxfiy orol kubogi','Кубок Секретного острова','Secret Island cup'],
+ tro_timedD:['Qiyin vaqtga sinovda 150+ ochko','150+ очков в сложном испытании на время','150+ points in a hard timed challenge'],
+ a_first:['Birinchi qadamlar','Первые шаги','First steps'],
+ a_firstD:['Birinchi misolni to‘g‘ri yech','Реши первый пример правильно','Solve your first example correctly'],
+ a_streak:['G‘alabalar seriyasi','Серия побед','Winning streak'],
+ a_streakD:['Ketma-ket 10 ta to‘g‘ri javob ber','Дай 10 правильных ответов подряд','Give 10 correct answers in a row'],
+ a_tablestar:['Ko‘paytirish yulduzi','Звезда умножения','Multiplication star'],
+ a_tablestarD:['Birinchi jadvalni to‘liq o‘zlashtir','Полностью освой первую таблицу','Fully master your first table'],
+ a_explorer:['Kashfiyotchi','Исследователь','Explorer'],
+ a_explorerD:['3 ta hududni och','Открой три региона','Open three regions'],
+ a_boss:['Boss yenguvchi','Победитель боссов','Boss beater'],
+ a_bossD:['Birinchi bossni yeng','Победи первого босса','Defeat your first boss'],
+ a_castle:['Qal’a himoyachisi','Защитник замка','Castle defender'],
+ a_castleD:['«Qal’ani himoya qilish» o‘yinida barcha to‘lqinlarni o‘t','Пройди все волны в «Защите замка»','Clear all waves in Castle Defense'],
+ a_treasure:['Xazina ovchisi','Охотник за сокровищами','Treasure hunter'],
+ a_treasureD:['Bitta o‘yinda 9 sandiqning 7 tasini birinchi urinishda och','Открой 7 из 9 сундуков с первой попытки за одну игру','Open 7 of 9 chests on the first try in one game'],
+ a_pilot:['Yulduzlar uchuvchisi','Звёздный пилот','Star pilot'],
+ a_pilotD:['5 ta sayyorani kashf et','Открой 5 планет','Discover 5 planets'],
+ a_racer:['Poyga chempioni','Чемпион гонки','Race champion'],
+ a_racerD:['Poygada 1-o‘rinni ol','Займи 1-е место в гонке','Take 1st place in the race'],
+ a_pairs:['Diqqatli ko‘z','Зоркий глаз','Sharp eye'],
+ a_pairsD:['«Juftini top»ni 10 yoki kamroq yurishda tugat','Пройди «Найди пару» за 10 ходов или меньше','Finish Find the Pair in 10 moves or fewer'],
+ a_collector:['Kolleksioner','Коллекционер','Collector'],
+ a_collectorD:['8 ta buyum to‘pla','Собери 8 предметов','Collect 8 items'],
+ a_level5:['Tajribali qahramon','Опытный герой','Seasoned hero'],
+ a_level5D:['5-darajaga yet','Достигни 5-го уровня','Reach level 5'],
+ a_daily:['Kun qahramoni','Герой дня','Daily hero'],
+ a_dailyD:['3 ta kunlik missiyani bajar','Выполни 3 ежедневные миссии','Complete 3 daily missions'],
+ a_master:['Jadval ustasi','Мастер таблицы','Table master'],
+ a_masterD:['1–10 har bir jadval mashqini 80%+ aniqlik bilan o‘t','Пройди практику по каждой таблице 1–10 с точностью от 80%','Pass practice for every table 1–10 with 80%+ accuracy'],
+ a_champion:['Matematika chempioni','Математический чемпион','Math champion'],
+ a_championD:['Aralash jadvalda 90%+ aniqlik ko‘rsat','Покажи точность от 90% в смешанной таблице','Score 90%+ accuracy in Mixed table'],
+ a_speed:['Chaqmoq','Молния','Lightning'],
+ a_speedD:['Vaqtga sinovda 200 ochko to‘pla','Набери 200 очков в испытании на время','Score 200 points in a timed challenge'],
+ achGoal:['Maqsad','Цель','Goal'],
+ achDone:['Olindi: {d}','Получено: {d}','Earned: {d}'],
+ achCount:['{n}/{m} ta yutuq','{n} из {m} достижений','{n} of {m} achievements'],
+ toastAch:['Yangi yutuq: {name}','Новое достижение: {name}','Achievement unlocked: {name}'],
+ toastLevel:['Yangi daraja: {n}!','Новый уровень: {n}!','Level up: {n}!'],
+ saveErr:['Progressni saqlab bo‘lmadi: brauzer xotirasi yopiq yoki to‘la','Не удалось сохранить прогресс: хранилище браузера недоступно или заполнено','Could not save progress: browser storage is blocked or full'],
+ loadErr:['Saqlangan ma’lumotlar buzilgan edi — o‘yin toza holatdan boshlandi','Сохранение было повреждено — игра начата с чистого листа','Saved data was damaged — the game started fresh'],
+ st_level:['O‘yinchi darajasi','Уровень игрока','Player level'],
+ st_tasks:['Bajarilgan topshiriqlar','Завершено заданий','Tasks completed'],
+ st_correct:['To‘g‘ri javoblar','Правильных ответов','Correct answers'],
+ st_acc:['Aniqlik','Точность','Accuracy'],
+ st_tables:['Jadvallar bo‘yicha natija','Результаты по таблицам','Results by table'],
+ st_mastered:['O‘zlashtirilgan misollar','Освоенных примеров','Mastered examples'],
+ st_review:['Takrorlash kerak','Нужно повторить','Needs review'],
+ st_noReview:['Hozircha takrorlash kerak emas — zo‘r!','Пока нечего повторять — здорово!','Nothing to review right now — great!'],
+ st_regions:['Ochilgan hududlar','Открыто регионов','Regions open'],
+ st_records:['O‘yin rekordlari','Игровые рекорды','Game records'],
+ st_history:['So‘nggi o‘yinlar','Последние игры','Recent sessions'],
+ st_noHistory:['Hali o‘yinlar yo‘q','Пока нет игр','No sessions yet'],
+ st_self:['O‘zingni faqat kechagi o‘zing bilan solishtir!','Сравнивай себя только с собой вчерашним!','Compare yourself only with yesterday’s you!'],
+ st_tableAcc:['{m}/10 o‘zlashtirildi · {a}%','освоено {m}/10 · {a}%','{m}/10 mastered · {a}%'],
+ st_notPlayed:['hali o‘ynalmagan','ещё не играли','not played yet'],
+ rec_timed:['Vaqtga sinov — {d}','На время — {d}','Timed — {d}'],
+ rec_mixed:['Aralash: eng yaxshi aniqlik','Смешанная: лучшая точность','Mixed: best accuracy'],
+ rec_castle:['Qal’a: eng yaxshi to‘lqin','Замок: лучшая волна','Castle: best wave'],
+ rec_pilot:['Uchuvchi: bir o‘yinda sayyoralar','Пилот: планет за игру','Pilot: planets in one game'],
+ rec_race:['Poyga: eng yaxshi o‘rin','Гонка: лучшее место','Race: best place'],
+ rec_pairs:['Juftlar: eng kam yurish','Пары: меньше всего ходов','Pairs: fewest moves'],
+ rec_treasure:['Xazina: eng ko‘p tanga','Сокровища: больше всего монет','Treasure: most coins'],
+ k_level:['Bosqich','Уровень','Level'],
+ k_boss:['Boss','Босс','Boss'],
+ k_secret:['Maxfiy bosqich','Секретный уровень','Secret level'],
+ k_island:['Maxfiy orol','Секретный остров','Secret Island'],
+ k_practice:['Mashq','Практика','Practice'],
+ k_review:['Takrorlash','Повторение','Review'],
+ k_timed:['Vaqtga sinov','На время','Timed'],
+ k_mixed:['Aralash','Смешанная','Mixed'],
+ k_learn:['Dars','Урок','Lesson'],
+ set_sound:['Ovoz effektlari','Звуковые эффекты','Sound effects'],
+ set_music:['Musiqa','Музыка','Music'],
+ set_anim:['Animatsiyalar','Анимации','Animations'],
+ on:['Yoqilgan','Вкл','On'],
+ off:['O‘chiq','Выкл','Off'],
+ set_mode:['Standart javob usuli','Способ ответа по умолчанию','Default answer mode'],
+ set_reset:['Progressni tozalash','Сбросить прогресс','Reset progress'],
+ resetQ:['Barcha yutuqlar, tangalar va statistika o‘chiriladi. Ishonchingiz komilmi?','Все достижения, монеты и статистика будут удалены. Вы уверены?','All achievements, coins and statistics will be deleted. Are you sure?'],
+ resetYes:['Ha, tozalash','Да, сбросить','Yes, reset'],
+ resetDone:['Progress tozalandi','Прогресс сброшен','Progress has been reset'],
+ set_tour:['Tanishuvni qayta ko‘rsatish','Показать знакомство снова','Show the intro again'],
+ set_storage:['Progress faqat shu qurilmadagi shu brauzerda saqlanadi.','Прогресс хранится только в этом браузере на этом устройстве.','Progress is saved only in this browser on this device.'],
+ set_data:['Ma’lumotlar','Данные','Data'],
+ ab_text:['KaraKara — bolalarga ko‘paytirish jadvalini o‘yin orqali o‘rgatadigan sarguzasht o‘yini. Timi va ajdarcha Kiki bilan Raqamlar qirolligini qutqar!','KaraKara — игра-приключение, которая помогает детям выучить таблицу умножения играя. Спаси Королевство Чисел вместе с Тими и дракончиком Кики!','KaraKara is an adventure game that helps kids learn the times tables through play. Save the Kingdom of Numbers with Timi and Kiki the little dragon!'],
+ ab_privacy:['O‘yin shaxsiy ma’lumot yig‘maydi. Reklama, ro‘yxatdan o‘tish va haqiqiy to‘lovlar yo‘q. Internet kerak emas.','Игра не собирает личные данные. Нет рекламы, регистрации и настоящих платежей. Интернет не нужен.','The game collects no personal data. No ads, no sign-up, no real payments. No internet needed.'],
+ ab_version:['Versiya','Версия','Version'],
+ rights:['© 2026 Anvar Muratov. Barcha huquqlar himoyalangan.','© 2026 Anvar Muratov. Все права защищены.','© 2026 Anvar Muratov. All rights reserved.'],
+ ab_chars:['Qahramonlar','Персонажи','Characters'],
+ heroName:['Timi','Тими','Timi'],
+ dragonName:['Kiki','Кики','Kiki'],
+ ab_hero:['Timi — quvnoq yosh sayyoh. U har qanday sirni ochishni yaxshi ko‘radi.','Тими — весёлый юный исследователь, который обожает разгадывать тайны.','Timi is a cheerful young explorer who loves solving mysteries.'],
+ ab_dragon:['Kiki — kichkina mehribon ajdar. U maslahat beradi va har bir g‘alabangga quvonadi.','Кики — маленький добрый дракон. Он подсказывает и радуется каждой твоей победе.','Kiki is a small friendly dragon who gives hints and cheers every win.'],
+ tour1T:['Do‘stlaring bilan tanish!','Познакомься с друзьями!','Meet your friends!'],
+ tour1:['Bu — Timi, yosh sayyoh. Bu esa — ajdarcha Kiki. Ular Raqamlar qirolligini qutqarishda senga yordam beradi!','Это Тими — юный исследователь. А это дракончик Кики. Они помогут тебе спасти Королевство Чисел!','This is Timi, a young explorer, and this is Kiki the little dragon. They will help you save the Kingdom of Numbers!'],
+ tour2T:['Tilni tanla','Выбери язык','Choose a language'],
+ tour2:['Tilni istalgan vaqtda sozlamalarda o‘zgartirish mumkin.','Язык можно поменять в любой момент в настройках.','You can change it any time in Settings.'],
+ tour3T:['Qanday javob beriladi','Как отвечать','How to answer'],
+ tour3:['To‘g‘ri javobni bos. Sinab ko‘r: 2 × 3 = ?','Нажми на правильный ответ. Попробуй: 2 × 3 = ?','Tap the right answer. Try it: 2 × 3 = ?'],
+ tour3ok:['To‘g‘ri! 2 × 3 = 3 + 3 = 6. Ana shunday oson!','Верно! 2 × 3 = 3 + 3 = 6. Вот так просто!','Correct! 2 × 3 = 3 + 3 = 6. That easy!'],
+ tour3no:['Deyarli! 2 × 3 — bu 2 ta guruh, har birida 3 tadan. Yana urinib ko‘r!','Почти! 2 × 3 — это 2 группы по 3. Попробуй ещё!','Almost! 2 × 3 is 2 groups of 3. Try again!'],
+ tour4T:['Yulduzlar to‘pla','Собирай звёзды','Collect stars'],
+ tour4:['Har bir bosqichda 3 tagacha yulduz olasan. Qancha ko‘p to‘g‘ri javob — shuncha ko‘p yulduz!','В каждом уровне можно получить до 3 звёзд. Больше правильных ответов — больше звёзд!','Each level gives up to 3 stars. More right answers — more stars!'],
+ tour5T:['Sarguzashtga tayyormisan?','Готов к приключению?','Ready for adventure?'],
+ tour5:['Birinchi bosqich Raqamlar o‘rmonida seni kutmoqda.','Первый уровень ждёт тебя в Лесу чисел.','Your first level is waiting in the Number Forest.'],
+ tourGo:['Birinchi bosqichni boshlash','Начать первый уровень','Start the first level']
+};
+
+let LANG = 'ru';
+function t(key, p) {
+  const row = DICT[key];
+  let s = row ? (row[LANG_IDX[LANG]] || row[2]) : key;
+  if (p) s = s.replace(/\{(\w+)\}/g, (m, k) => (p[k] !== undefined ? p[k] : m));
+  return s;
+}
+
+/* =========================================================
+   3. GAME DATA & LEVELS
+   ========================================================= */
+const REGIONS = [
+  { id:'forest', icon:'🌳', bossIcon:'🌲', grad:'linear-gradient(135deg,#4fcf8a,#1c8a55)', levels:[[1],[2],[10],[1,2,10],[1,2,10]], need:[] },
+  { id:'city',   icon:'🏙️', bossIcon:'🤖', grad:'linear-gradient(135deg,#ffb347,#ff6f61)', levels:[[3],[5],[3,5],[2,3,5],[3,5]], need:['forest'] },
+  { id:'space',  icon:'🚀', bossIcon:'☄️', grad:'linear-gradient(135deg,#6a5cff,#2b1a7a)', levels:[[4],[6],[4,6],[2,4,6],[4,6]], need:['forest'] },
+  { id:'water',  icon:'🐠', bossIcon:'🐙', grad:'linear-gradient(135deg,#2ec5d6,#1b5fb8)', levels:[[7],[8],[9],[7,8,9],[7,8,9]], need:['city','space'] },
+  { id:'olymp',  icon:'🏅', bossIcon:'🗿', grad:'linear-gradient(135deg,#ffcf3a,#e0741c)', levels:[[1,2,3,4,5],[6,7,8,9,10],RANGE10,[6,7,8,9,10],RANGE10], need:['water'] }
+];
+const REG = {}; REGIONS.forEach(r => { REG[r.id] = r; });
+const NEED_KEY = { city:'need_forest', space:'need_forest', water:'need_water', olymp:'need_olymp' };
+const SECRET_STARS = 9;
+
+const HATS = [
+  { id:'hat_explorer', price:0 }, { id:'hat_cap', price:50 }, { id:'hat_flower', price:80 },
+  { id:'hat_helmet', price:120 }, { id:'hat_wizard', price:150 }, { id:'hat_crown', price:250 }
+];
+const DCOLORS = [
+  { id:'dc_green', price:0, c:'#4cc97a', d:'#d6f7c9', w:'#2f9d63' },
+  { id:'dc_blue', price:60, c:'#4aa8ff', d:'#d8eeff', w:'#2a6fe0' },
+  { id:'dc_pink', price:60, c:'#ff8cc0', d:'#ffe1ef', w:'#df5b98' },
+  { id:'dc_purple', price:100, c:'#9a7bff', d:'#ece5ff', w:'#6a4ddf' },
+  { id:'dc_gold', price:200, c:'#ffc83d', d:'#fff3c4', w:'#e08e0b' }
+];
+const COLLECTION = [
+  { id:'col_crystal', ic:'💎' }, { id:'col_coin', ic:'🪙' }, { id:'col_key', ic:'🗝️' }, { id:'col_shell', ic:'🐚' },
+  { id:'col_starstone', ic:'🌟' }, { id:'col_clover', ic:'🍀' }, { id:'col_orb', ic:'🔮' }, { id:'col_feather', ic:'🪶' },
+  { id:'col_compass', ic:'🧭' }, { id:'col_map', ic:'📜' }, { id:'col_vase', ic:'🏺' }, { id:'col_crown', ic:'👑' }
+];
+const ABILITIES = [
+  { id:'hint', lvl:1, ic:'🐲' }, { id:'fifty', lvl:3, ic:'✂️' }, { id:'shield', lvl:5, ic:'🛡️' }, { id:'time', lvl:7, ic:'⏳' }
+];
+const TROPHIES = [
+  { id:'tro_forest', ic:'🏆', boss:'forest' }, { id:'tro_city', ic:'🏆', boss:'city' }, { id:'tro_space', ic:'🏆', boss:'space' },
+  { id:'tro_water', ic:'🏆', boss:'water' }, { id:'tro_olymp', ic:'🏆', boss:'olymp' },
+  { id:'tro_castle', ic:'🏰' }, { id:'tro_race', ic:'🏁' }, { id:'tro_timed', ic:'⚡' }, { id:'tro_island', ic:'🏝️' }
+];
+const TIMED = {
+  easy:   { tables:[1,2,3,4,5], time:60 },
+  medium: { tables:RANGE10, time:60 },
+  hard:   { tables:[2,3,4,5,6,7,8,9,10], time:45 }
+};
+const CASTLE_WAVES = [
+  { gap:4.2, list:[{hp:1,sp:3.0,ic:'👾'},{hp:1,sp:3.0,ic:'👾'},{hp:1,sp:3.0,ic:'👾'},{hp:1,sp:3.0,ic:'👾'}] },
+  { gap:3.9, list:[{hp:1,sp:3.2,ic:'👻'},{hp:2,sp:3.0,ic:'👻'},{hp:1,sp:3.2,ic:'👻'},{hp:2,sp:3.0,ic:'👻'},{hp:1,sp:3.3,ic:'👻'}] },
+  { gap:3.7, list:[{hp:2,sp:3.3,ic:'🦇'},{hp:2,sp:3.3,ic:'🦇'},{hp:1,sp:3.6,ic:'🦇'},{hp:2,sp:3.3,ic:'🦇'},{hp:2,sp:3.3,ic:'🦇'},{hp:1,sp:3.6,ic:'🦇'}] },
+  { gap:3.8, boss:true, list:[{hp:1,sp:3.2,ic:'👾'},{hp:8,sp:2.0,ic:'🦖',boss:true},{hp:1,sp:3.2,ic:'👻'},{hp:2,sp:3.0,ic:'🦇'}] }
+];
+const ACH = [
+  { id:'first', ic:'👣', ok:()=>S.counters.correct>=1, pr:()=>[S.counters.correct,1] },
+  { id:'streak', ic:'🔥', ok:()=>S.counters.bestStreak>=10, pr:()=>[S.counters.bestStreak,10] },
+  { id:'tablestar', ic:'⭐', ok:()=>RANGE10.some(tableMastered), pr:()=>[Math.max(...RANGE10.map(x=>tableStats(x).mastered)),10] },
+  { id:'explorer', ic:'🧭', ok:()=>unlockedRegionCount()>=3, pr:()=>[unlockedRegionCount(),3] },
+  { id:'boss', ic:'⚔️', ok:()=>Object.keys(S.bossDone).length>=1, pr:()=>[Object.keys(S.bossDone).length,1] },
+  { id:'castle', ic:'🏰', ok:()=>(S.records.castleWins||0)>=1, pr:()=>[S.records.castleWins||0,1] },
+  { id:'treasure', ic:'💰', ok:()=>(S.records.treasureFirst||0)>=7, pr:()=>[S.records.treasureFirst||0,7] },
+  { id:'pilot', ic:'🪐', ok:()=>S.planets>=5, pr:()=>[S.planets,5] },
+  { id:'racer', ic:'🏁', ok:()=>(S.records.raceWins||0)>=1, pr:()=>[S.records.raceWins||0,1] },
+  { id:'pairs', ic:'👁️', ok:()=>S.records.pairsMoves>0 && S.records.pairsMoves<=10, pr:()=>[S.records.pairsMoves&&S.records.pairsMoves<=10?1:0,1] },
+  { id:'collector', ic:'🎒', ok:()=>S.collection.length>=8, pr:()=>[S.collection.length,8] },
+  { id:'level5', ic:'🎖️', ok:()=>levelInfo(S.xp).lvl>=5, pr:()=>[levelInfo(S.xp).lvl,5] },
+  { id:'daily', ic:'📅', ok:()=>S.counters.dailyClaimed>=3, pr:()=>[S.counters.dailyClaimed,3] },
+  { id:'master', ic:'🎓', ok:()=>RANGE10.every(x=>S.tablePassed[x]), pr:()=>[RANGE10.filter(x=>S.tablePassed[x]).length,10] },
+  { id:'champion', ic:'🥇', ok:()=>(S.records.mixedAcc||0)>=90, pr:()=>[S.records.mixedAcc||0,90] },
+  { id:'speed', ic:'⚡', ok:()=>Math.max(S.records.timed_easy||0,S.records.timed_medium||0,S.records.timed_hard||0)>=200, pr:()=>[Math.max(S.records.timed_easy||0,S.records.timed_medium||0,S.records.timed_hard||0),200] }
+];
+
+/* =========================================================
+   4. SAVE SYSTEM
+   ========================================================= */
+function defaultState() {
+  const nl = (navigator.language || 'ru').toLowerCase();
+  return {
+    v: SAVE_VERSION,
+    lang: nl.startsWith('uz') ? 'uz' : nl.startsWith('en') ? 'en' : 'ru',
+    theme: prefersDark ? 'dark' : 'light',
+    sound: true, music: false, anim: !reduceMotion, mode: 'choice',
+    tourDone: false,
+    xp: 0, coins: 30, bonusStars: 0,
+    levels: {}, bossDone: {}, secretDone: {},
+    ach: {}, facts: {}, records: {}, sessions: [],
+    counters: { answered:0, correct:0, wrong:0, tasks:0, bestStreak:0, lessons:0, dailyClaimed:0 },
+    tablePassed: {},
+    inv: { owned: ['hat_explorer','dc_green'], hat: 'hat_explorer', color: 'dc_green' },
+    collection: [], trophies: [], planets: 0, tower: 1,
+    daily: { date: '', list: [] },
+    lastLevel: 'forest-1'
+  };
+}
+function isObj(x){ return x && typeof x === 'object' && !Array.isArray(x); }
+function sanitize(def, obj) {
+  if (!isObj(obj)) return def;
+  const out = {};
+  for (const k of Object.keys(def)) {
+    const dv = def[k], ov = obj[k];
+    if (ov === undefined || ov === null) { out[k] = dv; continue; }
+    if (Array.isArray(dv)) out[k] = Array.isArray(ov) ? ov : dv;
+    else if (isObj(dv)) out[k] = isObj(ov) ? (Object.keys(dv).length ? sanitize(dv, ov) : ov) : dv;
+    else if (typeof dv === 'number') out[k] = (typeof ov === 'number' && isFinite(ov) && ov >= 0) ? ov : dv;
+    else if (typeof dv === typeof ov) out[k] = ov;
+    else out[k] = dv;
+  }
+  return out;
+}
+function migrate(obj) {
+  // Future versions: transform obj step by step, e.g. if (obj.v === 1) {...; obj.v = 2;}
+  if (typeof obj.v !== 'number') obj.v = 1;
+  if (obj.v > SAVE_VERSION) obj.v = SAVE_VERSION;
+  return obj;
+}
+let LOAD_PROBLEM = false;
+function loadState() {
+  const def = defaultState();
+  let raw = null;
+  try { raw = localStorage.getItem(SAVE_KEY); } catch (e) { return def; }
+  if (!raw) return def;
+  try {
+    const obj = migrate(JSON.parse(raw));
+    const st = sanitize(def, obj);
+    if (!LANGS.includes(st.lang)) st.lang = def.lang;
+    if (!['light','dark'].includes(st.theme)) st.theme = def.theme;
+    if (!['choice','type'].includes(st.mode)) st.mode = 'choice';
+    if (!HATS.some(h=>h.id===st.inv.hat)) st.inv.hat = 'hat_explorer';
+    if (!DCOLORS.some(h=>h.id===st.inv.color)) st.inv.color = 'dc_green';
+    if (!Array.isArray(st.inv.owned)) st.inv.owned = def.inv.owned.slice();
+    ['hat_explorer','dc_green'].forEach(x=>{ if(!st.inv.owned.includes(x)) st.inv.owned.push(x); });
+    st.collection = st.collection.filter(id => COLLECTION.some(c=>c.id===id));
+    st.trophies = st.trophies.filter(id => TROPHIES.some(c=>c.id===id));
+    st.tower = Math.min(5, Math.max(1, Math.floor(st.tower)));
+    for (const k of Object.keys(st.facts)) { const f = st.facts[k]; if (!isObj(f) || !/^\d+x\d+$/.test(k)) delete st.facts[k]; else ['c','w','s','h','r'].forEach(p=>{ if(typeof f[p]!=='number'||!isFinite(f[p])||f[p]<0) f[p]=0; }); }
+    for (const k of Object.keys(st.levels)) { const v = st.levels[k]; if (typeof v !== 'number' || !isFinite(v)) delete st.levels[k]; else st.levels[k] = Math.max(0, Math.min(3, Math.round(v))); }
+    for (const k of Object.keys(st.records)) { if (typeof st.records[k] !== 'number' || !isFinite(st.records[k])) delete st.records[k]; }
+    for (const k of Object.keys(st.ach)) { if (typeof st.ach[k] !== 'number') delete st.ach[k]; }
+    st.sessions = st.sessions.filter(isObj).slice(0, 12);
+    if (!Array.isArray(st.daily.list)) st.daily = { date:'', list:[] };
+    return st;
+  } catch (e) {
+    LOAD_PROBLEM = true;
+    return def;
+  }
+}
+let saveWarned = false;
+function save() {
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); }
+  catch (e) { if (!saveWarned) { saveWarned = true; toast(t('saveErr')); } }
+}
+let S = loadState();
+LANG = S.lang;
+
+/* =========================================================
+   5. LEARNING SYSTEM & QUESTION GENERATION
+   ========================================================= */
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+function shuffle(a) { const r = a.slice(); for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; } return r; }
+let uidC = 0; const uid = () => 'u' + (++uidC) + '_' + Date.now();
+const fk = (t, b) => t + 'x' + b;
+function factOf(t, b) { const k = fk(t, b); if (!S.facts[k]) S.facts[k] = { c:0, w:0, s:0, h:0, r:0 }; return S.facts[k]; }
+const isMastered = f => !!f && f.c >= 3 && f.s >= 3;
+function needsHelp(t, b) { const f = S.facts[fk(t, b)]; return !!f && f.r >= 2; }
+function tableStats(tb) {
+  let mastered = 0, c = 0, w = 0, seen = 0;
+  for (const b of RANGE10) { const f = S.facts[fk(tb, b)]; if (!f) continue; if (isMastered(f)) mastered++; c += f.c; w += f.w; if (f.c + f.w > 0) seen++; }
+  return { mastered, c, w, seen, acc: (c + w) ? Math.round(c * 100 / (c + w)) : null };
+}
+const tableMastered = tb => tableStats(tb).mastered === 10;
+function reviewList() {
+  const out = [];
+  for (const k of Object.keys(S.facts)) {
+    const f = S.facts[k], n = f.c + f.w;
+    if ((f.r >= 1 && f.s < 2) || (n >= 3 && f.c / n < 0.6 && f.s < 3)) { const [a, b] = k.split('x').map(Number); out.push({ t:a, b, score: f.r * 2 + f.w - f.s }); }
+  }
+  return out.sort((x, y) => y.score - x.score);
+}
+function factWeight(tb, b) {
+  const f = S.facts[fk(tb, b)];
+  if (!f || f.c + f.w === 0) { return (tableStats(tb).seen < 6 && b > 5) ? 0.5 : 1.3; }
+  let w = 1 + f.r * 2 + (f.w / (f.c + f.w)) * 1.5 - Math.min(f.s, 6) * 0.12;
+  if (isMastered(f)) w *= 0.45;
+  return Math.max(0.12, w);
+}
+function pickFact(tables, ctx, opt) {
+  opt = opt || {};
+  const pool = opt.pool && opt.pool.length ? opt.pool : tables.flatMap(tb => RANGE10.map(b => [tb, b]));
+  const prog = opt.mixed ? Math.min(1, (ctx.idx || 0) / (ctx.total || 15)) : 1;
+  const cand = []; let sum = 0;
+  for (const [tb, b] of pool) {
+    let w = factWeight(tb, b);
+    if (opt.mixed) { const d = TDIFF[tb] + (b > 5 ? 1 : 0); const maxD = 1 + Math.floor(prog * 5); if (d > maxD) w *= 0.15; }
+    if (ctx && ctx.last === fk(tb, b) && pool.length > 1) w *= 0.02;
+    cand.push([tb, b, w]); sum += w;
+  }
+  let r = Math.random() * sum, chosen = cand[cand.length - 1];
+  for (const c of cand) { r -= c[2]; if (r <= 0) { chosen = c; break; } }
+  if (ctx) ctx.last = fk(chosen[0], chosen[1]);
+  return [chosen[0], chosen[1]];
+}
+function makeChoices(ans, x, y, n) {
+  n = n || 4;
+  const set = new Set([ans]);
+  const cands = shuffle([x*(y+1), x*(y-1), (x+1)*y, (x-1)*y, ans+1, ans-1, ans+10, ans-10, ans+2, ans+x, ans-y]).filter(v => v > 0 && v !== ans);
+  for (const v of cands) { if (set.size >= n) break; set.add(v); }
+  let guard = 0;
+  while (set.size < n && guard++ < 50) { const v = Math.max(1, ans + rnd(-12, 12)); set.add(v); }
+  return shuffle([...set]);
+}
+function makeQuestion(tb, b, opt) {
+  opt = opt || {};
+  const swap = !opt.noSwap && tb !== b && Math.random() < 0.3;
+  const x = swap ? b : tb, y = swap ? tb : b;
+  return { t:tb, b, x, y, ans: tb * b, choices: makeChoices(tb * b, x, y, opt.n || 4), review: !!opt.review, easier: opt.easier || null, shownAt: Date.now(), hinted: false, removed: [] };
+}
+function availableTables() {
+  const set = new Set();
+  REGIONS.forEach(r => { if (regionUnlocked(r)) r.levels.forEach(l => l.forEach(x => set.add(x))); });
+  return [...set].sort((a, b) => a - b);
+}
+function recordAnswer(tb, b, ok, ms, hinted) {
+  const f = factOf(tb, b);
+  S.counters.answered++;
+  if (ok) {
+    f.c++; if (!hinted) f.s++; f.r = Math.max(0, f.r - 1); f.h = Math.max(0, f.h - 1);
+    S.counters.correct++; dailyEvent('correct');
+  } else {
+    f.w++; f.s = 0; f.r++; if (f.r === 2) f.h = 3;
+    S.counters.wrong++;
+  }
+  if (ms && ms < 60000) f.tm = f.tm ? Math.round(f.tm * 0.7 + ms * 0.3) : ms;
+}
+const sumStr = (a, b) => Array(a).fill(b).join(' + ');
+const vizIcons = ['🍎','⭐','🐟','🌸','💎','🍪','🎈','🐞','🍓','🔵'];
+function vizHTML(a, b) {
+  const ic = vizIcons[(a * 3 + b) % vizIcons.length];
+  let g = '';
+  for (let i = 0; i < a; i++) { let d = ''; for (let j = 0; j < b; j++) d += '<span class="dot">' + ic + '</span>'; g += '<span class="grp" style="animation-delay:' + (i * 0.05) + 's">' + d + '</span>'; }
+  return '<div class="viz" role="img" aria-label="' + t('vizCap', {a, b}) + '"><div class="grps">' + g + '</div><div class="vizcap">' + t('vizCap', {a, b}) + '</div></div>';
+}
+function starsFor(acc) { return acc >= 90 ? 3 : acc >= 70 ? 2 : acc >= 50 ? 1 : 0; }
+
+/* =========================================================
+   7. SCORE, REWARDS & ACHIEVEMENTS
+   ========================================================= */
+function levelInfo(xp) { let lvl = 1, need = 100, rest = xp; while (rest >= need) { rest -= need; lvl++; need = 100 + (lvl - 1) * 60; } return { lvl, cur: rest, need }; }
+function abilityOn(id) { const a = ABILITIES.find(x => x.id === id); return !!a && levelInfo(S.xp).lvl >= a.lvl; }
+function addXP(n) {
+  const before = levelInfo(S.xp).lvl; S.xp += n; const after = levelInfo(S.xp).lvl;
+  if (after > before) {
+    toast('🎉 ' + t('toastLevel', { n: after })); confetti(70); sfx('reward');
+    ABILITIES.forEach(a => { if (a.lvl > before && a.lvl <= after) toast(a.ic + ' ' + t('abNew', { name: t('ab_' + a.id) })); });
+  }
+}
+function totalStars() { let s = S.bonusStars; for (const k of Object.keys(S.levels)) s += S.levels[k] || 0; return s; }
+function regionStars(r) { let s = 0; for (let n = 1; n <= 5; n++) s += S.levels[r.id + '-' + n] || 0; return s; }
+function regionUnlocked(r) { return r.need.every(id => S.bossDone[id]); }
+function unlockedRegionCount() { return REGIONS.filter(regionUnlocked).length; }
+function levelUnlocked(r, n) { return regionUnlocked(r) && (n === 1 || (S.levels[r.id + '-' + (n - 1)] || 0) >= 1); }
+function secretUnlocked(r) { return regionStars(r) >= SECRET_STARS; }
+function islandUnlocked() { return !!S.ach.streak; }
+function checkAch() {
+  const got = [];
+  for (const a of ACH) {
+    if (S.ach[a.id]) continue;
+    let ok = false; try { ok = a.ok(); } catch (e) { ok = false; }
+    if (ok) { S.ach[a.id] = Date.now(); got.push(a.id); toast(a.ic + ' ' + t('toastAch', { name: t('a_' + a.id) })); }
+  }
+  if (got.length) { confetti(90); sfx('reward'); save(); }
+  return got;
+}
+function giveTrophy(id) { if (!S.trophies.includes(id)) { S.trophies.push(id); return true; } return false; }
+function giveItem(exclude) {
+  const free = COLLECTION.filter(c => !S.collection.includes(c.id) && !(exclude || []).includes(c.id));
+  if (!free.length) return null;
+  const it = pick(free); return it.id;
+}
+function todayStr() { const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+function ensureDaily() {
+  const d = todayStr();
+  if (S.daily.date === d && S.daily.list.length) return;
+  let h = 0; for (const ch of d) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  const ids = Object.keys(DAILY_POOL), chosen = [];
+  while (chosen.length < 3) { h = (h * 1103515245 + 12345) >>> 0; const id = ids[h % ids.length]; if (!chosen.includes(id)) chosen.push(id); }
+  S.daily = { date: d, list: chosen.map(id => ({ id, p: 0, claimed: false })) };
+  save();
+}
+function dailyEvent(type, kind, val) {
+  ensureDaily();
+  for (const m of S.daily.list) {
+    const target = DAILY_POOL[m.id]; if (m.p >= target) continue;
+    if (type === 'correct' && m.id === 'correct20') m.p++;
+    if (type === 'streak' && m.id === 'streak5') m.p = Math.max(m.p, Math.min(target, val || 0));
+    if (type === 'finish') {
+      if (m.id === 'level1' && val && ['level','boss','secret','island'].includes(kind)) m.p = 1;
+      if (m.id === 'mini1' && ['treasure','castle','pilot','race','pairs'].includes(kind)) m.p = 1;
+      if (m.id === 'learn1' && kind === 'learn') m.p = 1;
+      if (m.id === 'timed1' && kind === 'timed') m.p = 1;
+      if (m.id === 'practice1' && kind === 'practice') m.p = 1;
+    }
+  }
+}
+function commitResult(res) {
+  if (res.applied) return res;
+  res.applied = true;
+  res.coins = Math.max(0, Math.round(res.coins || 0));
+  res.xp = Math.max(0, Math.round(res.xp || 0));
+  S.coins += res.coins;
+  S.counters.tasks++;
+  S.sessions.unshift({ t: Date.now(), k: res.kind, c: res.correct, w: res.wrong, p: res.score });
+  S.sessions = S.sessions.slice(0, 12);
+  addXP(res.xp);
+  dailyEvent('finish', res.kind, res.passed !== false);
+  checkAch();
+  res.newAch = Object.keys(S.ach).filter(k => !res.snap.has(k));
+  save();
+  return res;
+}
+const achSnap = () => new Set(Object.keys(S.ach));
+
+/* =========================================================
+   8. ADAPTIVE DIFFICULTY — QUIZ SESSION ENGINE
+   ========================================================= */
+let RT = {};          // runtime (not saved)
+function startQuiz(cfg) {
+  stopRuntime();
+  const s = {
+    id: uid(), cfg, kind: cfg.kind, tables: cfg.tables || RANGE10, pool: cfg.pool || null,
+    total: cfg.total || 10, extra: 0, timed: !!cfg.time, timeLeft: cfg.time || 0, endAt: 0,
+    mode: cfg.mode || S.mode, idx: 0, correct: 0, wrong: 0, streak: 0, best: 0, score: 0, bonusCoins: 0,
+    queue: [], q: null, answered: false, lastOk: false, done: false, input: '', wrongFacts: {}, tok: 0,
+    fifty: abilityOn('fifty') ? 2 : 0, shield: abilityOn('shield') ? 1 : 0, timeBonus: (cfg.time && abilityOn('time')) ? 1 : 0,
+    boss: cfg.boss ? { name: cfg.boss.name, icon: cfg.boss.icon, hp: BOSS_HP, max: BOSS_HP, hearts: BOSS_HEARTS } : null,
+    snap: achSnap(), last: null, bubble: cfg.boss ? t('bossIntro', { name: cfg.boss.name }) : t('think')
+  };
+  RT.sess = s;
+  s.q = nextQuestionFor(s);
+  go('quiz', {}, { replace: CUR.screen === 'results' || CUR.screen === 'quiz' });
+  if (s.timed) startTimer(s);
+}
+function nextQuestionFor(s) {
+  const i = s.queue.findIndex(x => x.due <= s.idx);
+  if (i >= 0 && !s.timed) {
+    const it = s.queue.splice(i, 1)[0];
+    s.last = fk(it.t, it.b);
+    return makeQuestion(it.t, it.b, { review: it.type === 'review', easier: it.type === 'easier' ? it.orig : null, noSwap: it.type === 'easier' });
+  }
+  const [tb, b] = pickFact(s.tables, s, { pool: s.pool, mixed: s.kind === 'mixed' });
+  return makeQuestion(tb, b, { noSwap: s.kind === 'learn' });
+}
+function startTimer(s) {
+  s.endAt = Date.now() + s.timeLeft * 1000;
+  RT.timer = setInterval(() => {
+    if (RT.sess !== s || s.done) { clearInterval(RT.timer); return; }
+    s.timeLeft = Math.max(0, (s.endAt - Date.now()) / 1000);
+    const f = document.getElementById('tfill'), tx = document.getElementById('ttext');
+    if (f) f.style.width = (s.timeLeft / s.cfg.time * 100) + '%';
+    if (tx) tx.textContent = '⏱ ' + Math.ceil(s.timeLeft) + ' ' + t('sec');
+    if (s.timeLeft <= 0) { clearInterval(RT.timer); toast('⏰ ' + t('timeUp')); finishQuiz(s); }
+  }, 100);
+}
+function submitAnswer(v) {
+  const s = RT.sess; if (!s || s.done || s.answered) return;
+  const q = s.q; if (v === '' || v === null || v === undefined || isNaN(Number(v))) return;
+  s.answered = true;
+  const ok = Number(v) === q.ans;
+  s.chosen = Number(v); s.lastOk = ok;
+  recordAnswer(q.t, q.b, ok, Date.now() - q.shownAt, q.hinted);
+  s.idx++;
+  if (ok) {
+    s.correct++; s.streak++; s.best = Math.max(s.best, s.streak);
+    S.counters.bestStreak = Math.max(S.counters.bestStreak, s.streak);
+    dailyEvent('streak', null, s.streak);
+    s.score += 10 + Math.min(s.streak, 10) * 2;
+    if (s.streak > 0 && s.streak % 5 === 0) { s.bonusCoins += 3; s.bubble = t('streakMsg', { n: s.streak }); } else s.bubble = t('praise' + rnd(1, 5));
+    sfx('correct');
+    if (s.boss) { s.boss.hp = Math.max(0, s.boss.hp - 1); s.bubble = t('bossHit'); }
+  } else {
+    s.wrong++;
+    s.wrongFacts[fk(q.t, q.b)] = [q.t, q.b];
+    if (s.shield > 0 && s.streak > 0) { s.shield--; s.bubble = t('shieldUsed'); }
+    else { s.streak = 0; s.bubble = pick([t('cheer1'), t('cheer2'), t('cheer3')]); }
+    sfx('wrong');
+    if (s.boss) { s.boss.hearts = Math.max(0, s.boss.hearts - 1); s.bubble = t('bossMiss'); }
+    if (!s.timed) {
+      if (!s.queue.some(x => x.t === q.t && x.b === q.b && x.type === 'review')) s.queue.push({ t:q.t, b:q.b, due: s.idx + 3, type:'review' });
+      if (needsHelp(q.t, q.b) && q.b > 1 && !q.easier) s.queue.push({ t:q.t, b:q.b - 1, due: s.idx, type:'easier', orig: q.b });
+    }
+  }
+  checkAch();
+  renderQuizParts(ok ? 'cheer' : 'sad');
+  const tok = ++s.tok;
+  if (s.boss && (s.boss.hp <= 0 || s.boss.hearts <= 0)) { setTimeout(() => { if (s.tok === tok) finishQuiz(s); }, 1100); return; }
+  if (s.timed) setTimeout(() => { if (s.tok === tok) nextQ(); }, ok ? 450 : 1100);
+  else if (ok) setTimeout(() => { if (s.tok === tok) nextQ(); }, 1100);
+  else setTimeout(() => { const b = document.getElementById('nextbtn'); if (b) b.focus({ preventScroll: true }); }, 30);
+}
+function nextQ() {
+  const s = RT.sess; if (!s || s.done || !s.answered) return;
+  s.tok++;
+  if (!s.boss && !s.timed && s.idx >= s.total) {
+    if (s.queue.some(x => x.type === 'review') && s.extra < 3) { s.total++; s.extra++; s.queue.forEach(x => { x.due = Math.min(x.due, s.idx); }); }
+    else { finishQuiz(s); return; }
+  }
+  s.q = nextQuestionFor(s); s.answered = false; s.input = ''; s.chosen = null; s.bubble = t('think');
+  renderQuizParts();
+}
+function useHint() { const s = RT.sess; if (!s || s.answered || s.q.hinted) return; s.q.hinted = true; sfx('click'); renderQuizParts(); }
+function useFifty() {
+  const s = RT.sess; if (!s || s.answered || s.fifty <= 0 || s.q.removed.length || s.mode !== 'choice') return;
+  s.fifty--; s.q.removed = shuffle(s.q.choices.filter(c => c !== s.q.ans)).slice(0, 2); renderQuizParts();
+}
+function useTime() { const s = RT.sess; if (!s || !s.timed || s.timeBonus <= 0 || s.done) return; s.timeBonus = 0; s.endAt += 10000; toast('⏳ +10'); renderQuizParts(); }
+function finishQuiz(s) {
+  if (s.done) return; s.done = true; s.tok++;
+  if (RT.timer) clearInterval(RT.timer);
+  const total = s.correct + s.wrong, acc = total ? Math.round(s.correct * 100 / total) : 0;
+  const res = { kind: s.kind, correct: s.correct, wrong: s.wrong, acc, score: s.score, coins: s.correct * 2 + s.bonusCoins, xp: s.correct * 10 + Math.floor(s.best / 5) * 10,
+    stars: 0, lines: [], snap: s.snap, passed: true, retry: () => startQuiz(s.cfg), backTo: s.cfg.backTo || { screen:'main' }, wrongFacts: Object.values(s.wrongFacts), title: t('results') };
+  const cfg = s.cfg;
+  if (s.kind === 'level' || s.kind === 'secret' || s.kind === 'island') {
+    res.stars = starsFor(acc); res.passed = res.stars >= 1;
+    res.title = res.passed ? t('levelDone') : t('wellPlayed');
+    if (!res.passed) res.lines.push(t('levelFail'));
+    if (s.kind === 'level') {
+      const prev = S.levels[cfg.levelId] || 0;
+      if (res.stars > prev) { if (prev > 0) { res.coins += (res.stars - prev) * 10; res.lines.push(t('improveReward', { n: (res.stars - prev) * 10 })); } else { res.coins += res.stars * 5; } S.levels[cfg.levelId] = res.stars; }
+      S.lastLevel = cfg.levelId;
+    }
+    if ((s.kind === 'secret' || s.kind === 'island') && res.passed && !S.secretDone[cfg.levelId]) {
+      S.secretDone[cfg.levelId] = true;
+      const bonus = s.kind === 'island' ? 80 : 40; res.coins += bonus; res.lines.push(t('firstReward', { n: bonus }));
+      const it = giveItem(); if (it) { S.collection.push(it); res.lines.push(t('gotItem', { name: t(it) })); }
+      if (s.kind === 'island' && giveTrophy('tro_island')) res.lines.push(t('gotTrophy', { name: t('tro_island') }));
+    }
+    if (res.passed) res.xp += 20;
+  } else if (s.kind === 'boss') {
+    const win = s.boss.hp <= 0; res.passed = win;
+    res.stars = win ? Math.max(1, starsFor(acc)) : 0;
+    res.title = win ? t('bossWin') : t('wellPlayed');
+    if (!win) res.lines.push(t('bossLose'));
+    if (win) {
+      const prev = S.levels[cfg.levelId] || 0; if (res.stars > prev) S.levels[cfg.levelId] = res.stars;
+      const before = REGIONS.filter(regionUnlocked).map(r => r.id);
+      if (!S.bossDone[cfg.region]) {
+        S.bossDone[cfg.region] = Date.now(); res.coins += 50; res.lines.push(t('firstReward', { n: 50 }));
+        if (giveTrophy('tro_' + cfg.region)) res.lines.push(t('gotTrophy', { name: t('troBoss', { name: t('boss_' + cfg.region) }) }));
+        REGIONS.filter(r => regionUnlocked(r) && !before.includes(r.id)).forEach(r => res.lines.push(t('unlockedRegion', { name: t('r_' + r.id) })));
+      }
+      res.xp += 50;
+    }
+  } else if (s.kind === 'practice' || s.kind === 'review') {
+    res.stars = starsFor(acc);
+    if (s.kind === 'practice' && acc >= 80 && s.correct >= 8 && cfg.tables.length === 1) S.tablePassed[cfg.tables[0]] = true;
+  } else if (s.kind === 'timed') {
+    res.stars = total >= 5 ? starsFor(acc) : 0;
+    const key = 'timed_' + cfg.diff, prev = S.records[key] || 0;
+    if (s.score > prev) { S.records[key] = s.score; if (prev > 0) res.lines.push('🏅 ' + t('newRecord')); }
+    if (cfg.diff === 'hard' && s.score >= 150 && giveTrophy('tro_timed')) res.lines.push(t('gotTrophy', { name: t('tro_timed') }));
+    res.lines.push(t('record', { n: S.records[key] || 0 }));
+  } else if (s.kind === 'mixed') {
+    res.stars = starsFor(acc);
+    if (total >= 15 && acc > (S.records.mixedAcc || 0)) { S.records.mixedAcc = acc; res.lines.push('🏅 ' + t('newRecord')); }
+  } else if (s.kind === 'learn') {
+    res.stars = starsFor(acc); S.counters.lessons++;
+  }
+  res.rec = recommendation(res, s.tables);
+  showResults(res);
+}
+function recommendation(res, tables) {
+  const wf = res.wrongFacts || [];
+  if (wf.length) return { text: t('recFacts', { list: wf.slice(0, 4).map(([a, b]) => a + '×' + b).join(', ') }), facts: wf };
+  if (res.acc < 70 && tables && tables.length) {
+    let worst = tables[0], wa = 101; tables.forEach(x => { const a = tableStats(x).acc; if (a !== null && a < wa) { wa = a; worst = x; } });
+    return { text: t('recTable', { n: worst }), facts: null };
+  }
+  return { text: t('recGood'), facts: null };
+}
+function showResults(res) {
+  stopRuntime();
+  commitResult(res);
+  RT.res = res;
+  if (res.stars >= 2 || res.passed && res.kind === 'boss') confetti(110);
+  if (res.stars >= 1) sfx('reward');
+  go('results', {}, { replace: true });
+}
+
+/* =========================================================
+   11. SOUND (Web Audio API) & ANIMATIONS
+   ========================================================= */
+const AudioSys = {
+  ctx: null, musicTimer: null, step: 0,
+  ensure() {
+    if (this.ctx) { if (this.ctx.state === 'suspended') this.ctx.resume().catch(()=>{}); return this.ctx; }
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
+    try { this.ctx = new AC(); } catch (e) { this.ctx = null; }
+    return this.ctx;
+  },
+  tone(freq, dur, type, vol, delay) {
+    const c = this.ctx; if (!c) return;
+    const t0 = c.currentTime + (delay || 0);
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = type || 'sine'; o.frequency.setValueAtTime(freq, t0);
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(vol || 0.15, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g); g.connect(c.destination); o.start(t0); o.stop(t0 + dur + 0.05);
+  },
+  startMusic() {
+    if (this.musicTimer || !S.music) return; if (!this.ensure()) return;
+    const mel = [523,659,784,659,587,698,880,698,523,659,784,1047,880,784,659,587];
+    const bass = [131,175,196,165];
+    this.musicTimer = setInterval(() => {
+      if (!S.music || document.hidden) return;
+      const i = this.step++ % mel.length;
+      this.tone(mel[i], 0.32, 'triangle', 0.035);
+      if (i % 4 === 0) this.tone(bass[(i / 4) % 4], 0.8, 'sine', 0.045);
+    }, 400);
+  },
+  stopMusic() { if (this.musicTimer) clearInterval(this.musicTimer); this.musicTimer = null; }
+};
+function sfx(name) {
+  if (!S.sound) return; const c = AudioSys.ensure(); if (!c) return;
+  try {
+    if (name === 'correct') { AudioSys.tone(660, .15, 'triangle', .16); AudioSys.tone(880, .18, 'triangle', .16, .09); AudioSys.tone(1175, .22, 'triangle', .14, .18); }
+    else if (name === 'wrong') { AudioSys.tone(330, .22, 'sine', .1); AudioSys.tone(262, .3, 'sine', .09, .12); }
+    else if (name === 'reward') { [784, 988, 1175, 1568].forEach((f, i) => AudioSys.tone(f, .25, 'triangle', .13, i * .09)); }
+    else if (name === 'click') { AudioSys.tone(520, .06, 'sine', .06); }
+    else if (name === 'hit') { AudioSys.tone(220, .12, 'square', .06); AudioSys.tone(440, .1, 'triangle', .08, .05); }
+    else if (name === 'coin') { AudioSys.tone(988, .08, 'square', .06); AudioSys.tone(1319, .14, 'square', .06, .07); }
+  } catch (e) { /* audio is optional */ }
+}
+function confetti(n) {
+  if (!S.anim) return;
+  const fx = document.getElementById('fx'); if (!fx) return;
+  const colors = ['#ffc23a','#ff8a1f','#2a72ee','#5aaeff','#7b5cff','#4cc97a','#ff7fb5'];
+  for (let i = 0; i < (n || 60); i++) {
+    const d = document.createElement('div'); d.className = 'cf';
+    d.style.left = Math.random() * 100 + 'vw'; d.style.background = pick(colors);
+    d.style.animationDuration = (1.6 + Math.random() * 1.6) + 's'; d.style.animationDelay = (Math.random() * 0.4) + 's';
+    d.style.transform = 'rotate(' + rnd(0, 360) + 'deg)';
+    fx.appendChild(d); setTimeout(() => d.remove(), 3800);
+  }
+}
+function toast(msg) {
+  const box = document.getElementById('toasts'); if (!box) return;
+  const d = document.createElement('div'); d.className = 'toast'; d.textContent = msg; box.appendChild(d);
+  setTimeout(() => d.remove(), 3200);
+  while (box.children.length > 4) box.firstChild.remove();
+}
+function buddyMood(cls) {
+  const b = document.querySelector('#buddy .char, .buddy-inline .char'); if (!b || !S.anim) return;
+  b.classList.remove('cheer', 'sad'); void b.offsetWidth; b.classList.add(cls);
+}
+
+/* =========================================================
+   SVG ART: logo, characters, objects
+   ========================================================= */
+let svgId = 0;
+function logoSVG(cls) {
+  const i = ++svgId;
+  return '<svg class="logo ' + (cls || '') + '" viewBox="0 0 420 150" role="img" aria-label="KaraKara">' +
+  '<defs><linearGradient id="lgb' + i + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd8ff"/><stop offset=".55" stop-color="#2f86f6"/><stop offset="1" stop-color="#1a4fc4"/></linearGradient>' +
+  '<linearGradient id="lgo' + i + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff07a"/><stop offset=".5" stop-color="#ffc23a"/><stop offset="1" stop-color="#ff7a1a"/></linearGradient>' +
+  '<linearGradient id="lgc' + i + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3a0"/><stop offset="1" stop-color="#ffae1a"/></linearGradient>' +
+  '<filter id="lgs' + i + '" x="-10%" y="-10%" width="120%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="3" flood-color="#0b2a6b" flood-opacity=".35"/></filter>' +
+  '<radialGradient id="lgg' + i + '"><stop offset="0" stop-color="#fff6b0" stop-opacity=".9"/><stop offset="1" stop-color="#fff6b0" stop-opacity="0"/></radialGradient></defs>' +
+  '<ellipse class="lg-glow" cx="210" cy="92" rx="200" ry="58" fill="url(#lgg' + i + ')" opacity=".55"/>' +
+  '<g filter="url(#lgs' + i + ')" transform="translate(178 6)"><path d="M4 36 L0 8 L16 20 L32 0 L48 20 L64 8 L60 36 Z" fill="url(#lgc' + i + ')" stroke="#e08a00" stroke-width="3" stroke-linejoin="round"/><circle cx="32" cy="24" r="5" fill="#ff5d73"/><circle cx="14" cy="28" r="3" fill="#5aaeff"/><circle cx="50" cy="28" r="3" fill="#5aaeff"/></g>' +
+  '<g filter="url(#lgs' + i + ')" font-family="' + "'Arial Rounded MT Bold','Nunito','Varela Round','Trebuchet MS',Arial,sans-serif" + '" font-weight="900" font-size="78" text-anchor="middle" stroke="#ffffff" stroke-width="9" paint-order="stroke" stroke-linejoin="round">' +
+  '<text x="210" y="122" textLength="370" lengthAdjust="spacingAndGlyphs"><tspan fill="url(#lgb' + i + ')">Kara</tspan><tspan fill="url(#lgo' + i + ')">Kara</tspan></text></g>' +
+  '<g fill="#ffc23a"><path d="M24 40 l4 9 9 4 -9 4 -4 9 -4 -9 -9 -4 9 -4z"/><path d="M392 30 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z"/><path d="M380 128 l2.5 5 5 2.5 -5 2.5 -2.5 5 -2.5 -5 -5 -2.5 5 -2.5z" fill="#5aaeff"/></g>' +
+  '</svg>';
+}
+function hatSVG(id) {
+  switch (id) {
+    case 'hat_cap': return '<path d="M35 34 Q37 10 60 10 Q83 10 85 34Z" fill="#2a72ee"/><path d="M80 32 Q102 31 106 38 L80 38Z" fill="#1a55c2"/><circle cx="60" cy="11" r="3.5" fill="#ffc23a"/><path d="M60 12 V33" stroke="#1a55c2" stroke-width="2"/>';
+    case 'hat_crown': return '<path d="M37 32 L39 8 L50 20 L60 4 L70 20 L81 8 L83 32Z" fill="#ffc83d" stroke="#e09a00" stroke-width="2.5" stroke-linejoin="round"/><circle cx="60" cy="22" r="3.5" fill="#ff5d73"/><circle cx="46" cy="26" r="2.5" fill="#5aaeff"/><circle cx="74" cy="26" r="2.5" fill="#5aaeff"/>';
+    case 'hat_wizard': return '<path d="M33 32 L62 -8 L87 32Z" fill="#7b5cff"/><ellipse cx="60" cy="32" rx="31" ry="6" fill="#5b3fd6"/><path d="M58 8 l2 4 4 2 -4 2 -2 4 -2 -4 -4 -2 4 -2z" fill="#ffd45e"/><circle cx="70" cy="20" r="2" fill="#ffd45e"/><circle cx="50" cy="24" r="1.6" fill="#ffd45e"/>';
+    case 'hat_helmet': return '<circle cx="60" cy="47" r="35" fill="rgba(170,225,255,.28)" stroke="#cfeeff" stroke-width="4"/><path d="M38 30 Q46 20 58 19" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".85"/><rect x="50" y="78" width="20" height="6" rx="3" fill="#cfeeff"/>';
+    case 'hat_flower': return '<path d="M36 30 Q60 18 84 30" stroke="#3f9e55" stroke-width="4" fill="none"/>' + [38,49,60,71,82].map((x, k) => '<circle cx="' + x + '" cy="' + (k % 2 ? 22 : 27) + '" r="6" fill="' + ['#ff7fb5','#ffd45e','#ff8a5b','#b38cff','#ff7fb5'][k] + '"/><circle cx="' + x + '" cy="' + (k % 2 ? 22 : 27) + '" r="2.2" fill="#fff6c2"/>').join('');
+    default: return '<ellipse cx="60" cy="29" rx="37" ry="7" fill="#c49a5f"/><path d="M38 29 Q40 6 60 6 Q80 6 82 29Z" fill="#dcb47a"/><rect x="39" y="21" width="42" height="5" rx="2" fill="#8a5a2b"/>';
+  }
+}
+function heroSVG(size, hat) {
+  return '<svg class="char hero" width="' + size + '" height="' + Math.round(size * 1.33) + '" viewBox="0 -10 120 160" role="img" aria-label="' + t('heroName') + '">' +
+  '<ellipse cx="60" cy="146" rx="32" ry="5" fill="rgba(0,0,0,.15)"/>' +
+  '<rect x="44" y="112" width="12" height="28" rx="5" fill="#2e4a7d"/><rect x="64" y="112" width="12" height="28" rx="5" fill="#2e4a7d"/>' +
+  '<ellipse cx="49" cy="141" rx="10" ry="5" fill="#6b3f1e"/><ellipse cx="71" cy="141" rx="10" ry="5" fill="#6b3f1e"/>' +
+  '<rect x="28" y="72" width="16" height="34" rx="6" fill="#e0662a"/><rect x="31" y="80" width="10" height="8" rx="2" fill="#ffb37a"/>' +
+  '<rect x="38" y="70" width="44" height="46" rx="16" fill="#ff9f43"/><rect x="38" y="100" width="44" height="16" rx="6" fill="#3b6fd6"/>' +
+  '<path d="M48 72 L60 85 L72 72" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/><path d="M60 89 l2 4 4 1 -3 3 1 4 -4 -2 -4 2 1 -4 -3 -3 4 -1z" fill="#ffe066"/>' +
+  '<rect x="26" y="76" width="12" height="30" rx="6" fill="#ff9f43" transform="rotate(12 32 78)"/><circle cx="27" cy="106" r="6" fill="#f5c29a"/>' +
+  '<rect x="82" y="66" width="12" height="30" rx="6" fill="#ff9f43" transform="rotate(-38 88 70)"/><circle cx="100" cy="52" r="6.5" fill="#f5c29a"/>' +
+  '<circle cx="60" cy="48" r="26" fill="#f5c29a"/><circle cx="34" cy="50" r="5" fill="#eeb58b"/><circle cx="86" cy="50" r="5" fill="#eeb58b"/>' +
+  '<path d="M34 44 Q35 20 60 20 Q85 20 86 44 Q78 32 66 33 Q60 26 52 33 Q42 32 34 44Z" fill="#3a2414"/>' +
+  '<ellipse cx="50" cy="50" rx="3.8" ry="4.4" fill="#1d1d2b"/><ellipse cx="70" cy="50" rx="3.8" ry="4.4" fill="#1d1d2b"/><circle cx="51.3" cy="48.4" r="1.3" fill="#fff"/><circle cx="71.3" cy="48.4" r="1.3" fill="#fff"/>' +
+  '<path d="M50 60 Q60 69 70 60" stroke="#b5452b" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+  '<circle cx="43" cy="58" r="4.5" fill="#ff8f8f" opacity=".55"/><circle cx="77" cy="58" r="4.5" fill="#ff8f8f" opacity=".55"/>' +
+  hatSVG(hat) + '</svg>';
+}
+function dragonSVG(size, colorId) {
+  const c = DCOLORS.find(x => x.id === colorId) || DCOLORS[0];
+  return '<svg class="char dragon" width="' + size + '" height="' + Math.round(size * 0.93) + '" viewBox="0 0 140 130" role="img" aria-label="' + t('dragonName') + '">' +
+  '<ellipse cx="70" cy="124" rx="34" ry="5" fill="rgba(0,0,0,.15)"/>' +
+  '<path d="M96 98 Q132 104 130 72 Q122 88 102 86Z" fill="' + c.c + '"/><path d="M128 70 l6 -4 -2 8z" fill="' + c.w + '"/>' +
+  '<path d="M46 62 Q12 38 16 74 Q28 64 46 76Z" fill="' + c.w + '"/><path d="M94 62 Q128 38 124 74 Q112 64 94 76Z" fill="' + c.w + '"/>' +
+  '<ellipse cx="70" cy="90" rx="32" ry="30" fill="' + c.c + '"/><ellipse cx="70" cy="96" rx="20" ry="21" fill="' + c.d + '"/>' +
+  '<path d="M58 88 H82 M56 98 H84 M58 108 H82" stroke="' + c.c + '" stroke-width="2" opacity=".35"/>' +
+  '<ellipse cx="54" cy="118" rx="10" ry="6" fill="' + c.w + '"/><ellipse cx="86" cy="118" rx="10" ry="6" fill="' + c.w + '"/>' +
+  '<path d="M52 26 L46 8 L62 20Z" fill="#ffd166"/><path d="M88 26 L94 8 L78 20Z" fill="#ffd166"/>' +
+  '<circle cx="70" cy="48" r="28" fill="' + c.c + '"/><path d="M66 20 l4 -8 4 8z" fill="' + c.w + '"/>' +
+  '<ellipse cx="59" cy="46" rx="7.5" ry="8.5" fill="#fff"/><ellipse cx="81" cy="46" rx="7.5" ry="8.5" fill="#fff"/>' +
+  '<circle cx="60" cy="47" r="4.4" fill="#1d1d2b"/><circle cx="82" cy="47" r="4.4" fill="#1d1d2b"/><circle cx="61.6" cy="45" r="1.5" fill="#fff"/><circle cx="83.6" cy="45" r="1.5" fill="#fff"/>' +
+  '<ellipse cx="70" cy="62" rx="13" ry="8" fill="' + c.d + '"/><circle cx="66" cy="60" r="1.6" fill="#1d1d2b"/><circle cx="74" cy="60" r="1.6" fill="#1d1d2b"/>' +
+  '<path d="M62 66 Q70 72 78 66" stroke="#1d1d2b" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+  '<circle cx="49" cy="58" r="4.5" fill="#ff8fb1" opacity=".55"/><circle cx="91" cy="58" r="4.5" fill="#ff8fb1" opacity=".55"/></svg>';
+}
+function chestSVG(open) {
+  return open
+    ? '<svg viewBox="0 0 64 56" aria-hidden="true"><path d="M6 22 L10 4 H54 L58 22Z" fill="#a0612a"/><rect x="6" y="22" width="52" height="30" rx="5" fill="#c47a35"/><rect x="6" y="30" width="52" height="5" fill="#ffc23a"/><circle cx="32" cy="22" r="9" fill="#fff3a0" opacity=".9"/><rect x="28" y="30" width="8" height="10" rx="2" fill="#ffd45e"/></svg>'
+    : '<svg viewBox="0 0 64 56" aria-hidden="true"><path d="M6 24 Q6 6 32 6 Q58 6 58 24Z" fill="#b86d2e"/><rect x="6" y="22" width="52" height="30" rx="5" fill="#c47a35"/><rect x="6" y="22" width="52" height="5" fill="#ffc23a"/><rect x="28" y="20" width="8" height="14" rx="2" fill="#ffd45e" stroke="#a36a00"/><path d="M14 6 V52 M50 6 V52" stroke="#8a4f1c" stroke-width="3" opacity=".5"/></svg>';
+}
+function castleSVG() {
+  return '<svg class="castle" viewBox="0 0 92 110" aria-hidden="true"><rect x="8" y="40" width="76" height="66" fill="#b9c2d6"/><rect x="0" y="20" width="26" height="86" fill="#cfd6e6"/><rect x="66" y="20" width="26" height="86" fill="#cfd6e6"/>' +
+  '<path d="M0 20 h6 v-8 h7 v8 h6 v-8 h7 v8" fill="#cfd6e6"/><path d="M66 20 h6 v-8 h7 v8 h6 v-8 h7 v8" fill="#cfd6e6"/><path d="M-2 20 L13 0 L28 20Z" fill="#ff6f61"/><path d="M64 20 L79 0 L94 20Z" fill="#ff6f61"/>' +
+  '<path d="M34 106 V80 Q46 66 58 80 V106Z" fill="#6b4a2a"/><rect x="8" y="34" width="8" height="10" fill="#5a6b8c"/><rect x="74" y="34" width="8" height="10" fill="#5a6b8c"/><circle cx="79" cy="56" r="7" fill="#ffc23a"/></svg>';
+}
+function rocketSVG() {
+  return '<svg viewBox="0 0 40 60" aria-hidden="true"><path d="M20 2 Q34 16 32 40 H8 Q6 16 20 2Z" fill="#f3f6ff"/><circle cx="20" cy="22" r="6" fill="#5aaeff" stroke="#2a72ee" stroke-width="2"/><path d="M8 34 L0 48 L9 44Z" fill="#ff6f61"/><path d="M32 34 L40 48 L31 44Z" fill="#ff6f61"/><path d="M12 40 Q20 60 28 40Z" fill="#ffc23a"/><path d="M15 40 Q20 52 25 40Z" fill="#fff3a0"/></svg>';
+}
+function carSVG(color) {
+  return '<svg viewBox="0 0 80 40" aria-hidden="true"><path d="M4 26 Q4 16 16 15 L26 6 H50 L62 15 Q76 16 76 26 V30 H4Z" fill="' + color + '"/><path d="M29 9 H48 L56 15 H24Z" fill="#cfeeff"/><circle cx="20" cy="30" r="7" fill="#222"/><circle cx="20" cy="30" r="3" fill="#bbb"/><circle cx="60" cy="30" r="7" fill="#222"/><circle cx="60" cy="30" r="3" fill="#bbb"/><rect x="70" y="19" width="6" height="4" rx="1" fill="#ffe066"/></svg>';
+}
+
+/* =========================================================
+   9. UI RENDERING
+   ========================================================= */
+let CUR = { screen: 'splash', params: {} };
+const NAV = [];
+const $ = s => document.querySelector(s);
+const SCREENS = {};
+const NO_NAV = ['splash', 'tour'];
+function applyPrefs() {
+  document.documentElement.setAttribute('data-theme', S.theme);
+  document.documentElement.setAttribute('lang', S.lang === 'uz' ? 'uz-Latn' : S.lang);
+  document.documentElement.classList.toggle('noanim', !S.anim);
+  LANG = S.lang;
+}
+function render(focus) {
+  const app = document.getElementById('app');
+  const fn = SCREENS[CUR.screen] || SCREENS.main;
+  app.innerHTML = '<div class="screen">' + fn(CUR.params || {}) + '</div>';
+  const after = AFTER[CUR.screen]; if (after) after(CUR.params || {});
+  if (focus) { const h = app.querySelector('h1'); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); } window.scrollTo(0, 0); }
+}
+function go(screen, params, opt) {
+  opt = opt || {};
+  if (opt.reset) NAV.length = 0;
+  else if (!opt.replace && !NO_NAV.includes(CUR.screen)) NAV.push(CUR);
+  if (screen !== CUR.screen) stopRuntime(screen);
+  CUR = { screen, params: params || {} };
+  render(true);
+}
+function back() {
+  const prev = NAV.pop();
+  stopRuntime();
+  CUR = prev || { screen: 'main', params: {} };
+  if (CUR.screen === 'quiz' || CUR.screen === 'results') CUR = { screen: 'main', params: {} };
+  render(true);
+}
+function stopRuntime(next) {
+  if (RT.timer) { clearInterval(RT.timer); RT.timer = null; }
+  if (RT.raf) { cancelAnimationFrame(RT.raf); RT.raf = null; }
+  if (RT.pairsTimer) { clearInterval(RT.pairsTimer); RT.pairsTimer = null; }
+  if (RT.sess && next !== 'quiz') { RT.sess.tok++; }
+  if (RT.game && RT.game.timeouts) RT.game.timeouts.forEach(clearTimeout);
+}
+function isActivePlay() {
+  const sc = CUR.screen;
+  if (sc === 'quiz') return RT.sess && !RT.sess.done && (RT.sess.idx > 0 || RT.sess.timed);
+  if (['treasure','castle','pilot','race','pairs'].includes(sc)) { const g = RT.game; return g && !g.done && g.phase !== 'prep' && (g.started || g.type === 'pairs' && g.moves > 0 || g.type === 'treasure' && g.chests.some(c => c.open)); }
+  return false;
+}
+function pills() {
+  const li = levelInfo(S.xp);
+  return '<div class="pills"><span class="pill" title="' + t('coins') + '">🪙 <b>' + S.coins + '</b></span><span class="pill" title="' + t('stars') + '">⭐ <b>' + totalStars() + '</b></span><span class="pill" title="' + t('level') + '">Lv <b>' + li.lvl + '</b></span></div>';
+}
+function topbar(title) {
+  return '<header class="topbar"><button class="iconbtn" data-act="back" aria-label="' + t('back') + '">←</button><h1>' + title + '</h1>' + pills() + '</header>';
+}
+function helpBtn(key) { return '<button class="help" data-act="help" data-arg="' + key + '" aria-label="' + t('helpTitle') + '">?</button>'; }
+function starsHTML(n, max) { let h = '<span class="stars" aria-label="' + n + '/' + (max || 3) + '">'; for (let i = 0; i < (max || 3); i++) h += '<span class="s ' + (i < n ? 'on' : '') + '">⭐</span>'; return h + '</span>'; }
+function credit() { return '<footer class="credit"><div class="cn">KaraKara</div><div>by Anvar Muratov</div><div>' + t('rights') + '</div></footer>'; }
+function langSeg() { return '<div class="seg" role="group" aria-label="' + t('langLbl') + '">' + LANGS.map(l => '<button data-act="lang" data-arg="' + l + '" aria-pressed="' + (S.lang === l) + '">' + (l === 'uz' ? 'UZ' : l.toUpperCase()) + '</button>').join('') + '</div>'; }
+function choiceButtons(q, act, answered, chosen) {
+  return '<div class="choices">' + q.choices.map((c, i) => {
+    let cls = '', mk = '';
+    if (answered) { if (c === q.ans) { cls = 'right'; mk = '✓'; } else if (c === chosen) { cls = 'wrong'; mk = '✗'; } }
+    if (q.removed && q.removed.includes(c) && !answered) cls = 'gone';
+    return '<button class="choice ' + cls + '" data-act="' + act + '" data-arg="' + c + '" data-key="' + (i + 1) + '" ' + (answered || cls === 'gone' ? 'disabled' : '') + ' aria-label="' + c + (mk ? ' ' + mk : '') + '"><span class="k">' + (i + 1) + '</span>' + c + (mk ? '<span class="mk" aria-hidden="true">' + mk + '</span>' : '') + '</button>';
+  }).join('') + '</div>';
+}
+const AFTER = {};
+
+/* ---------- Splash ---------- */
+SCREENS.splash = () => '<div class="splash">' + logoSVG() + '<div class="slogan">' + t('slogan') + '</div><div class="chars">' + heroSVG(110, S.inv.hat).replace('class="char', 'class="char floaty') + dragonSVG(120, S.inv.color).replace('class="char', 'class="char floaty') + '</div><div class="loader bar gold"><i id="ld" style="width:5%"></i></div><button class="btn acc big" data-act="splashGo">▶ ' + t('tapStart') + '</button>' + credit() + '</div>';
+AFTER.splash = () => {
+  setTimeout(() => { const l = $('#ld'); if (l) l.style.width = '100%'; }, 50);
+  RT.splashT = setTimeout(() => { if (CUR.screen === 'splash') leaveSplash(); }, 2600);
+};
+function leaveSplash() { clearTimeout(RT.splashT); if (CUR.screen !== 'splash') return; if (!S.tourDone) { RT.tour = { step: 0, demoOk: false }; go('tour', {}, { reset: true }); } else go('main', {}, { reset: true }); }
+
+/* ---------- Tour ---------- */
+SCREENS.tour = () => {
+  const st = RT.tour || (RT.tour = { step: 0, demoOk: false }); const n = 5, i = st.step;
+  let body = '';
+  if (i === 0) body = '<div class="row c">' + heroSVG(110, S.inv.hat) + dragonSVG(120, S.inv.color) + '</div><h1>' + t('tour1T') + '</h1><p>' + t('tour1') + '</p>';
+  if (i === 1) body = '<h1>' + t('tour2T') + '</h1><div class="row c" style="margin:14px 0">' + LANGS.map(l => '<button class="btn ' + (S.lang === l ? '' : 'ghost') + '" data-act="lang" data-arg="' + l + '" aria-pressed="' + (S.lang === l) + '">' + LANG_LABEL[l] + '</button>').join('') + '</div><p class="muted">' + t('tour2') + '</p>';
+  if (i === 2) {
+    const q = st.q || (st.q = { x:2, y:3, ans:6, choices:[5,6,8,9], removed:[] });
+    body = '<h1>' + t('tour3T') + '</h1><p>' + t('tour3') + '</p>' + vizHTML(2, 3) + '<div class="expr" style="font-size:52px">2<span class="op">×</span>3<span class="op">=</span><span class="slot ' + (st.demoOk ? 'ok' : '') + '">' + (st.demoOk ? 6 : '?') + '</span></div>' + choiceButtons(q, 'tourAns', st.demoOk, st.demoPick) + '<div class="feedback ' + (st.demoOk ? 'ok' : (st.demoPick ? 'no' : '')) + '" aria-live="polite">' + (st.demoOk ? t('tour3ok') : (st.demoPick ? t('tour3no') : '')) + '</div>';
+  }
+  if (i === 3) body = '<h1>' + t('tour4T') + '</h1><div class="demo-stars"><span>⭐</span><span>⭐</span><span>⭐</span></div><p>' + t('tour4') + '</p><p class="muted">' + t('help_stars') + '</p>';
+  if (i === 4) body = '<div class="row c">' + dragonSVG(120, S.inv.color).replace('class="char', 'class="char floaty') + '</div><h1>' + t('tour5T') + '</h1><p>' + t('tour5') + '</p><button class="btn acc big" data-act="tourFinish" data-arg="play">🌳 ' + t('tourGo') + '</button>';
+  const canNext = i !== 2 || st.demoOk;
+  return '<div class="tour"><div class="card">' + logoSVG('sm') + '<div class="steps">' + Array.from({ length: n }, (_, k) => '<i class="' + (k < i ? 'on' : k === i ? 'cur' : '') + '"></i>').join('') + '</div>' + body +
+    '<div class="row sb" style="margin-top:16px"><button class="btn ghost" data-act="tourFinish" data-arg="skip">' + t('skip') + '</button><div class="row">' + (i > 0 ? '<button class="btn ghost" data-act="tourStep" data-arg="-1">' + t('back') + '</button>' : '') + (i < n - 1 ? '<button class="btn" data-act="tourStep" data-arg="1" ' + (canNext ? '' : 'disabled') + '>' + t('next') + ' →</button>' : '') + '</div></div></div></div>';
+};
+
+/* ---------- Main ---------- */
+SCREENS.main = () => {
+  ensureDaily();
+  const li = levelInfo(S.xp);
+  const menu = [
+    ['play','🗺️','playD','hero'], ['learn','📖','learnD'], ['practice','✏️','practiceD'], ['minigames','🎮','minigamesD'],
+    ['achievements','🏆','achievementsD'], ['stats','📊','statsD'], ['inventory','🎒','inventoryD'], ['settings','⚙️','settingsD'], ['about','ℹ️','aboutD']
+  ];
+  const daily = S.daily.list.map(m => {
+    const target = DAILY_POOL[m.id], done = m.p >= target;
+    return '<li><span style="font-size:1.4rem">' + (m.claimed ? '✅' : done ? '🎁' : '🎯') + '</span><div class="grow"><div><b>' + t('m_' + m.id, { n: target }) + '</b></div><div class="bar green" style="height:8px;margin-top:4px"><i style="width:' + Math.min(100, m.p / target * 100) + '%"></i></div><small class="muted">' + Math.min(m.p, target) + '/' + target + ' · ' + t('dailyReward', { c: 20, x: 30 }) + '</small></div>' +
+      (m.claimed ? '<span class="chip">' + t('claimed') + '</span>' : '<button class="btn sm acc" data-act="claimDaily" data-arg="' + m.id + '" ' + (done ? '' : 'disabled') + '>' + t('claim') + '</button>') + '</li>';
+  }).join('');
+  return '<main class="wrap"><div class="mainhead">' + langSeg() + '<div class="row"><button class="iconbtn" data-act="toggleTheme" aria-label="' + t('toggleTheme') + '">' + (S.theme === 'dark' ? '☀️' : '🌙') + '</button><button class="iconbtn" data-act="toggleSound" aria-label="' + t('set_sound') + '">' + (S.sound ? '🔊' : '🔇') + '</button>' + pills() + '</div></div>' +
+  '<h1 class="sr">KaraKara</h1>' + logoSVG() + '<p class="center" style="font-weight:800;margin-top:-6px">' + t('slogan') + '</p>' +
+  '<section class="card scene"><div>' + heroSVG(96, S.inv.hat).replace('class="char', 'class="char floaty') + '</div><div><div class="bubble">' + t('hello') + '</div><div class="playercard" style="margin-top:12px"><div class="row sb"><span class="lv">' + t('level') + ' ' + li.lvl + '</span><span class="muted">' + li.cur + ' / ' + li.need + ' ' + t('xp') + '</span></div><div class="bar"><i style="width:' + (li.cur / li.need * 100) + '%"></i></div></div></div><div class="dr">' + dragonSVG(104, S.inv.color).replace('class="char', 'class="char floaty') + '</div></section>' +
+  '<nav class="menu-grid" aria-label="menu">' + menu.map(m => '<button class="menu-btn ' + (m[3] || '') + '" data-act="nav" data-arg="' + m[0] + '"><span class="ic" aria-hidden="true">' + m[1] + '</span><span><span class="nm">' + t(m[0]) + '</span><br><span class="ds">' + t(m[2]) + '</span></span></button>').join('') + '</nav>' +
+  '<section class="card daily" style="margin-top:14px"><h2>📅 ' + t('dailyTitle') + '</h2><ul>' + daily + '</ul></section>' + credit() + '</main>';
+};
+
+/* ---------- Map & regions ---------- */
+SCREENS.map = () => {
+  let html = topbar(t('mapTitle')) + '<main class="wrap"><p class="muted">' + t('mapHint') + '</p><div class="regions">';
+  REGIONS.forEach((r, idx) => {
+    const un = regionUnlocked(r), st = regionStars(r);
+    if (idx === 1) html += '<div class="route"><span class="ln"></span>🧭 ' + t('routeChoice') + '<span class="ln"></span></div>';
+    html += '<button class="region-card ' + (un ? '' : 'locked') + '" style="background:' + r.grad + '" data-act="region" data-arg="' + r.id + '"><span class="ric" aria-hidden="true">' + r.icon + '</span><span class="grow"><h3>' + (un ? '' : '🔒 ') + t('r_' + r.id) + (S.bossDone[r.id] ? ' ✅' : '') + '</h3><p>' + t('r_' + r.id + 'D') + '</p>' +
+      (un ? '<p>⭐ ' + t('regionStars', { n: st, m: 15 }) + '</p><div class="bar" style="height:8px"><i style="width:' + (st / 15 * 100) + '%"></i></div>' : '<p>🔒 ' + t(NEED_KEY[r.id]) + '</p>') + '</span>' + '</button>';
+  });
+  const iu = islandUnlocked(), ib = S.secretDone.island;
+  html += '<button class="region-card ' + (iu ? '' : 'locked') + '" style="background:linear-gradient(135deg,#ff7fb5,#7b5cff)" data-act="island"><span class="ric" aria-hidden="true">🏝️</span><span class="grow"><h3>' + (iu ? '' : '🔒 ') + t('island') + (ib ? ' ✅' : '') + '</h3><p>' + t('islandD') + '</p><p>' + (iu ? '🎁 ' + t('tablesList', { list: '1–10' }) : '🔒 ' + t('islandNeed')) + '</p></span>' + '</button>';
+  return html + '</div>' + credit() + '</main>';
+};
+SCREENS.region = (p) => {
+  const r = REG[p.id] || REGIONS[0];
+  let html = topbar(r.icon + ' ' + t('r_' + r.id)) + '<main class="wrap"><div class="card" style="background:' + r.grad + ';color:#fff"><b>' + t('r_' + r.id + 'D') + '</b><div>⭐ ' + t('regionStars', { n: regionStars(r), m: 15 }) + ' ' + helpBtn('help_stars') + '</div></div><div class="path">';
+  for (let n = 1; n <= 5; n++) {
+    const un = levelUnlocked(r, n), st = S.levels[r.id + '-' + n] || 0, isB = n === 5;
+    html += '<button class="node ' + (isB ? 'boss ' : '') + (un ? '' : 'locked ') + (st ? 'done' : '') + '" data-act="level" data-arg="' + r.id + '-' + n + '"><span class="nb">' + (un ? (isB ? r.bossIcon : n) : '🔒') + '</span><span class="grow"><b>' + (isB ? t('boss') + ': ' + t('boss_' + r.id) : t('levelN', { n })) + '</b><br><small class="muted">' + t('tablesList', { list: r.levels[n - 1].length === 10 ? '1–10' : r.levels[n - 1].join(', ') }) + '</small><br>' + starsHTML(st) + '</span></button>';
+  }
+  const su = secretUnlocked(r), sd = S.secretDone[r.id + '-s'];
+  html += '<button class="node secret ' + (su ? '' : 'locked ') + (sd ? 'done' : '') + '" data-act="level" data-arg="' + r.id + '-s"><span class="nb">' + (su ? '🎁' : '🔒') + '</span><span class="grow"><b>' + t('secret') + '</b><br><small class="muted">' + (su ? t('questions', { n: 8 }) : t('secretNeed', { n: SECRET_STARS })) + '</small></span></button>';
+  return html + '</div></main>';
+};
+function levelModal(id) {
+  const [rid, nStr] = id.split('-'); const r = REG[rid]; if (!r) return;
+  if (!regionUnlocked(r)) { openModal('<h2>🔒 ' + t('r_' + rid) + '</h2><p>' + t(NEED_KEY[rid]) + '</p><div class="row c"><button class="btn" data-act="closeModal">' + t('ok') + '</button></div>'); return; }
+  if (nStr === 's') {
+    if (!secretUnlocked(r)) { openModal('<h2>🔒 ' + t('secret') + '</h2><p>' + t('secretNeed', { n: SECRET_STARS }) + '</p><p>⭐ ' + t('regionStars', { n: regionStars(r), m: 15 }) + '</p><div class="row c"><button class="btn" data-act="closeModal">' + t('ok') + '</button></div>'); return; }
+    openModal('<h2>🎁 ' + t('secret') + '</h2><p>' + t('tablesList', { list: [...new Set(r.levels.flat())].join(', ') }) + ' · ' + t('questions', { n: 8 }) + '</p><div class="row c"><button class="btn ghost" data-act="closeModal">' + t('cancel') + '</button><button class="btn acc" data-act="startLevel" data-arg="' + id + '">▶ ' + t('start') + '</button></div>'); return;
+  }
+  const n = Number(nStr);
+  if (!levelUnlocked(r, n)) { openModal('<h2>🔒 ' + t('levelN', { n }) + '</h2><p>' + t('needPrev') + '</p><div class="row c"><button class="btn" data-act="closeModal">' + t('ok') + '</button></div>'); return; }
+  const isB = n === 5, st = S.levels[id] || 0;
+  openModal('<h2>' + (isB ? r.bossIcon + ' ' + t('boss_' + rid) : t('levelN', { n })) + '</h2><p>' + t('tablesList', { list: r.levels[n - 1].length === 10 ? '1–10' : r.levels[n - 1].join(', ') }) + (isB ? '' : ' · ' + t('questions', { n: 10 })) + '</p>' + (isB ? '<p>' + t('bossIntro', { name: t('boss_' + rid) }) + '</p><p>❤️ × ' + BOSS_HEARTS + '</p>' : '') + '<p>' + t('best') + ': ' + starsHTML(st) + ' ' + helpBtn('help_stars') + '</p><div class="row c"><button class="btn ghost" data-act="closeModal">' + t('cancel') + '</button><button class="btn acc" data-act="startLevel" data-arg="' + id + '">▶ ' + t('start') + '</button></div>');
+}
+function startLevel(id) {
+  closeModal();
+  const [rid, nStr] = id.split('-'); const r = REG[rid];
+  const via = [{ screen:'map', params:{} }];
+  if (id === 'island') { startQuiz({ kind:'island', tables:RANGE10, total:12, levelId:'island', backTo:{ screen:'map', via:[] } }); return; }
+  if (nStr === 's') { startQuiz({ kind:'secret', tables:[...new Set(r.levels.flat())], total:8, levelId:id, region:rid, backTo:{ screen:'region', params:{ id:rid }, via } }); return; }
+  const n = Number(nStr), isB = n === 5;
+  startQuiz({ kind: isB ? 'boss' : 'level', tables: r.levels[n - 1], total: 10, levelId: id, region: rid, boss: isB ? { name: t('boss_' + rid), icon: r.bossIcon } : null, backTo: { screen:'region', params:{ id:rid }, via } });
+}
+
+/* ---------- Quiz ---------- */
+function sessTitle(s) {
+  const c = s.cfg;
+  if (s.kind === 'level' || s.kind === 'boss') { const [rid, n] = c.levelId.split('-'); return t('r_' + rid) + ' · ' + (s.kind === 'boss' ? t('boss') : t('levelN', { n })); }
+  if (s.kind === 'secret') return t('secret');
+  if (s.kind === 'island') return t('island');
+  if (s.kind === 'practice') return t('pr_table') + ' · ' + c.tables[0];
+  if (s.kind === 'review') return t('k_review');
+  if (s.kind === 'timed') return t('pr_timed') + ' · ' + t(c.diff);
+  if (s.kind === 'mixed') return t('pr_mixed');
+  if (s.kind === 'learn') return t('toQuiz') + ' · ' + t('tableOf', { n: c.tables[0] });
+  return 'KaraKara';
+}
+SCREENS.quiz = () => {
+  const s = RT.sess; if (!s) return SCREENS.main();
+  return topbar(sessTitle(s)) + '<main class="wrap"><div class="hud" id="hud"></div>' + (s.boss ? '<div class="bossbar" id="bossbar"></div>' : '') +
+    '<div class="qwrap"><section class="qcard" id="qzone"></section><aside class="buddy" id="buddy">' + dragonSVG(140, S.inv.color) + '<div class="bubble" id="bubble" aria-live="polite"></div></aside></div></main>';
+};
+AFTER.quiz = () => renderQuizParts();
+function renderQuizParts(mood) {
+  const s = RT.sess; if (!s || CUR.screen !== 'quiz') return;
+  const hud = $('#hud');
+  if (hud) {
+    let left;
+    if (s.timed) left = '<div class="timer"><div class="bar"><i id="tfill" style="width:' + (s.timeLeft / s.cfg.time * 100) + '%"></i></div><span id="ttext">⏱ ' + Math.ceil(s.timeLeft) + ' ' + t('sec') + '</span></div>';
+    else if (s.boss) left = '';
+    else left = '<div class="prog"><div class="bar"><i style="width:' + Math.min(100, s.idx / s.total * 100) + '%"></i></div><span>' + t('qOf', { i: Math.min(s.total, s.answered ? s.idx : s.idx + 1), n: s.total }) + '</span></div>';
+    hud.innerHTML = left + '<span class="chip">🔥 ' + t('streak') + ': <b>' + s.streak + '</b></span><span class="chip">🏅 ' + t('score') + ': <b>' + s.score + '</b></span>' + (s.shield > 0 ? '<span class="chip" title="' + t('shieldActive') + '">🛡️ ' + t('shieldActive') + '</span>' : '');
+  }
+  const bb = $('#bossbar');
+  if (bb && s.boss) {
+    const b = s.boss;
+    bb.innerHTML = '<span class="bic" aria-hidden="true">' + b.icon + '</span><div class="grow"><b>' + b.name + '</b><div class="bar" style="margin:4px 0"><i style="width:' + (b.hp / b.max * 100) + '%"></i></div><small>' + b.hp + '/' + b.max + '</small></div><div aria-label="' + t('hearts') + ': ' + b.hearts + '">' + '❤️'.repeat(b.hearts) + '🤍'.repeat(BOSS_HEARTS - b.hearts) + '</div>';
+    if (mood === 'cheer') { bb.classList.remove('hit'); void bb.offsetWidth; bb.classList.add('hit'); }
+  }
+  const z = $('#qzone'); if (!z) return;
+  const q = s.q, f = S.facts[fk(q.t, q.b)];
+  const autoHelp = !s.timed && f && f.h >= 2;
+  const showViz = q.hinted || autoHelp || (s.answered && !s.lastOk && !s.timed);
+  let html = '<div class="row c" style="min-height:26px">' + (q.review ? '<span class="tag">🔁 ' + t('tagReview') + '</span>' : '') + (q.easier ? '<span class="tag v">🪜 ' + t('tagEasier') + '</span>' : '') + '</div>';
+  if (q.easier) html += '<p class="muted">' + t('easierNote', { a: q.t, b: q.b, c: q.easier }) + '</p>';
+  const slot = s.answered ? q.ans : (s.mode === 'type' ? (s.input || '?') : '?');
+  html += '<div class="expr" aria-label="' + q.x + ' × ' + q.y + '"><span>' + q.x + '</span><span class="op">×</span><span>' + q.y + '</span><span class="op">=</span><span class="slot ' + (s.answered ? (s.lastOk ? 'ok' : 'no') : '') + '">' + slot + '</span></div>';
+  if (showViz && q.x <= 10 && q.y <= 10) html += vizHTML(q.x, q.y) + ((f && f.h >= 3) || (s.answered && !s.lastOk) ? '<div class="muted"><b>' + t('sumHint', { sum: sumStr(q.x, q.y) }) + '</b></div>' : '');
+  if (s.mode === 'choice') html += choiceButtons(q, 'ans', s.answered, s.chosen);
+  else {
+    html += '<div class="typebox" aria-live="polite" aria-label="' + t('typeHere') + '">' + (s.answered ? q.ans : (s.input || '<span class="muted" style="font-size:1rem">' + t('typeHere') + '</span>')) + '</div>';
+    if (!s.answered) html += '<div class="keypad">' + [1,2,3,4,5,6,7,8,9].map(d => '<button data-act="key" data-arg="' + d + '">' + d + '</button>').join('') + '<button data-act="key" data-arg="del" aria-label="' + t('erase') + '">⌫</button><button data-act="key" data-arg="0">0</button><button class="kok" data-act="key" data-arg="ok" aria-label="' + t('check') + '">✓</button></div>';
+  }
+  html += '<div class="feedback ' + (s.answered ? (s.lastOk ? 'ok' : 'no') : '') + '" aria-live="assertive">' + (s.answered ? (s.lastOk ? '✓ ' + t('praise' + (1 + (q.ans % 5))) : '✗ ' + t('wrongFb', { ans: q.ans })) : '') + '</div>';
+  if (s.answered && !s.lastOk && !s.timed) html += '<div class="explain">💡 ' + t('explain', { a: q.x, b: q.y, sum: sumStr(q.x, q.y), ans: q.ans }) + '</div>';
+  html += '<div class="tools">';
+  if (!s.answered) {
+    if (!q.hinted && !s.timed) html += '<button class="btn ghost sm" data-act="hint">🐲 ' + t('hintBtn') + '</button>' + helpBtn('help_hint');
+    if (s.mode === 'choice' && s.fifty > 0 && !q.removed.length) html += '<button class="btn ghost sm" data-act="fifty">✂️ ' + t('fiftyBtn', { n: s.fifty }) + '</button>';
+    if (s.timed && s.timeBonus > 0) html += '<button class="btn ghost sm" data-act="timeBonus">⏳ ' + t('timeBtn') + '</button>';
+  } else if (!s.done && !(s.boss && (s.boss.hp <= 0 || s.boss.hearts <= 0))) {
+    html += '<button class="btn ' + (s.lastOk ? '' : 'acc') + '" id="nextbtn" data-act="nextQ">' + t('next') + ' →</button>';
+  }
+  html += '</div>';
+  z.innerHTML = html;
+  const bub = $('#bubble'); if (bub) bub.textContent = s.bubble || '';
+  if (mood) buddyMood(mood);
+}
+
+/* ---------- Results ---------- */
+SCREENS.results = () => {
+  const r = RT.res; if (!r) return SCREENS.main();
+  const total = r.correct + r.wrong;
+  let html = topbar(t('results')) + '<main class="wrap"><section class="card center"><div class="row c">' + dragonSVG(100, S.inv.color).replace('class="char', 'class="char ' + (r.stars ? 'cheer' : '')) + '</div><h1>' + r.title + '</h1>' +
+    '<div class="res-stars" aria-label="' + t('resStars') + ': ' + r.stars + '/3">' + [0,1,2].map(i => '<span class="' + (i < r.stars ? 'on' : '') + '">⭐</span>').join('') + '</div>' +
+    '<div class="statgrid"><div class="stat"><b>✓ ' + r.correct + '</b><small>' + t('resCorrect') + '</small></div><div class="stat"><b>✗ ' + r.wrong + '</b><small>' + t('resWrong') + '</small></div><div class="stat"><b>' + (total ? r.acc : 0) + '%</b><small>' + t('resAcc') + '</small></div><div class="stat"><b>' + r.score + '</b><small>' + t('resScore') + '</small></div><div class="stat"><b>+' + r.xp + '</b><small>' + t('resXp') + '</small></div><div class="stat"><b>🪙 +' + r.coins + '</b><small>' + t('resCoins') + '</small></div></div>';
+  if (r.lines.length) html += '<div class="explain" style="text-align:left">' + r.lines.map(l => '<div>• ' + l + '</div>').join('') + '</div>';
+  if (r.newAch && r.newAch.length) html += '<h3 style="margin-top:14px">' + t('resNewAch') + '</h3><div class="row c">' + r.newAch.map(id => { const a = ACH.find(x => x.id === id); return '<span class="chip">' + (a ? a.ic : '🏅') + ' ' + t('a_' + id) + '</span>'; }).join('') + '</div>';
+  if (r.rec) html += '<h3 style="margin-top:14px">' + t('resRec') + '</h3><p>' + r.rec.text + '</p>' + (r.rec.facts ? '<button class="btn ghost sm" data-act="reviewFacts">🔁 ' + t('practiceThese') + '</button>' : '');
+  html += '<div class="row c" style="margin-top:18px"><button class="btn acc big" data-act="retry">🔄 ' + t('retry') + '</button><button class="btn big" data-act="resCont">' + t('cont') + ' →</button><button class="btn ghost" data-act="home">🏠 ' + t('mainMenu') + '</button></div></section></main>';
+  return html;
+};
+
+/* ---------- Learn ---------- */
+function tableGrid(act, selected) {
+  return '<div class="tgrid">' + RANGE10.map(n => { const st = tableStats(n); return '<button class="tbtn" data-act="' + act + '" data-arg="' + n + '" aria-pressed="' + (selected === n) + '"><b>× ' + n + '</b><div class="bar green"><i style="width:' + (st.mastered * 10) + '%"></i></div><small>' + st.mastered + '/10 ' + t('mastered') + (tableMastered(n) ? ' ⭐' : '') + '</small></button>'; }).join('') + '</div>';
+}
+SCREENS.learnSelect = () => topbar(t('learn')) + '<main class="wrap"><section class="card"><h2>📖 ' + t('learnTitle') + '</h2><p>' + t('learnIntro') + '</p>' + vizHTML(3, 4) + '<p class="center"><b>3 × 4 = ' + sumStr(3, 4) + ' = 12</b></p></section><section class="card"><h2>' + t('chooseTable') + ' ' + helpBtn('help_mastery') + '</h2>' + tableGrid('learnTable') + '</section></main>';
+SCREENS.learn = () => {
+  const L = RT.learn; if (!L) return SCREENS.learnSelect();
+  const i = L.i, x = L.t, y = i, ans = x * y;
+  const phase = i <= 3 ? 'show' : i <= 6 ? 'viz' : 'try';
+  const revealed = phase === 'show' || L.answered || L.revealed;
+  const showViz = phase !== 'try' || L.revealed || (L.answered && !L.ok);
+  let html = topbar(t('tableOf', { n: x })) + '<main class="wrap"><div class="tip">💡 ' + t('tip' + x) + '</div><div class="steps" aria-label="' + t('learnStep', { i }) + '">' + RANGE10.map(k => '<i class="' + (k < i ? 'on' : k === i ? 'cur' : '') + '"></i>').join('') + '</div>' +
+    '<div class="qwrap"><section class="qcard"><div class="muted"><b>' + t('learnStep', { i }) + '</b> · ' + (phase === 'show' ? t('watch') : t('yourTurn')) + '</div>' +
+    '<div class="expr"><span>' + x + '</span><span class="op">×</span><span>' + y + '</span><span class="op">=</span><span class="slot ' + (revealed ? 'ok' : '') + '">' + (revealed ? ans : '?') + '</span></div>';
+  if (showViz) html += vizHTML(x, y);
+  if (revealed) html += '<div class="explain">💡 ' + t('explain', { a: x, b: y, sum: sumStr(x, y), ans }) + '</div>';
+  if (phase !== 'show') {
+    const q = L.q || (L.q = { x, y, ans, choices: makeChoices(ans, x, y, 4), removed: [] });
+    html += choiceButtons(q, 'learnAns', L.answered, L.chosen) + '<div class="feedback ' + (L.answered ? (L.ok ? 'ok' : 'no') : '') + '" aria-live="polite">' + (L.answered ? (L.ok ? '✓ ' + t('praise' + rnd(1, 5)) : '✗ ' + t('wrongFb', { ans })) : '') + '</div>';
+  }
+  html += '<div class="tools"><button class="btn ghost sm" data-act="learnNav" data-arg="-1" ' + (i === 1 ? 'disabled' : '') + '>← ' + t('prev') + '</button><button class="btn ghost sm" data-act="learnRepeat">🔁 ' + t('repeatEx') + '</button>' +
+    (phase === 'try' && !revealed ? '<button class="btn ghost sm" data-act="learnReveal">👁️ ' + t('showAns') + '</button>' : '') +
+    (i < 10 ? '<button class="btn" data-act="learnNav" data-arg="1" ' + (revealed ? '' : 'disabled') + '>' + t('next') + ' →</button>' : '<button class="btn acc" data-act="learnQuiz" ' + (revealed ? '' : 'disabled') + '>✅ ' + t('toQuiz') + '</button>') + '</div></section>' +
+    '<aside class="buddy buddy-inline" id="buddy">' + dragonSVG(140, S.inv.color) + '<div class="bubble">' + (phase === 'show' ? t('watch') : L.answered ? (L.ok ? t('praise' + (1 + i % 5)) : t('cheer1')) : t('think')) + '</div></aside></div></main>';
+  return html;
+};
+
+/* ---------- Practice ---------- */
+SCREENS.practiceMenu = () => {
+  const rv = reviewList();
+  const card = (act, ic, title, desc, extra) => '<button class="gcard" style="background:' + extra + '" data-act="' + act + '"><span class="gic" aria-hidden="true">' + ic + '</span><span><h3>' + title + '</h3><p>' + desc + '</p></span></button>';
+  return topbar(t('practice')) + '<main class="wrap"><div class="games">' +
+    card('prTableScreen', '✏️', t('pr_table'), t('pr_tableD'), 'linear-gradient(135deg,#4aa8ff,#2a55d6)') +
+    card('prTimedScreen', '⏱️', t('pr_timed'), t('pr_timedD'), 'linear-gradient(135deg,#ffb347,#ff6f61)') +
+    card('prMixed', '🎲', t('pr_mixed'), t('pr_mixedD') + ' · ' + (S.records.mixedAcc ? t('record', { n: S.records.mixedAcc + '%' }) : t('noRecord')), 'linear-gradient(135deg,#9a7bff,#5b3fd6)') +
+    (rv.length ? card('prReview', '🔁', t('pr_review'), t('pr_reviewD', { n: rv.length }), 'linear-gradient(135deg,#4fcf8a,#1c8a55)') : '') +
+    '</div><p class="muted center" style="margin-top:12px">' + t('help_mixed') + '</p></main>';
+};
+SCREENS.practiceSetup = () => {
+  if (!RT.pr) RT.pr = { table: 1, mode: S.mode };
+  return topbar(t('pr_table')) + '<main class="wrap"><section class="card"><h2>' + t('chooseTable') + '</h2>' + tableGrid('prPick', RT.pr.table) + '</section><section class="card"><h2>' + t('answerMode') + ' ' + helpBtn('help_mode') + '</h2><div class="seg"><button data-act="prMode" data-arg="choice" aria-pressed="' + (RT.pr.mode === 'choice') + '">🔢 ' + t('modeChoice') + '</button><button data-act="prMode" data-arg="type" aria-pressed="' + (RT.pr.mode === 'type') + '">⌨️ ' + t('modeType') + '</button></div></section><div class="row c" style="margin-top:16px"><button class="btn acc big" data-act="prStart">▶ ' + t('start') + ' · × ' + RT.pr.table + '</button></div></main>';
+};
+SCREENS.timedSetup = () => {
+  if (!RT.td) RT.td = { diff: 'easy', mode: S.mode };
+  return topbar(t('pr_timed')) + '<main class="wrap"><section class="card"><h2>' + t('difficulty') + ' ' + helpBtn('help_diff') + '</h2><div class="games">' +
+    ['easy','medium','hard'].map(d => '<button class="tbtn" style="padding:14px" data-act="tdDiff" data-arg="' + d + '" aria-pressed="' + (RT.td.diff === d) + '"><b style="font-size:1.3rem">' + t(d) + '</b><small>' + t('d_' + d) + '</small><small>' + (S.records['timed_' + d] ? '🏅 ' + t('record', { n: S.records['timed_' + d] }) : t('noRecord')) + '</small></button>').join('') +
+    '</div></section><section class="card"><h2>' + t('answerMode') + ' ' + helpBtn('help_mode') + '</h2><div class="seg"><button data-act="tdMode" data-arg="choice" aria-pressed="' + (RT.td.mode === 'choice') + '">🔢 ' + t('modeChoice') + '</button><button data-act="tdMode" data-arg="type" aria-pressed="' + (RT.td.mode === 'type') + '">⌨️ ' + t('modeType') + '</button></div></section><div class="row c" style="margin-top:16px"><button class="btn acc big" data-act="tdStart">▶ ' + t('start') + '</button></div></main>';
+};
+
+/* ---------- Mini-games menu ---------- */
+SCREENS.minigames = () => {
+  const R = S.records;
+  const games = [
+    ['treasure','💰','linear-gradient(135deg,#ffcf3a,#e0741c)', R.treasureCoins ? t('record', { n: R.treasureCoins + ' 🪙' }) : t('noRecord')],
+    ['castle','🏰','linear-gradient(135deg,#6a7bff,#3b2a9a)', R.castleWave ? t('record', { n: t('ca_wave', { n: R.castleWave, m: 4 }) }) : t('noRecord')],
+    ['pilot','🚀','linear-gradient(135deg,#3b2a8a,#120a35)', R.pilotBest ? t('record', { n: '🪐 ' + R.pilotBest }) : t('noRecord')],
+    ['race','🏎️','linear-gradient(135deg,#ff6f61,#c2185b)', R.raceBest ? t('record', { n: t('ra_place', { n: R.raceBest }) }) : t('noRecord')],
+    ['pairs','🃏','linear-gradient(135deg,#4fcf8a,#1c8a55)', R.pairsMoves ? t('pa_best', { m: R.pairsMoves, t: R.pairsTime || '—' }) : t('noRecord')]
+  ];
+  return topbar(t('minigames')) + '<main class="wrap"><div class="games">' + games.map(g => '<button class="gcard" style="background:' + g[2] + '" data-act="game" data-arg="' + g[0] + '"><span class="gic" aria-hidden="true">' + g[1] + '</span><span><h3>' + t('g_' + g[0]) + '</h3><p>' + t('g_' + g[0] + 'D') + '</p><small>' + g[3] + '</small></span></button>').join('') + '</div></main>';
+};
+function gameResult(g, extra) {
+  const total = g.correct + g.wrong, acc = total ? Math.round(g.correct * 100 / total) : 0;
+  return Object.assign({ kind: g.type, correct: g.correct, wrong: g.wrong, acc, score: g.score || 0, coins: 0, xp: 0, stars: starsFor(acc), lines: [], snap: g.snap, passed: true,
+    retry: () => startGame(g.type), backTo: { screen: 'minigames', via: [] }, wrongFacts: Object.values(g.wrongFacts || {}), title: t('wellPlayed') }, extra || {});
+}
+function gameAnswer(g, q, v) {
+  const ok = Number(v) === q.ans;
+  recordAnswer(q.t, q.b, ok, Date.now() - q.shownAt, false);
+  if (ok) { g.correct++; g.streak = (g.streak || 0) + 1; S.counters.bestStreak = Math.max(S.counters.bestStreak, g.streak); dailyEvent('streak', null, g.streak); sfx('correct'); }
+  else { g.wrong++; g.streak = 0; g.wrongFacts = g.wrongFacts || {}; g.wrongFacts[fk(q.t, q.b)] = [q.t, q.b]; sfx('wrong'); }
+  checkAch();
+  return ok;
+}
+function gq(g, tables) { const [tb, b] = pickFact(tables || availableTables(), g); return makeQuestion(tb, b); }
+function later(g, fn, ms) { const id = setTimeout(() => { if (RT.game === g && !g.done) fn(); }, ms); g.timeouts.push(id); return id; }
+function startGame(type) {
+  stopRuntime();
+  const base = { type, id: uid(), correct: 0, wrong: 0, score: 0, snap: achSnap(), last: null, done: false, timeouts: [], wrongFacts: {} };
+  if (type === 'treasure') RT.game = Object.assign(base, { chests: Array.from({ length: 9 }, () => ({ open: false, tries: 0, rew: null })), active: -1, q: null, answered: false, coins: 0, stars: 0, items: [], firstTry: 0, msg: '' });
+  if (type === 'castle') RT.game = Object.assign(base, { phase: 'prep', hp: 5, maxHp: 5, wave: 0, spawned: 0, spawnT: 0.5, enemies: [], kills: 0, charge: 0, waveBreak: 0, msg: '' });
+  if (type === 'pilot') RT.game = Object.assign(base, { phase: 'fly', lane: 1, shields: 3, gate: 0, total: 16, found: 0, p: 0, dur: 7200, opts: [], q: null, msg: '', started: true });
+  if (type === 'race') RT.game = Object.assign(base, { phase: 'prep', diff: 'easy', you: 0, boost: 0, rivals: [], order: [], tm: 0, q: null, answered: false });
+  if (type === 'pairs') { RT.game = Object.assign(base, { cards: [], open: [], matched: [], moves: 0, secs: 0, startAt: Date.now(), lock: false, mism: 0 }); setupPairs(RT.game); }
+  go(type, {}, { replace: CUR.screen === 'results' || CUR.screen === type });
+}
+
+/* ---------- 6a. Dragon Treasures ---------- */
+SCREENS.treasure = () => {
+  const g = RT.game; if (!g || g.type !== 'treasure') return SCREENS.minigames();
+  const left = g.chests.filter(c => !c.open).length;
+  let html = topbar(t('g_treasure')) + '<main class="wrap"><div class="row sb"><p><b>' + t('tr_intro') + '</b></p><div class="row"><span class="chip">🧰 ' + t('tr_left', { n: left }) + '</span><span class="chip">🪙 +' + g.coins + '</span><span class="chip">⭐ +' + g.stars + '</span></div></div>' +
+    '<div class="tmap">' + g.chests.map((c, i) => '<button class="chest ' + (g.active === i ? 'active ' : '') + (c.open ? 'opened' : '') + '" data-act="chest" data-arg="' + i + '" ' + (c.open ? 'disabled' : '') + ' aria-label="' + t('tr_chest', { n: i + 1 }) + (c.open ? ' ✓' : '') + '">' + chestSVG(c.open) + '<span>' + (c.open ? c.rew : (c.tries ? '🔒×' + c.tries : (i + 1))) + '</span></button>').join('') + '</div>';
+  if (g.active >= 0 && g.q) {
+    const q = g.q;
+    html += '<section class="qcard overlayq"><div class="row sb"><b>' + t('tr_chest', { n: g.active + 1 }) + '</b><button class="btn ghost sm" data-act="chestClose">' + t('tr_choose') + '</button></div><div class="expr"><span>' + q.x + '</span><span class="op">×</span><span>' + q.y + '</span><span class="op">=</span><span class="slot ' + (g.answered ? (g.lastOk ? 'ok' : 'no') : '') + '">' + (g.answered ? q.ans : '?') + '</span></div>' + choiceButtons(q, 'trAns', g.answered, g.chosen) + '<div class="feedback ' + (g.answered ? (g.lastOk ? 'ok' : 'no') : '') + '" aria-live="polite">' + (g.msg || '') + '</div></section>';
+  }
+  html += '<div class="row c" style="margin-top:10px">' + dragonSVG(90, S.inv.color).replace('class="char', 'class="char floaty') + '</div></main>';
+  return html;
+};
+function openChest(i) {
+  const g = RT.game; if (!g || g.type !== 'treasure' || g.done) return;
+  const c = g.chests[i]; if (!c || c.open) return;
+  g.active = i; g.q = gq(g); g.answered = false; g.chosen = null; g.msg = ''; g.started = true;
+  render(); const b = document.querySelector('.choice'); if (b) b.focus({ preventScroll: true });
+}
+function treasureAnswer(v) {
+  const g = RT.game; if (!g || g.answered || g.active < 0 || g.done) return;
+  g.answered = true; g.chosen = Number(v);
+  const c = g.chests[g.active];
+  const ok = gameAnswer(g, g.q, v); g.lastOk = ok;
+  if (ok) {
+    c.open = true; if (c.tries === 0) g.firstTry++;
+    const leftClosed = g.chests.filter(x => !x.open).length;
+    const r = Math.random();
+    let item = null;
+    if (r < 0.22 || (leftClosed === 0 && !g.items.length)) item = giveItem(g.items);
+    if (item) { g.items.push(item); const it = COLLECTION.find(x => x.id === item); c.rew = it.ic; g.msg = '✓ ' + t('gotItem', { name: t(item) }); }
+    else if (r < 0.42) { g.stars++; c.rew = '⭐'; g.msg = '✓ ' + t('tr_star'); }
+    else { const n = rnd(5, 10); g.coins += n; c.rew = '🪙' + n; g.msg = '✓ ' + t('tr_coins', { n }); sfx('coin'); }
+    g.score += 20;
+    render();
+    later(g, () => { g.active = -1; g.q = null; if (g.chests.every(x => x.open)) finishTreasure(g); else render(); }, 1300);
+  } else {
+    c.tries++; g.msg = '✗ ' + t('wrongFb', { ans: g.q.ans }) + ' · ' + t('tr_stuck');
+    render();
+    later(g, () => { g.q = gq(g); g.answered = false; g.chosen = null; g.msg = ''; render(); }, 1700);
+  }
+}
+function finishTreasure(g) {
+  if (g.done) return; g.done = true;
+  const res = gameResult(g, { coins: g.coins + (g.firstTry === 9 ? 15 : 0), xp: g.correct * 8 + 30, title: t('tr_open') });
+  S.bonusStars += g.stars;
+  g.items.forEach(id => { if (!S.collection.includes(id)) { S.collection.push(id); res.lines.push(t('gotItem', { name: t(id) })); } });
+  if (g.stars) res.lines.push('⭐ +' + g.stars);
+  if (g.firstTry > (S.records.treasureFirst || 0)) S.records.treasureFirst = g.firstTry;
+  if (res.coins > (S.records.treasureCoins || 0)) { S.records.treasureCoins = res.coins; res.lines.push('🏅 ' + t('newRecord')); }
+  res.rec = recommendation(res, availableTables());
+  showResults(res);
+}
+
+/* ---------- 6b. Castle Defense ---------- */
+const towerDmg = lvl => [1, 1, 2, 2, 3][lvl - 1] || 1;
+SCREENS.castle = () => {
+  const g = RT.game; if (!g || g.type !== 'castle') return SCREENS.minigames();
+  if (g.phase === 'prep') {
+    const cost = 40 * S.tower;
+    return topbar(t('g_castle')) + '<main class="wrap"><section class="card center"><div class="row c">' + castleSVG().replace('class="castle"', 'style="width:120px"') + heroSVG(90, S.inv.hat) + '</div><h2>' + t('g_castle') + '</h2><p>' + t('ca_intro') + '</p>' +
+      '<p><b>' + t('ca_tower', { n: S.tower }) + '</b> ' + helpBtn('help_tower') + '<br>' + t('ca_dmg', { n: towerDmg(S.tower) }) + '</p><div class="row c">' +
+      (S.tower < 5 ? '<button class="btn ghost" data-act="towerUp" ' + (S.coins >= cost ? '' : 'disabled') + '>⬆️ ' + t('ca_upgrade', { n: cost }) + '</button>' : '<span class="chip">' + t('ca_max') + '</span>') +
+      '<button class="btn acc big" data-act="castleGo">🛡️ ' + t('ca_go') + '</button></div>' + (S.records.castleWave ? '<p class="muted">' + t('record', { n: t('ca_wave', { n: S.records.castleWave, m: 4 }) }) + '</p>' : '') + '</section></main>';
+  }
+  const W = CASTLE_WAVES[Math.min(g.wave, CASTLE_WAVES.length - 1)];
+  return topbar(t('g_castle')) + '<main class="wrap"><div class="hud"><span class="chip" id="cawave">🌊 ' + t('ca_wave', { n: g.wave + 1, m: CASTLE_WAVES.length }) + (W.boss ? ' · ' + t('ca_bossWave') : '') + '</span><span class="chip" id="cahp">🏰 ' + '❤️'.repeat(g.hp) + '🤍'.repeat(g.maxHp - g.hp) + '</span><span class="chip">⚔️ ' + t('ca_dmg', { n: towerDmg(S.tower) }) + '</span><span class="chip" id="cakills">👾 ' + g.kills + '</span></div>' +
+    '<div class="field" id="field"><div class="road"></div>' + castleSVG() + '<div id="camsg" style="position:absolute;top:10px;left:50%;transform:translateX(-50%);font-weight:900;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.5);text-align:center"></div></div>' +
+    '<section class="qcard" style="margin-top:12px" id="caq"></section></main>';
+};
+AFTER.castle = () => {
+  const g = RT.game; if (!g || g.phase !== 'play') return;
+  const f = $('#field'); g.wall = f && f.clientWidth ? Math.max(9, 100 * 100 / f.clientWidth) : 12;
+  renderCastleQ(); g.lastTs = 0; if (RT.raf) cancelAnimationFrame(RT.raf); RT.raf = requestAnimationFrame(castleLoop);
+};
+function castleStart() {
+  const g = RT.game; if (!g || g.phase !== 'prep') return;
+  g.phase = 'play'; g.started = true; g.q = gq(g); g.answered = false; g.wave = 0; g.spawned = 0; g.spawnT = 1;
+  render(); castleMsg('🌊 ' + t('ca_wave', { n: 1, m: CASTLE_WAVES.length }));
+}
+function castleMsg(m) { const e = $('#camsg'); if (e) e.textContent = m; const g = RT.game; if (g) { clearTimeout(g.msgT); g.msgT = setTimeout(() => { const e2 = $('#camsg'); if (e2) e2.textContent = ''; }, 1800); } }
+function renderCastleQ() {
+  const g = RT.game, z = $('#caq'); if (!z || !g.q) return;
+  const q = g.q;
+  z.innerHTML = '<div class="expr" style="font-size:clamp(40px,10vw,64px)"><span>' + q.x + '</span><span class="op">×</span><span>' + q.y + '</span><span class="op">=</span><span class="slot ' + (g.answered ? (g.lastOk ? 'ok' : 'no') : '') + '">' + (g.answered ? q.ans : '?') + '</span></div>' + choiceButtons(q, 'caAns', g.answered, g.chosen) + '<div class="feedback ' + (g.answered ? (g.lastOk ? 'ok' : 'no') : '') + '" aria-live="polite">' + (g.msg || '') + '</div>';
+}
+function castleHud() {
+  const g = RT.game;
+  const a = $('#cahp'); if (a) a.textContent = '🏰 ' + '❤️'.repeat(g.hp) + '🤍'.repeat(Math.max(0, g.maxHp - g.hp));
+  const k = $('#cakills'); if (k) k.textContent = '👾 ' + g.kills;
+  const W = CASTLE_WAVES[Math.min(g.wave, CASTLE_WAVES.length - 1)];
+  const w = $('#cawave'); if (w) w.textContent = '🌊 ' + t('ca_wave', { n: Math.min(g.wave + 1, CASTLE_WAVES.length), m: CASTLE_WAVES.length }) + (W.boss ? ' · ' + t('ca_bossWave') : '');
+}
+function spawnEnemy(g, spec) {
+  const field = $('#field'); if (!field) return;
+  const e = { id: uid(), x: 104, hp: spec.hp, max: spec.hp, sp: spec.sp, boss: !!spec.boss, ic: spec.ic };
+  const el = document.createElement('div'); el.className = 'enemy' + (e.boss ? ' boss' : ''); el.id = e.id;
+  el.innerHTML = '<span class="eic">' + e.ic + '</span><span class="ehp"><i style="width:100%"></i></span>';
+  el.style.left = e.x + '%'; field.appendChild(el); g.enemies.push(e);
+  if (g.charge > 0) { g.charge--; setTimeout(() => castleShoot(g, towerDmg(S.tower)), 400); }
+}
+function castleShoot(g, dmg) {
+  if (!g.enemies.length) { g.charge = Math.min(3, g.charge + 1); castleMsg('⚡ ' + t('ca_charge')); return; }
+  const target = g.enemies.reduce((a, b) => (a.x < b.x ? a : b));
+  const field = $('#field');
+  if (field && S.anim) {
+    const s = document.createElement('div'); s.className = 'shot'; field.appendChild(s);
+    requestAnimationFrame(() => { s.style.left = 'calc(' + target.x + '% - 7px)'; s.style.bottom = '70px'; });
+    setTimeout(() => s.remove(), 300);
+  }
+  sfx('hit');
+  target.hp -= dmg;
+  const el = document.getElementById(target.id);
+  if (el) { const bar = el.querySelector('.ehp i'); if (bar) bar.style.width = Math.max(0, target.hp / target.max * 100) + '%'; }
+  if (target.hp <= 0) {
+    g.enemies = g.enemies.filter(e => e !== target); g.kills++; g.score += target.boss ? 60 : 15;
+    if (el) { el.classList.add('dead'); setTimeout(() => el.remove(), 320); }
+    castleHud();
+  }
+}
+function castleAnswer(v) {
+  const g = RT.game; if (!g || g.phase !== 'play' || g.answered || g.done) return;
+  g.answered = true; g.chosen = Number(v);
+  const fast = Date.now() - g.q.shownAt < 3000;
+  const ok = gameAnswer(g, g.q, v); g.lastOk = ok;
+  if (ok) { const dmg = towerDmg(S.tower) + (fast ? 1 : 0); g.msg = '✓ ' + (fast ? t('ca_fast') : t('praise' + rnd(1, 5))); g.score += 5; castleShoot(g, dmg); }
+  else g.msg = '✗ ' + t('wrongFb', { ans: g.q.ans });
+  renderCastleQ();
+  later(g, () => { g.q = gq(g); g.answered = false; g.chosen = null; g.msg = ''; renderCastleQ(); }, ok ? 500 : 1300);
+}
+function castleLoop(ts) {
+  const g = RT.game; if (!g || g.type !== 'castle' || g.phase !== 'play' || g.done || CUR.screen !== 'castle') return;
+  const dt = g.lastTs ? Math.min(0.1, (ts - g.lastTs) / 1000) : 0; g.lastTs = ts;
+  if (g.waveBreak > 0) {
+    g.waveBreak -= dt;
+    if (g.waveBreak <= 0) { g.spawned = 0; g.spawnT = 0.6; castleHud(); const W2 = CASTLE_WAVES[g.wave]; castleMsg((W2.boss ? '🦖 ' + t('ca_bossWave') : '🌊 ' + t('ca_wave', { n: g.wave + 1, m: CASTLE_WAVES.length }))); }
+  } else {
+    const W = CASTLE_WAVES[g.wave];
+    g.spawnT -= dt;
+    if (g.spawned < W.list.length && g.spawnT <= 0) { spawnEnemy(g, W.list[g.spawned]); g.spawned++; g.spawnT = W.gap; }
+    for (const e of g.enemies.slice()) {
+      e.x -= e.sp * dt;
+      const el = document.getElementById(e.id); if (el) el.style.left = e.x + '%';
+      if (e.x <= (g.wall || 12)) {
+        g.enemies = g.enemies.filter(x => x !== e); if (el) el.remove();
+        g.hp--; sfx('wrong'); castleHud();
+        if (g.hp <= 0) { endCastle(g, false); return; }
+      }
+    }
+    if (g.spawned >= W.list.length && g.enemies.length === 0) {
+      if (g.wave + 1 >= CASTLE_WAVES.length) { endCastle(g, true); return; }
+      g.wave++; g.waveBreak = 2.4; castleMsg('✨ ' + t('praise3'));
+    }
+  }
+  RT.raf = requestAnimationFrame(castleLoop);
+}
+function endCastle(g, win) {
+  if (g.done) return; g.done = true;
+  const reached = win ? CASTLE_WAVES.length : g.wave + 1;
+  const res = gameResult(g, { coins: g.kills * 2 + (win ? 30 : 0), xp: g.correct * 8 + (win ? 50 : 10), title: win ? t('ca_win') : t('wellPlayed'), passed: win });
+  res.stars = win ? Math.max(1, starsFor(res.acc)) : 0;
+  if (!win) res.lines.push(t('ca_lose'));
+  res.lines.push(t('ca_reached', { n: reached }));
+  if (reached > (S.records.castleWave || 0)) S.records.castleWave = reached;
+  if (win) { S.records.castleWins = (S.records.castleWins || 0) + 1; if (giveTrophy('tro_castle')) res.lines.push(t('gotTrophy', { name: t('tro_castle') })); }
+  res.rec = recommendation(res, availableTables());
+  showResults(res);
+}
+
+/* ---------- 6c. Space Pilot ---------- */
+SCREENS.pilot = () => {
+  const g = RT.game; if (!g || g.type !== 'pilot') return SCREENS.minigames();
+  return topbar(t('g_pilot')) + '<main class="wrap"><p class="muted">' + t('pi_intro') + '</p><div class="hud"><span class="chip" id="pigate"></span><span class="chip" id="pish"></span><span class="chip" id="piplan"></span></div>' +
+    '<div class="space" id="space"><div class="spaceq" id="piq"></div><div class="lanes">' + [0,1,2].map(i => '<div class="lane"><button class="gate" id="gate' + i + '" data-act="gate" data-arg="' + i + '"></button></div>').join('') + '</div><div class="ship" id="ship">' + rocketSVG() + '</div><div id="pimsg"></div></div>' +
+    '<div class="row c" style="margin-top:12px"><button class="btn ghost big" data-act="lane" data-arg="-1" aria-label="' + t('laneL') + '">◀</button><button class="btn acc big" data-act="flyNow">🚀 ' + t('fly') + '</button><button class="btn ghost big" data-act="lane" data-arg="1" aria-label="' + t('laneR') + '">▶</button></div><div class="feedback center" id="pifb" aria-live="polite"></div></main>';
+};
+AFTER.pilot = () => { const g = RT.game; if (!g) return; if (!g.q) pilotNewGate(g); else pilotDraw(g); g.lastTs = 0; if (RT.raf) cancelAnimationFrame(RT.raf); RT.raf = requestAnimationFrame(pilotLoop); };
+function pilotNewGate(g) {
+  g.q = gq(g); g.p = 0; g.phase = 'fly'; g.q.shownAt = Date.now();
+  const others = shuffle(g.q.choices.filter(c => c !== g.q.ans)).slice(0, 2);
+  g.opts = shuffle([g.q.ans, ...others]);
+  [0,1,2].forEach(i => { const b = $('#gate' + i); if (b) { b.classList.remove('ok', 'no'); b.disabled = false; } });
+  const fb = $('#pifb'); if (fb) { fb.textContent = ''; fb.className = 'feedback center'; }
+  const m = $('#pimsg'); if (m) m.innerHTML = '';
+  pilotDraw(g);
+}
+function pilotDraw(g) {
+  const q = $('#piq'); if (q) q.textContent = g.q.x + ' × ' + g.q.y + ' = ?';
+  [0,1,2].forEach(i => { const b = $('#gate' + i); if (b) { b.textContent = g.opts[i]; b.style.top = (8 + g.p * 54) + '%'; b.setAttribute('aria-label', String(g.opts[i])); } });
+  const sh = $('#ship'); if (sh) sh.style.left = (g.lane * 33.33) + '%';
+  const a = $('#pigate'); if (a) a.textContent = '🚪 ' + t('pi_gate', { i: Math.min(g.gate + 1, g.total), n: g.total });
+  const b = $('#pish'); if (b) b.textContent = '🛡️ ' + '💙'.repeat(g.shields) + '🤍'.repeat(3 - g.shields);
+  const c = $('#piplan'); if (c) c.textContent = '🪐 ' + t('pi_planets', { n: g.found });
+}
+function pilotLoop(ts) {
+  const g = RT.game; if (!g || g.type !== 'pilot' || g.done || CUR.screen !== 'pilot') return;
+  const dt = g.lastTs ? Math.min(0.1, (ts - g.lastTs) / 1000) : 0; g.lastTs = ts;
+  if (g.phase === 'fly') { g.p += dt * 1000 / g.dur; if (g.p >= 1) { g.p = 1; pilotResolve(g, g.lane); } else pilotDraw(g); }
+  RT.raf = requestAnimationFrame(pilotLoop);
+}
+function pilotResolve(g, lane) {
+  if (g.phase !== 'fly' || g.done) return;
+  g.phase = 'fb'; g.lane = lane; pilotDraw(g);
+  const v = g.opts[lane], early = g.p < 0.5;
+  const ok = gameAnswer(g, g.q, v);
+  const gateEl = $('#gate' + lane); if (gateEl) gateEl.classList.add(ok ? 'ok' : 'no');
+  const corr = g.opts.indexOf(g.q.ans); if (!ok) { const ce = $('#gate' + corr); if (ce) ce.classList.add('ok'); }
+  [0,1,2].forEach(i => { const b = $('#gate' + i); if (b) b.disabled = true; });
+  const fb = $('#pifb');
+  if (ok) {
+    g.score += 10 + (early ? 5 : 0);
+    if (fb) { fb.textContent = '✓ ' + t('pi_pass'); fb.className = 'feedback center ok'; }
+    if (g.correct % 4 === 0) { g.found++; const name = PLANETS[(S.planets + g.found - 1) % PLANETS.length]; const m = $('#pimsg'); if (m) m.innerHTML = '<div class="planetmsg">🪐 ' + t('pi_planet', { name }) + '</div>'; sfx('reward'); }
+  } else {
+    g.shields--; if (fb) { fb.textContent = '✗ ' + t('pi_bump', { ans: g.q.ans }); fb.className = 'feedback center no'; }
+    const sh = $('#ship'); if (sh && S.anim) { sh.classList.remove('bump'); void sh.offsetWidth; sh.classList.add('bump'); }
+  }
+  pilotDraw(g);
+  later(g, () => {
+    g.gate++;
+    if (g.gate >= g.total || g.shields <= 0) { endPilot(g); return; }
+    g.dur = Math.max(4800, g.dur - 140); pilotNewGate(g);
+  }, ok ? 1100 : 1700);
+}
+function endPilot(g) {
+  if (g.done) return; g.done = true;
+  S.planets += g.found;
+  const res = gameResult(g, { coins: g.correct * 2 + g.found * 10, xp: g.correct * 10 + g.found * 10, title: g.found ? t('pi_planets', { n: g.found }) : t('wellPlayed') });
+  if (g.found > (S.records.pilotBest || 0)) { S.records.pilotBest = g.found; if (g.found) res.lines.push('🏅 ' + t('newRecord')); }
+  res.lines.push('🪐 ' + t('pi_planets', { n: S.planets }));
+  res.rec = recommendation(res, availableTables());
+  showResults(res);
+}
+
+/* ---------- 6d. Math Race ---------- */
+const RACE_CFG = { easy: { sp: [1.45, 1.75, 2.05], tables: [1,2,3,4,5,10] }, medium: { sp: [1.95, 2.35, 2.75], tables: RANGE10 } };
+const RIVAL_COLORS = ['#8a96b3', '#ff7fb5', '#4cc97a'];
+SCREENS.race = () => {
+  const g = RT.game; if (!g || g.type !== 'race') return SCREENS.minigames();
+  if (g.phase === 'prep') {
+    return topbar(t('g_race')) + '<main class="wrap"><section class="card center"><div class="row c"><span style="width:110px;display:inline-block">' + carSVG('#2a72ee') + '</span></div><h2>' + t('g_race') + '</h2><p>' + t('ra_intro') + '</p><div class="games" style="margin:10px 0">' +
+      ['easy','medium'].map(d => '<button class="tbtn" style="padding:14px" data-act="raDiff" data-arg="' + d + '" aria-pressed="' + (g.diff === d) + '"><b style="font-size:1.2rem">' + t(d) + '</b><small>' + t(d === 'easy' ? 'ra_easyD' : 'ra_medD') + '</small></button>').join('') +
+      '</div><button class="btn acc big" data-act="raceGo">🏁 ' + t('ra_go') + '</button>' + (S.records.raceBest ? '<p class="muted">' + t('record', { n: t('ra_place', { n: S.records.raceBest }) }) + '</p>' : '') + '</section></main>';
+  }
+  const lanes = [{ name: t('ra_you'), color: '#2a72ee', id: 'you' }].concat(g.rivals.map((r, i) => ({ name: r.name, color: RIVAL_COLORS[i], id: 'r' + i })));
+  return topbar(t('g_race')) + '<main class="wrap"><div class="track" id="track">' + lanes.map(l => '<div class="tlane"><span class="finish"></span><div class="car" id="car_' + l.id + '">' + carSVG(l.color) + '<span class="cn">' + l.name + '</span></div></div>').join('') + '</div>' +
+    '<section class="qcard" style="margin-top:12px" id="raq"></section></main>';
+};
+AFTER.race = () => { const g = RT.game; if (g && g.phase === 'play') { renderRaceQ(); raceDraw(g); g.lastTs = 0; if (RT.raf) cancelAnimationFrame(RT.raf); RT.raf = requestAnimationFrame(raceLoop); } };
+function raceStart() {
+  const g = RT.game; if (!g || g.phase !== 'prep') return;
+  const cfg = RACE_CFG[g.diff];
+  g.rivals = RIVALS.map((n, i) => ({ name: n, pos: 0, sp: cfg.sp[i], ph: Math.random() * 6, done: false }));
+  g.tables = cfg.tables; g.phase = 'play'; g.started = true; g.q = gq(g, g.tables); g.answered = false;
+  render();
+}
+function renderRaceQ() {
+  const g = RT.game, z = $('#raq'); if (!z || !g.q) return; const q = g.q;
+  z.innerHTML = '<div class="expr" style="font-size:clamp(40px,10vw,64px)"><span>' + q.x + '</span><span class="op">×</span><span>' + q.y + '</span><span class="op">=</span><span class="slot ' + (g.answered ? (g.lastOk ? 'ok' : 'no') : '') + '">' + (g.answered ? q.ans : '?') + '</span></div>' + choiceButtons(q, 'raAns', g.answered, g.chosen) + '<div class="feedback ' + (g.answered ? (g.lastOk ? 'ok' : 'no') : '') + '" aria-live="polite">' + (g.msg || '') + '</div>';
+}
+function raceDraw(g) {
+  const place = (id, pos) => { const el = document.getElementById('car_' + id); if (el) el.style.left = 'calc(' + Math.min(100, pos) + '% * 0.82)'; };
+  place('you', g.you); g.rivals.forEach((r, i) => place('r' + i, r.pos));
+  const y = document.getElementById('car_you'); if (y) y.classList.toggle('boost', g.boost > 0);
+}
+function raceAnswer(v) {
+  const g = RT.game; if (!g || g.phase !== 'play' || g.answered || g.done) return;
+  g.answered = true; g.chosen = Number(v);
+  const ok = gameAnswer(g, g.q, v); g.lastOk = ok;
+  if (ok) { g.boost += 6.5; g.score += 10; g.msg = '✓ ' + t('ra_boost'); }
+  else { g.msg = '✗ ' + t('wrongFb', { ans: g.q.ans }); const y = document.getElementById('car_you'); if (y && S.anim) { y.classList.remove('wobble'); void y.offsetWidth; y.classList.add('wobble'); } }
+  renderRaceQ();
+  later(g, () => { g.q = gq(g, g.tables); g.answered = false; g.chosen = null; g.msg = ''; renderRaceQ(); }, ok ? 380 : 1200);
+}
+function raceLoop(ts) {
+  const g = RT.game; if (!g || g.type !== 'race' || g.phase !== 'play' || g.done || CUR.screen !== 'race') return;
+  const dt = g.lastTs ? Math.min(0.1, (ts - g.lastTs) / 1000) : 0; g.lastTs = ts; g.tm += dt;
+  g.rivals.forEach(r => { if (r.done) return; r.pos += r.sp * (1 + 0.18 * Math.sin(g.tm * 0.9 + r.ph)) * dt; if (r.pos >= 100) { r.pos = 100; r.done = true; g.order.push(r.name); } });
+  const burst = g.boost > 0 ? Math.min(g.boost, 7.5 * dt) : 0; g.boost -= burst;
+  g.you += 0.9 * dt + burst;
+  raceDraw(g);
+  if (g.you >= 100) { g.you = 100; raceDraw(g); endRace(g); return; }
+  RT.raf = requestAnimationFrame(raceLoop);
+}
+function endRace(g) {
+  if (g.done) return; g.done = true;
+  const place = g.order.length + 1;
+  const res = gameResult(g, { coins: [40, 25, 15, 10][place - 1] + g.correct, xp: g.correct * 8 + (place === 1 ? 40 : 10), title: place === 1 ? t('ra_win') : t('ra_finish', { n: place }) });
+  res.stars = [3, 2, 1, 1][place - 1];
+  res.lines.push('🏁 ' + t('ra_place', { n: place }));
+  if (!S.records.raceBest || place < S.records.raceBest) S.records.raceBest = place;
+  if (place === 1) { S.records.raceWins = (S.records.raceWins || 0) + 1; if (giveTrophy('tro_race')) res.lines.push(t('gotTrophy', { name: t('tro_race') })); }
+  res.rec = recommendation(res, g.tables);
+  showResults(res);
+}
+
+/* ---------- 6e. Find the Pair ---------- */
+function setupPairs(g) {
+  const tabs = availableTables(); const used = new Set(), facts = [];
+  let guard = 0;
+  while (facts.length < 6 && guard++ < 400) {
+    const [tb, b] = pickFact(tabs, g); const p = tb * b;
+    if (used.has(p)) continue; used.add(p); facts.push([tb, b]);
+  }
+  g.facts = facts;
+  g.cards = shuffle(facts.flatMap(([tb, b], k) => [{ k, type: 'e', txt: tb + ' × ' + b }, { k, type: 'r', txt: String(tb * b) }]));
+}
+SCREENS.pairs = () => {
+  const g = RT.game; if (!g || g.type !== 'pairs') return SCREENS.minigames();
+  return topbar(t('g_pairs')) + '<main class="wrap"><p><b>' + t('pa_intro') + '</b></p><div class="hud"><span class="chip" id="pamoves">🔄 ' + t('pa_moves', { n: g.moves }) + '</span><span class="chip" id="patime">⏱ ' + t('pa_time', { n: g.secs }) + '</span>' + (S.records.pairsMoves ? '<span class="chip">🏅 ' + t('pa_best', { m: S.records.pairsMoves, t: S.records.pairsTime || '—' }) + '</span>' : '') + '</div>' +
+    '<div class="pairs">' + g.cards.map((c, i) => { const up = g.open.includes(i), got = g.matched.includes(c.k); return '<button class="pcard ' + (got ? 'got' : up ? 'up' : '') + '" data-act="flip" data-arg="' + i + '" ' + (got ? 'disabled' : '') + ' aria-label="' + (up || got ? c.txt : t('pa_card', { n: i + 1 })) + '"><div class="in"><div class="ba">?</div><div class="fa">' + c.txt + (got ? ' ✓' : '') + '</div></div></button>'; }).join('') + '</div>' +
+    '<div class="row c" style="margin-top:12px">' + dragonSVG(90, S.inv.color).replace('class="char', 'class="char floaty') + '</div></main>';
+};
+AFTER.pairs = () => {
+  const g = RT.game; if (!g || RT.pairsTimer) return;
+  RT.pairsTimer = setInterval(() => { if (!RT.game || RT.game !== g || g.done) { clearInterval(RT.pairsTimer); RT.pairsTimer = null; return; } g.secs = Math.round((Date.now() - g.startAt) / 1000); const e = $('#patime'); if (e) e.textContent = '⏱ ' + t('pa_time', { n: g.secs }); }, 500);
+};
+function flipCard(i) {
+  const g = RT.game; if (!g || g.type !== 'pairs' || g.lock || g.done) return;
+  const c = g.cards[i]; if (!c || g.open.includes(i) || g.matched.includes(c.k)) return;
+  g.open.push(i); sfx('click');
+  if (g.open.length === 2) {
+    g.moves++;
+    const [a, b] = g.open.map(x => g.cards[x]);
+    if (a.k === b.k && a.type !== b.type) {
+      g.matched.push(a.k); g.open = []; g.correct++;
+      const [tb, bb] = g.facts[a.k]; recordAnswer(tb, bb, true, 0, false); sfx('correct'); checkAch();
+      if (g.matched.length === 6) { render(); later(g, () => finishPairs(g), 700); return; }
+    } else {
+      g.lock = true; g.wrong++; g.mism++;
+      render();
+      later(g, () => { g.open = []; g.lock = false; render(); }, 950);
+      return;
+    }
+  }
+  render();
+}
+function finishPairs(g) {
+  if (g.done) return; g.done = true;
+  g.secs = Math.round((Date.now() - g.startAt) / 1000);
+  const score = Math.max(50, 600 - g.moves * 15 - g.secs * 2);
+  const res = gameResult(g, { score, coins: 10 + Math.max(0, 30 - (g.moves - 6) * 2), xp: 40 + g.correct * 5, title: t('pa_done') });
+  res.stars = g.moves <= 8 ? 3 : g.moves <= 12 ? 2 : 1;
+  res.acc = Math.round(6 * 100 / g.moves);
+  res.lines.push(t('pa_moves', { n: g.moves }) + ' · ' + t('pa_time', { n: g.secs }));
+  let rec = false;
+  if (!S.records.pairsMoves || g.moves < S.records.pairsMoves) { S.records.pairsMoves = g.moves; rec = true; }
+  if (!S.records.pairsTime || g.secs < S.records.pairsTime) { S.records.pairsTime = g.secs; rec = true; }
+  if (rec) res.lines.push('🏅 ' + t('newRecord'));
+  res.wrongFacts = []; res.rec = { text: t('recGood'), facts: null };
+  showResults(res);
+}
+
+/* ---------- Inventory ---------- */
+SCREENS.inventory = () => {
+  const tab = RT.invTab || 'shop', lvl = levelInfo(S.xp).lvl;
+  const tabs = [['shop','inv_shop','🛒'],['col','inv_col','🎒'],['tro','inv_tro','🏆'],['ab','inv_ab','✨']];
+  let html = topbar(t('inventory')) + '<main class="wrap"><div class="tabs" role="tablist">' + tabs.map(x => '<button role="tab" aria-selected="' + (tab === x[0]) + '" data-act="invTab" data-arg="' + x[0] + '">' + x[2] + ' ' + t(x[1]) + '</button>').join('') + '</div>';
+  if (tab === 'shop') {
+    html += '<p class="muted">🪙 ' + t('shopNote') + '</p><section class="card"><div class="row c">' + heroSVG(100, S.inv.hat) + dragonSVG(110, S.inv.color) + '</div></section>';
+    const itemCard = (it, kind, preview) => {
+      const owned = S.inv.owned.includes(it.id), on = (kind === 'hat' ? S.inv.hat : S.inv.color) === it.id;
+      return '<div class="item ' + (on ? 'on' : '') + '">' + preview + '<b>' + t(it.id) + '</b>' + (on ? '<span class="chip">✓ ' + t('worn') + '</span>' : owned ? '<button class="btn sm" data-act="equip" data-arg="' + kind + ':' + it.id + '">' + t('wear') + '</button>' : '<button class="btn sm acc" data-act="buy" data-arg="' + kind + ':' + it.id + '" ' + (S.coins >= it.price ? '' : 'disabled') + '>' + t('buy') + ' · 🪙 ' + it.price + '</button>') + '</div>';
+    };
+    html += '<section class="card"><h2>🎩 ' + t('hats') + '</h2><div class="items">' + HATS.map(h => itemCard(h, 'hat', heroSVG(60, h.id))).join('') + '</div></section>';
+    html += '<section class="card"><h2>🐲 ' + t('dcolors') + '</h2><div class="items">' + DCOLORS.map(c => itemCard(c, 'color', dragonSVG(70, c.id))).join('') + '</div></section>';
+  } else if (tab === 'col') {
+    html += '<section class="card"><h2>🎒 ' + t('colCount', { n: S.collection.length, m: COLLECTION.length }) + '</h2><p class="muted">' + t('colHow') + '</p><div class="items">' + COLLECTION.map(c => { const has = S.collection.includes(c.id); return '<div class="item ' + (has ? '' : 'lock') + '"><span class="iic">' + (has ? c.ic : '❔') + '</span><b>' + (has ? t(c.id) : t('notFound')) + '</b></div>'; }).join('') + '</div></section>';
+  } else if (tab === 'tro') {
+    html += '<section class="card"><h2>🏆 ' + t('inv_tro') + '</h2><p class="muted">' + t('noTrophies') + '</p><div class="items">' + TROPHIES.map(tr => { const has = S.trophies.includes(tr.id); const name = tr.boss ? t('troBoss', { name: t('boss_' + tr.boss) }) : t(tr.id); return '<div class="item ' + (has ? 'on' : 'lock') + '"><span class="iic">' + (has ? tr.ic : '🔒') + '</span><b>' + name + '</b>' + (tr.id === 'tro_timed' ? '<small class="muted">' + t('tro_timedD') + '</small>' : '') + '</div>'; }).join('') + '</div></section>';
+  } else {
+    html += '<section class="card"><h2>✨ ' + t('inv_ab') + '</h2><div class="achs">' + ABILITIES.map(a => { const on = lvl >= a.lvl; return '<div class="ach ' + (on ? '' : 'lock') + '"><span class="aic">' + a.ic + '</span><div><b>' + t('ab_' + a.id) + '</b><div class="muted">' + t('ab_' + a.id + 'D') + '</div><small>' + (on ? '✓ ' + t('unlockedLbl') : '🔒 ' + t('unlockAt', { n: a.lvl })) + '</small></div></div>'; }).join('') + '</div></section>';
+  }
+  return html + '</main>';
+};
+
+/* ---------- Achievements ---------- */
+function fmtDate(ts) { const d = new Date(ts); const p = n => (n < 10 ? '0' : '') + n; return p(d.getDate()) + '.' + p(d.getMonth() + 1) + '.' + d.getFullYear() + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()); }
+SCREENS.achievements = () => {
+  const n = Object.keys(S.ach).length;
+  return topbar(t('achievements')) + '<main class="wrap"><section class="card"><h2>🏅 ' + t('achCount', { n, m: ACH.length }) + '</h2><div class="bar gold"><i style="width:' + (n / ACH.length * 100) + '%"></i></div></section><div class="achs" style="margin-top:14px">' +
+    ACH.map(a => { const got = S.ach[a.id]; let pr = [0, 1]; try { pr = a.pr(); } catch (e) { /* ignore */ } const pct = Math.min(100, pr[0] / pr[1] * 100);
+      return '<div class="ach ' + (got ? '' : 'lock') + '"><span class="aic">' + a.ic + '</span><div class="grow"><b>' + t('a_' + a.id) + '</b><div class="muted">' + t('a_' + a.id + 'D') + '</div>' + (got ? '<small>✓ ' + t('achDone', { d: fmtDate(got) }) + '</small>' : '<small>🎯 ' + t('achGoal') + ': ' + Math.min(pr[0], pr[1]) + '/' + pr[1] + '</small><div class="bar gold" style="height:7px;margin-top:3px"><i style="width:' + pct + '%"></i></div>') + '</div></div>'; }).join('') +
+    '</div><section class="card" style="margin-top:14px"><h2>🏆 ' + t('inv_tro') + '</h2><div class="row">' + (S.trophies.length ? S.trophies.map(id => { const tr = TROPHIES.find(x => x.id === id); return '<span class="chip">' + tr.ic + ' ' + (tr.boss ? t('troBoss', { name: t('boss_' + tr.boss) }) : t(id)) + '</span>'; }).join('') : '<span class="muted">' + t('noTrophies') + '</span>') + '</div></section></main>';
+};
+
+/* ---------- Statistics ---------- */
+SCREENS.stats = () => {
+  const c = S.counters, li = levelInfo(S.xp), tot = c.correct + c.wrong, acc = tot ? Math.round(c.correct * 100 / tot) : 0;
+  let mastered = 0; for (const k of Object.keys(S.facts)) if (isMastered(S.facts[k])) mastered++;
+  const rv = reviewList();
+  const R = S.records;
+  const recs = [
+    [t('rec_timed', { d: t('easy') }), R.timed_easy], [t('rec_timed', { d: t('medium') }), R.timed_medium], [t('rec_timed', { d: t('hard') }), R.timed_hard],
+    [t('rec_mixed'), R.mixedAcc ? R.mixedAcc + '%' : 0], [t('rec_treasure'), R.treasureCoins], [t('rec_castle'), R.castleWave],
+    [t('rec_pilot'), R.pilotBest], [t('rec_race'), R.raceBest ? t('ra_place', { n: R.raceBest }) : 0], [t('rec_pairs'), R.pairsMoves]
+  ];
+  const kindName = k => ({ level:'k_level', boss:'k_boss', secret:'k_secret', island:'k_island', practice:'k_practice', review:'k_review', timed:'k_timed', mixed:'k_mixed', learn:'k_learn', treasure:'g_treasure', castle:'g_castle', pilot:'g_pilot', race:'g_race', pairs:'g_pairs' })[k] || 'k_level';
+  return topbar(t('stats')) + '<main class="wrap"><p class="center"><b>🌱 ' + t('st_self') + '</b></p><div class="statgrid">' +
+    '<div class="stat"><b>' + li.lvl + '</b><small>' + t('st_level') + '</small></div><div class="stat"><b>' + c.tasks + '</b><small>' + t('st_tasks') + '</small></div><div class="stat"><b>' + c.correct + '</b><small>' + t('st_correct') + '</small></div><div class="stat"><b>' + acc + '%</b><small>' + t('st_acc') + '</small></div><div class="stat"><b>' + mastered + '/100</b><small>' + t('st_mastered') + '</small></div><div class="stat"><b>' + unlockedRegionCount() + '/5</b><small>' + t('st_regions') + '</small></div><div class="stat"><b>⭐ ' + totalStars() + '</b><small>' + t('stars') + '</small></div><div class="stat"><b>🔥 ' + c.bestStreak + '</b><small>' + t('streak') + '</small></div></div>' +
+    '<section class="card"><h2>📈 ' + t('st_tables') + ' ' + helpBtn('help_mastery') + '</h2>' + RANGE10.map(n => { const st = tableStats(n); return '<div class="tbl-row"><b>×' + n + '</b><div><div class="bar green"><i style="width:' + st.mastered * 10 + '%"></i></div><small class="muted">' + (st.acc === null ? t('st_notPlayed') : t('st_tableAcc', { m: st.mastered, a: st.acc })) + (S.tablePassed[n] ? ' · 🎓' : '') + '</small></div><button class="btn sm ghost" data-act="prQuick" data-arg="' + n + '">' + t('practice') + '</button></div>'; }).join('') + '</section>' +
+    '<section class="card"><h2>🔁 ' + t('st_review') + '</h2>' + (rv.length ? '<div class="factchips">' + rv.slice(0, 16).map(x => '<span class="chip">' + x.t + ' × ' + x.b + '</span>').join('') + '</div><div style="margin-top:10px"><button class="btn sm acc" data-act="prReview">🔁 ' + t('practiceThese') + '</button></div>' : '<p class="muted">' + t('st_noReview') + '</p>') + '</section>' +
+    '<section class="card"><h2>🏅 ' + t('st_records') + '</h2><ul class="hist">' + recs.map(r => '<li><span>' + r[0] + '</span><b>' + (r[1] ? r[1] : '—') + '</b></li>').join('') + '</ul></section>' +
+    '<section class="card"><h2>🕑 ' + t('st_history') + '</h2>' + (S.sessions.length ? '<ul class="hist">' + S.sessions.map(s => '<li><span>' + fmtDate(s.t) + ' · ' + t(kindName(s.k)) + '</span><span>✓ ' + s.c + ' · ✗ ' + s.w + ' · 🏅 ' + s.p + '</span></li>').join('') + '</ul>' : '<p class="muted">' + t('st_noHistory') + '</p>') + '</section></main>';
+};
+
+/* ---------- Settings ---------- */
+SCREENS.settings = () => {
+  const tog = (act, val, label, help) => '<div class="row sb" style="padding:8px 0;border-bottom:1px dashed var(--line)"><span><b>' + label + '</b>' + (help ? helpBtn(help) : '') + '</span><div class="seg"><button data-act="' + act + '" data-arg="1" aria-pressed="' + val + '">' + t('on') + '</button><button data-act="' + act + '" data-arg="0" aria-pressed="' + !val + '">' + t('off') + '</button></div></div>';
+  return topbar(t('settings')) + '<main class="wrap"><section class="card"><h2>🌐 ' + t('langLbl') + '</h2><div class="row">' + LANGS.map(l => '<button class="btn ' + (S.lang === l ? '' : 'ghost') + '" data-act="lang" data-arg="' + l + '" aria-pressed="' + (S.lang === l) + '">' + LANG_LABEL[l] + '</button>').join('') + '</div></section>' +
+    '<section class="card"><h2>🎨 ' + t('themeLbl') + '</h2><div class="seg"><button data-act="theme" data-arg="light" aria-pressed="' + (S.theme === 'light') + '">☀️ ' + t('light') + '</button><button data-act="theme" data-arg="dark" aria-pressed="' + (S.theme === 'dark') + '">🌙 ' + t('dark') + '</button></div></section>' +
+    '<section class="card">' + tog('setSound', S.sound, '🔊 ' + t('set_sound')) + tog('setMusic', S.music, '🎵 ' + t('set_music'), 'help_music') + tog('setAnim', S.anim, '✨ ' + t('set_anim'), 'help_anim') +
+    '<div class="row sb" style="padding:8px 0"><span><b>⌨️ ' + t('set_mode') + '</b>' + helpBtn('help_mode') + '</span><div class="seg"><button data-act="setMode" data-arg="choice" aria-pressed="' + (S.mode === 'choice') + '">' + t('modeChoice') + '</button><button data-act="setMode" data-arg="type" aria-pressed="' + (S.mode === 'type') + '">' + t('modeType') + '</button></div></div></section>' +
+    '<section class="card"><h2>💾 ' + t('set_data') + '</h2><p class="muted">' + t('set_storage') + '</p><div class="row"><button class="btn ghost" data-act="showTour">👋 ' + t('set_tour') + '</button><button class="btn danger" data-act="resetAsk">🗑️ ' + t('set_reset') + '</button>' + helpBtn('help_reset') + '</div></section></main>';
+};
+
+/* ---------- About ---------- */
+SCREENS.about = () => topbar(t('about')) + '<main class="wrap"><section class="card center">' + logoSVG() + '<p style="font-weight:800">' + t('slogan') + '</p><p>' + t('ab_text') + '</p></section>' +
+  '<section class="card"><h2>' + t('ab_chars') + '</h2><div class="achs"><div class="ach" style="border-style:solid">' + heroSVG(70, S.inv.hat) + '<div><b>' + t('heroName') + '</b><div class="muted">' + t('ab_hero') + '</div></div></div><div class="ach">' + dragonSVG(80, S.inv.color) + '<div><b>' + t('dragonName') + '</b><div class="muted">' + t('ab_dragon') + '</div></div></div></div></section>' +
+  '<section class="card"><p>🔒 ' + t('ab_privacy') + '</p><p class="muted">' + t('set_storage') + '</p><p class="muted">' + t('ab_version') + ': ' + APP_VERSION + '</p></section>' + credit() + '</main>';
+
+/* ---------- Modal ---------- */
+let modalOpen = false, modalReturn = null;
+function openModal(html) {
+  modalReturn = document.activeElement;
+  const root = document.getElementById('modal-root');
+  root.innerHTML = '<div class="modal-bg" data-act="modalBg"><div class="modal" role="dialog" aria-modal="true">' + html + '</div></div>';
+  modalOpen = true;
+  const b = root.querySelector('.modal button'); if (b) b.focus();
+}
+function closeModal() {
+  document.getElementById('modal-root').innerHTML = ''; modalOpen = false;
+  if (modalReturn && document.body.contains(modalReturn)) modalReturn.focus({ preventScroll: true });
+}
+function confirmModal(text, yesLabel, yesAct, danger) {
+  openModal('<h2>❓</h2><p>' + text + '</p><div class="row c"><button class="btn ghost" data-act="closeModal">' + t('cancel') + '</button><button class="btn ' + (danger ? 'danger' : 'acc') + '" data-act="' + yesAct + '">' + yesLabel + '</button></div>');
+}
+
+/* =========================================================
+   10. EVENT HANDLERS
+   ========================================================= */
+const ACTIONS = {
+  back() { if (isActivePlay()) { openModal('<h2>🚪</h2><p>' + t('leaveQ') + '</p><div class="row c"><button class="btn" data-act="closeModal">' + t('stay') + '</button><button class="btn danger" data-act="leaveNow">' + t('leave') + '</button></div>'); return; } back(); },
+  leaveNow() { closeModal(); if (RT.sess) RT.sess.done = true; if (RT.game) RT.game.done = true; stopRuntime(); back(); },
+  home() { go('main', {}, { reset: true }); },
+  splashGo() { AudioSys.ensure(); leaveSplash(); },
+  nav(a) {
+    if (a === 'play') go('map'); else if (a === 'learn') go('learnSelect'); else if (a === 'practice') go('practiceMenu');
+    else if (a === 'minigames') go('minigames'); else if (a === 'achievements') go('achievements'); else if (a === 'stats') go('stats');
+    else if (a === 'settings') go('settings'); else if (a === 'inventory') { RT.invTab = 'shop'; go('inventory'); } else if (a === 'about') go('about');
+  },
+  lang(l) { if (!LANGS.includes(l)) return; S.lang = l; applyPrefs(); save(); render(); },
+  toggleTheme() { S.theme = S.theme === 'dark' ? 'light' : 'dark'; applyPrefs(); save(); render(); },
+  theme(v) { S.theme = v === 'dark' ? 'dark' : 'light'; applyPrefs(); save(); render(); },
+  toggleSound() { S.sound = !S.sound; save(); render(); if (S.sound) sfx('click'); },
+  setSound(v) { S.sound = v === '1'; save(); render(); if (S.sound) sfx('click'); },
+  setMusic(v) { S.music = v === '1'; save(); if (S.music) AudioSys.startMusic(); else AudioSys.stopMusic(); render(); },
+  setAnim(v) { S.anim = v === '1'; applyPrefs(); save(); render(); },
+  setMode(v) { S.mode = v === 'type' ? 'type' : 'choice'; save(); render(); },
+  help(k) { openModal('<h2>❔ ' + t('helpTitle') + '</h2><p>' + t(k) + '</p><div class="row c"><button class="btn" data-act="closeModal">' + t('ok') + '</button></div>'); },
+  closeModal() { closeModal(); },
+  modalBg(_, el, e) { if (e.target === el) closeModal(); },
+  claimDaily(id) {
+    ensureDaily(); const m = S.daily.list.find(x => x.id === id);
+    if (!m || m.claimed || m.p < DAILY_POOL[m.id]) return;
+    m.claimed = true; S.coins += 20; S.counters.dailyClaimed++; addXP(30); sfx('reward'); confetti(50); checkAch(); save(); render();
+  },
+  tourStep(d) { const st = RT.tour; st.step = Math.max(0, Math.min(4, st.step + Number(d))); render(true); },
+  tourAns(v) { const st = RT.tour; if (st.demoOk) return; st.demoPick = Number(v); if (Number(v) === 6) { st.demoOk = true; sfx('correct'); confetti(40); } else sfx('wrong'); render(); },
+  tourFinish(a) { S.tourDone = true; save(); RT.tour = null; go('main', {}, { reset: true }); if (a === 'play') { NAV.push({ screen: 'map', params: {} }); CUR = { screen: 'region', params: { id: 'forest' } }; startLevel('forest-1'); } },
+  showTour() { RT.tour = { step: 0, demoOk: false }; go('tour', {}, { reset: true }); },
+  region(id) { const r = REG[id]; if (!r) return; if (!regionUnlocked(r)) { openModal('<h2>🔒 ' + t('r_' + id) + '</h2><p>' + t(NEED_KEY[id]) + '</p><div class="row c"><button class="btn" data-act="closeModal">' + t('ok') + '</button></div>'); return; } go('region', { id }); },
+  island() { if (!islandUnlocked()) { openModal('<h2>🔒 ' + t('island') + '</h2><p>' + t('islandNeed') + '</p><div class="row c"><button class="btn" data-act="closeModal">' + t('ok') + '</button></div>'); return; } openModal('<h2>🏝️ ' + t('island') + '</h2><p>' + t('islandD') + '</p><p>' + t('tablesList', { list: '1–10' }) + ' · ' + t('questions', { n: 12 }) + '</p><div class="row c"><button class="btn ghost" data-act="closeModal">' + t('cancel') + '</button><button class="btn acc" data-act="startLevel" data-arg="island">▶ ' + t('start') + '</button></div>'); },
+  level(id) { levelModal(id); },
+  startLevel(id) { startLevel(id); },
+  ans(v) { submitAnswer(v); },
+  key(k) {
+    const s = RT.sess; if (!s || s.answered || s.done) return;
+    if (k === 'del') s.input = s.input.slice(0, -1);
+    else if (k === 'ok') { if (s.input) submitAnswer(s.input); return; }
+    else if (s.input.length < 3) s.input += k;
+    renderQuizParts();
+  },
+  nextQ() { nextQ(); },
+  hint() { useHint(); },
+  fifty() { useFifty(); },
+  timeBonus() { useTime(); },
+  retry() { const r = RT.res; if (r && r.retry) r.retry(); },
+  resCont() { const r = RT.res; const b = (r && r.backTo) || { screen: 'main' }; NAV.length = 0; if (b.screen !== 'main') { NAV.push({ screen: 'main', params: {} }); (b.via || []).forEach(v => NAV.push(v)); } stopRuntime(b.screen); CUR = { screen: b.screen, params: b.params || {} }; render(true); },
+  reviewFacts() { const r = RT.res; if (!r || !r.rec || !r.rec.facts) return; startQuiz({ kind: 'review', pool: r.rec.facts, tables: [...new Set(r.rec.facts.map(f => f[0]))], total: Math.max(6, Math.min(10, r.rec.facts.length * 2)), backTo: { screen: 'practiceMenu', via: [] } }); },
+  learnTable(n) { RT.learn = { t: Number(n), i: 1, answered: false, revealed: false, q: null }; go('learn'); },
+  learnNav(d) { const L = RT.learn; if (!L) return; L.i = Math.max(1, Math.min(10, L.i + Number(d))); L.answered = false; L.revealed = false; L.q = null; L.chosen = null; render(); },
+  learnRepeat() { const L = RT.learn; if (!L) return; L.answered = false; L.revealed = false; L.q = null; L.chosen = null; render(); },
+  learnReveal() { const L = RT.learn; if (!L) return; L.revealed = true; render(); },
+  learnAns(v) { const L = RT.learn; if (!L || L.answered || L.revealed) return; L.answered = true; L.chosen = Number(v); L.ok = Number(v) === L.t * L.i; recordAnswer(L.t, L.i, L.ok, 0, L.i <= 6); if (L.ok) sfx('correct'); else sfx('wrong'); checkAch(); render(); buddyMood(L.ok ? 'cheer' : 'sad'); },
+  learnQuiz() { const L = RT.learn; if (!L) return; startQuiz({ kind: 'learn', tables: [L.t], total: 5, mode: 'choice', backTo: { screen: 'learnSelect', via: [] } }); },
+  prTableScreen() { RT.pr = RT.pr || { table: 1, mode: S.mode }; go('practiceSetup'); },
+  prPick(n) { RT.pr.table = Number(n); render(); },
+  prMode(m) { RT.pr.mode = m; render(); },
+  prStart() { const p = RT.pr; startQuiz({ kind: 'practice', tables: [p.table], total: 10, mode: p.mode, backTo: { screen: 'practiceSetup', via: [{ screen: 'practiceMenu', params: {} }] } }); },
+  prQuick(n) { RT.pr = { table: Number(n), mode: S.mode }; startQuiz({ kind: 'practice', tables: [Number(n)], total: 10, backTo: { screen: 'stats', via: [] } }); },
+  prTimedScreen() { RT.td = RT.td || { diff: 'easy', mode: S.mode }; go('timedSetup'); },
+  tdDiff(d) { RT.td.diff = d; render(); },
+  tdMode(m) { RT.td.mode = m; render(); },
+  tdStart() { const d = RT.td.diff, c = TIMED[d]; startQuiz({ kind: 'timed', diff: d, tables: c.tables, time: c.time, total: 999, mode: RT.td.mode, backTo: { screen: 'timedSetup', via: [{ screen: 'practiceMenu', params: {} }] } }); },
+  prMixed() { startQuiz({ kind: 'mixed', tables: RANGE10, total: 15, backTo: { screen: 'practiceMenu', via: [] } }); },
+  prReview() { const rv = reviewList().slice(0, 12); if (!rv.length) return; const pool = rv.map(x => [x.t, x.b]); startQuiz({ kind: 'review', pool, tables: [...new Set(pool.map(p => p[0]))], total: Math.max(6, Math.min(12, pool.length * 2)), backTo: { screen: 'practiceMenu', via: [] } }); },
+  game(type) { startGame(type); },
+  chest(i) { openChest(Number(i)); },
+  chestClose() { const g = RT.game; if (!g || g.answered && g.lastOk) return; g.active = -1; g.q = null; g.msg = ''; g.answered = false; render(); },
+  trAns(v) { treasureAnswer(v); },
+  towerUp() { const cost = 40 * S.tower; if (S.tower >= 5) return; if (S.coins < cost) { toast(t('notEnough')); return; } S.coins -= cost; S.tower++; save(); sfx('reward'); toast('⬆️ ' + t('upgraded')); render(); },
+  castleGo() { castleStart(); },
+  caAns(v) { castleAnswer(v); },
+  gate(i) { const g = RT.game; if (g && g.type === 'pilot' && g.phase === 'fly') pilotResolve(g, Number(i)); },
+  lane(d) { const g = RT.game; if (!g || g.type !== 'pilot' || g.phase !== 'fly') return; g.lane = Math.max(0, Math.min(2, g.lane + Number(d))); pilotDraw(g); },
+  flyNow() { const g = RT.game; if (g && g.type === 'pilot' && g.phase === 'fly') pilotResolve(g, g.lane); },
+  raDiff(d) { const g = RT.game; if (g) { g.diff = d; render(); } },
+  raceGo() { raceStart(); },
+  raAns(v) { raceAnswer(v); },
+  flip(i) { flipCard(Number(i)); },
+  invTab(tb) { RT.invTab = tb; render(); },
+  buy(arg) {
+    const [kind, id] = arg.split(':'); const list = kind === 'hat' ? HATS : DCOLORS; const it = list.find(x => x.id === id);
+    if (!it || S.inv.owned.includes(id)) return;
+    if (S.coins < it.price) { toast(t('notEnough')); return; }
+    S.coins -= it.price; S.inv.owned.push(id); if (kind === 'hat') S.inv.hat = id; else S.inv.color = id;
+    save(); sfx('reward'); toast('🛍️ ' + t('bought')); render();
+  },
+  equip(arg) { const [kind, id] = arg.split(':'); if (!S.inv.owned.includes(id)) return; if (kind === 'hat') S.inv.hat = id; else S.inv.color = id; save(); sfx('click'); render(); },
+  resetAsk() { confirmModal(t('resetQ'), t('resetYes'), 'resetDo', true); },
+  resetDo() {
+    closeModal();
+    const keep = { lang: S.lang, theme: S.theme, sound: S.sound, music: S.music, anim: S.anim, mode: S.mode };
+    S = Object.assign(defaultState(), keep, { tourDone: true });
+    RT = {}; save(); toast('🗑️ ' + t('resetDone')); go('main', {}, { reset: true });
+  }
+};
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-act]'); if (!el || el.disabled) return;
+  const fn = ACTIONS[el.dataset.act]; if (!fn) return;
+  if (el.dataset.act !== 'modalBg') e.preventDefault();
+  try { fn(el.dataset.arg, el, e); } catch (err) { console.error(err); }
+});
+document.addEventListener('pointerdown', () => { if (S.sound || S.music) AudioSys.ensure(); if (S.music) AudioSys.startMusic(); }, { once: false, passive: true });
+document.addEventListener('keydown', (e) => {
+  if (modalOpen) { if (e.key === 'Escape') closeModal(); return; }
+  const sc = CUR.screen, ae = document.activeElement, onBtn = ae && ae.tagName === 'BUTTON';
+  if (e.key === 'Escape') { ACTIONS.back(); return; }
+  if (sc === 'splash' && (e.key === 'Enter' || e.key === ' ')) { if (!onBtn) { e.preventDefault(); leaveSplash(); } return; }
+  if (sc === 'quiz' && RT.sess) {
+    const s = RT.sess;
+    if (s.answered) { if ((e.key === 'Enter' || e.key === ' ') && !onBtn) { e.preventDefault(); nextQ(); } return; }
+    if (s.mode === 'type') {
+      if (/^[0-9]$/.test(e.key)) { e.preventDefault(); ACTIONS.key(e.key); }
+      else if (e.key === 'Backspace') { e.preventDefault(); ACTIONS.key('del'); }
+      else if (e.key === 'Enter' && !onBtn) { e.preventDefault(); ACTIONS.key('ok'); }
+      return;
+    }
+  }
+  if (sc === 'pilot') {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); ACTIONS.lane(-1); return; }
+    if (e.key === 'ArrowRight') { e.preventDefault(); ACTIONS.lane(1); return; }
+    if ((e.key === 'ArrowUp' || ((e.key === 'Enter' || e.key === ' ') && !onBtn))) { e.preventDefault(); ACTIONS.flyNow(); return; }
+    if (/^[1-3]$/.test(e.key)) { e.preventDefault(); ACTIONS.gate(Number(e.key) - 1); return; }
+  }
+  if (/^[1-4]$/.test(e.key) && ['quiz','treasure','castle','race','learn','tour'].includes(sc)) {
+    const b = document.querySelector('.choice[data-key="' + e.key + '"]:not([disabled])');
+    if (b) { e.preventDefault(); b.click(); }
+  }
+});
+document.addEventListener('visibilitychange', () => { const g = RT.game; if (g) g.lastTs = 0; });
+window.addEventListener('storage', (e) => { if (e.key === SAVE_KEY && e.newValue) { /* another tab saved: keep this tab's state authoritative */ } });
+
+/* =========================================================
+   12. INITIALIZATION
+   ========================================================= */
+function init() {
+  applyPrefs();
+  ensureDaily();
+  CUR = { screen: 'splash', params: {} };
+  render(true);
+  if (LOAD_PROBLEM) setTimeout(() => toast(t('loadErr')), 400);
+  if (window.matchMedia) {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq.addEventListener) mq.addEventListener('change', ev => { if (ev.matches) { S.anim = false; applyPrefs(); save(); } });
+  }
+}
+window.addEventListener('error', (e) => { try { console.error('KaraKara error:', e.message); } catch (x) { /* ignore */ } });
+init();
+})();
+</script>
+</body>
+</html>
