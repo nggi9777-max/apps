@@ -1,0 +1,21 @@
+const { chromium } = require('/home/claude/.npm-global/lib/node_modules/playwright');
+const SH = '/home/claude/shots3/';
+(async () => {
+  const br = await chromium.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox'] });
+  const pg = await br.newPage({ viewport: { width: 1600, height: 960 } }); const errs = [];
+  pg.on('pageerror', e => errs.push('PAGEERR ' + e.stack.split('\n').slice(0, 2).join(' | ')));
+  await pg.goto('file:///home/claude/dist/GazProduvka.html'); await pg.waitForTimeout(800);
+  console.log('native in browser:', await pg.evaluate(() => GSRC.native()));
+  await pg.click('#bImport'); await pg.waitForTimeout(300); await pg.click('.gd-tile[data-s="pg"]'); await pg.waitForTimeout(400);
+  console.log('pg tile in browser:', (await pg.textContent('.ov .mb')).slice(0, 110)); await pg.click('.ov .mf .tbtn');
+  await pg.click('#bImport'); await pg.waitForTimeout(300); await pg.click('.gd-tile[data-s="file"]'); await pg.waitForTimeout(400);
+  await pg.setInputFiles('#fi', process.argv[2]); await pg.waitForTimeout(1500);
+  await pg.fill('#ifname', 'Кандым'); await pg.click('.mf .tbtn.primary'); await pg.waitForTimeout(1300);
+  await pg.fill('[data-k="d_mm"]', '6'); await pg.fill('[data-k="gamma"]', '0.6'); await pg.click('.mf .tbtn.primary'); await pg.waitForTimeout(2500);
+  const k = await pg.$$eval('.bdp .kpi, .kpis .kpi', e => e.slice(0, 12).map(x => x.textContent.replace(/\s+/g, ' ').trim()).join(' || '));
+  console.log('OFFLINE dash:', k.slice(0, 600));
+  await pg.screenshot({ path: SH + '20_offline_dash.png' });
+  await pg.click('#srcPill'); await pg.waitForTimeout(1200); await pg.screenshot({ path: SH + '21_offline_sources.png' });
+  console.log('compat details present:', await pg.$$eval('details.adv summary', e => e.map(x => x.textContent).join('|')));
+  console.log(errs.join('\n') || 'NO ERRORS'); await br.close();
+})();
